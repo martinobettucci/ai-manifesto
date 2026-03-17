@@ -43,3 +43,29 @@ Variables attendues pour SMTP:
 - `SMTP_USER` (ou `SCW_SCW_DEFAULT_PROJECT_ID`, ou `SCW_DEFAULT_PROJECT_ID` converti en `SCW_<PROJECT_ID>`)
 - `SMTP_PASS` (ou `SCW_SECRET_KEY`)
 - `SMTP_REQUIRE_AUTH=true` en production (activé par défaut)
+
+## Claude Code en Docker
+
+Image minimale dédiée à Claude Code:
+
+```bash
+./runClaudeCode.sh
+```
+
+Ce script:
+- build l'image définie dans `Dockerfile.claude-code`
+- monte le dossier courant dans `/workspace`
+- ouvre un conteneur interactif avec `claude`
+- persiste les réglages globaux et l'authentification Claude dans le volume Docker `ai-manifesto-claude-code-home` monté sur `~/.claude`
+
+Pour ouvrir un shell dans le conteneur à la place:
+
+```bash
+./runClaudeCode.sh bash
+```
+
+Pour changer le nom du volume persistant:
+
+```bash
+CLAUDE_HOME_VOLUME=my-claude-home ./runClaudeCode.sh
+```
