@@ -21,6 +21,43 @@ import {
 } from './manifestoText.js';
 
 const REQUIRED_MANIFESTO_CHECKS = MANIFESTO_REQUIRED_CHECKS;
+const THEME_STORAGE_KEY = 'manifesto-theme';
+
+function getPreferredTheme() {
+  if (typeof window === 'undefined') {
+    return 'dark';
+  }
+
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+
+  if (storedTheme === 'light' || storedTheme === 'dark') {
+    return storedTheme;
+  }
+
+  return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
+function getThemeCopy(locale, theme) {
+  const language = locale?.split('-')[0] ?? 'fr';
+  const isFrench = language === 'fr';
+
+  return {
+    currentLabel: isFrench
+      ? theme === 'dark'
+        ? 'Sombre'
+        : 'Clair'
+      : theme === 'dark'
+        ? 'Dark'
+        : 'Light',
+    actionLabel: isFrench
+      ? theme === 'dark'
+        ? 'Activer le mode clair'
+        : 'Activer le mode sombre'
+      : theme === 'dark'
+        ? 'Switch to light mode'
+        : 'Switch to dark mode',
+  };
+}
 
 function createInitialForm(locale = 'fr') {
   return {
@@ -64,8 +101,10 @@ function App() {
   const deferredSearchTerm = useDeferredValue(searchTerm);
   const [busy, setBusy] = useState(false);
   const [reflectionOpen, setReflectionOpen] = useState(false);
+  const [theme, setTheme] = useState(() => getPreferredTheme());
 
   const locale = i18n.resolvedLanguage ?? 'fr';
+  const themeCopy = getThemeCopy(locale, theme);
   const promisePoints = t('promise.points', { returnObjects: true });
   const motiveItems = t('motives.items', { returnObjects: true });
   const localizedPromisePoints = Array.isArray(promisePoints) ? promisePoints : [];
@@ -86,6 +125,11 @@ function App() {
   useEffect(() => {
     document.title = t('meta.siteTitle');
   }, [t, locale]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
 
   useEffect(() => {
     setForm((current) => ({ ...current, locale }));
@@ -282,6 +326,22 @@ function App() {
             <span className="live-dot" aria-hidden="true" />
             {totalSigners} {t('meta.liveCount')}
           </span>
+
+          <button
+            type="button"
+            className="theme-toggle"
+            aria-label={themeCopy.actionLabel}
+            title={themeCopy.actionLabel}
+            aria-pressed={theme === 'light'}
+            onClick={() => {
+              setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
+            }}
+          >
+            <span className="theme-toggle-icon" aria-hidden="true">
+              {theme === 'dark' ? '☾' : '☀'}
+            </span>
+            <span className="theme-toggle-label">{themeCopy.currentLabel}</span>
+          </button>
 
           <label className="language-switcher">
             <select
