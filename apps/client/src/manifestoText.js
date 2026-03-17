@@ -1,6 +1,11 @@
-Dans le grand ligne, chaque visiteur peut lire les motivations qui viennent de ces reflexions:
-"""
-Les réflexions derrière ce manifeste
+function toLines(text) {
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+export const REFLECTIONS_TEXT = `Les réflexions derrière ce manifeste
 Ce manifeste ne part pas d’un rejet de l’intelligence artificielle.
 Il part d’un constat plus subtil et plus préoccupant.
 Nous entrons dans un environnement où les réponses sont abondantes, rapides, bien formulées, et accessibles en quelques secondes. Mais cette abondance crée une illusion. L’impression de diversité ne garantit plus la diversité réelle des sources, des points de vue ou des raisonnements.
@@ -97,12 +102,9 @@ La capacité d’écouter.
 La capacité de ne pas déléguer entièrement notre compréhension du monde.
 La liberté ne disparaît pas brutalement.
 Elle s’érode lorsque nous cessons d’exercer notre propre jugement.
-Ce manifeste est une réponse à cette érosion.
-"""
+Ce manifeste est une réponse à cette érosion.`;
 
-L'idée globale derrière le site est que tout signataire accète cette charte:
-"""
-MANIFESTE — IA OUI COMME OUTIL, NON COMME ORACLE
+export const MANIFESTO_TEXT = `MANIFESTE — IA OUI COMME OUTIL, NON COMME ORACLE
 Je reconnais que la pluralité apparente des réponses ne garantit plus la pluralité réelle des sources ni des jugements.
 J’agis en questionnant l’origine des informations et leur indépendance réelle.
 Je reconnais que le vrai danger n’est pas seulement l’erreur, mais mon acceptation passive.
@@ -135,5 +137,53 @@ Après l’IA, je m’engage à ne pas oublier de le faire.
 Je m’engage surtout à l’écouter réellement.
 Parce que ma liberté ne disparaît pas d’un coup.
 Elle s’érode lorsque je cesse d’exercer mon jugement.
-Et je refuse cette érosion.
-"""
+Et je refuse cette érosion.`;
+
+export const REFLECTION_SUBHEADINGS = new Set([
+  'Un paradoxe comportemental',
+  'Une faille cognitive exploitée',
+  'Le problème n’est pas seulement technique',
+  'Des exemples déjà visibles',
+  'Une transformation à grande échelle',
+  'Une réalité géopolitique',
+  'Restaurer une architecture saine',
+  'Une ligne claire',
+  'Un rappel essentiel',
+  'Ce que nous cherchons à préserver',
+]);
+
+const reflectionLines = toLines(REFLECTIONS_TEXT);
+const manifestoLines = toLines(MANIFESTO_TEXT);
+const positionTitleIndex = manifestoLines.indexOf('POSITION FONDAMENTALE');
+const engagementTitleIndex = manifestoLines.indexOf('ENGAGEMENT FINAL');
+const REQUIRED_COMMITMENT_PAIRS = 9;
+
+const commitmentLines = manifestoLines.slice(1, positionTitleIndex);
+const manifestoCommitments = [];
+
+for (let index = 0; index < commitmentLines.length; index += 2) {
+  manifestoCommitments.push({
+    recognize: commitmentLines[index],
+    act: commitmentLines[index + 1] ?? '',
+  });
+}
+
+if (manifestoCommitments.length !== REQUIRED_COMMITMENT_PAIRS) {
+  throw new Error(
+    `Manifesto commitments mismatch: expected ${REQUIRED_COMMITMENT_PAIRS}, got ${manifestoCommitments.length}.`,
+  );
+}
+
+export const REFLECTION_TITLE = reflectionLines[0] ?? '';
+export const REFLECTION_BODY_LINES = reflectionLines.slice(1);
+
+export const MANIFESTO_TITLE = manifestoLines[0] ?? '';
+export const MANIFESTO_COMMITMENTS = manifestoCommitments;
+export const MANIFESTO_REQUIRED_CHECKS = REQUIRED_COMMITMENT_PAIRS;
+export const MANIFESTO_POSITION_TITLE = manifestoLines[positionTitleIndex] ?? 'POSITION FONDAMENTALE';
+export const MANIFESTO_POSITION_LINES = manifestoLines.slice(
+  positionTitleIndex + 1,
+  engagementTitleIndex,
+);
+export const MANIFESTO_ENGAGEMENT_TITLE = manifestoLines[engagementTitleIndex] ?? 'ENGAGEMENT FINAL';
+export const MANIFESTO_ENGAGEMENT_LINES = manifestoLines.slice(engagementTitleIndex + 1);

@@ -1,0 +1,38 @@
+name: ai-manifesto-dev
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_FILE: /data/manifesto.sqlite
+      APP_BASE_URL: http://localhost:8080
+      PRIVACY_POLICY_URL: https://p2enjoy.studio/privacy/politique-confidentialite
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_SECURE: "false"
+      SMTP_REQUIRE_AUTH: "false"
+      SMTP_FROM: Manifesto IA <noreply@manifesto.local>
+    volumes:
+      - ./data:/data
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mailpit
+
+  client:
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - server
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"

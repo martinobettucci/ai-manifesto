@@ -1,0 +1,10 @@
+node_modules
+apps/client/node_modules
+apps/server/node_modules
+apps/client/dist
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
+npm-debug.log
+.git
+.DS_Store
