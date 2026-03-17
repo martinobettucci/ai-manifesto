@@ -1,0 +1,22 @@
+{
+  "name": "ai-manifesto",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Manifesto website for responsible AI usage",
+  "license": "ISC",
+  "type": "module",
+  "workspaces": [
+    "apps/client",
+    "apps/server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,magenta \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+    "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --workspace server",
+    "build": "npm run build --workspace client",
+    "start": "npm run start --workspace server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
