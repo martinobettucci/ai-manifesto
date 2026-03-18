@@ -12,22 +12,13 @@ if [[ -f .env ]]; then
   set +a
 fi
 
-# Scaleway TEM username can be provided directly or derived from project id.
-if [[ -z "${SMTP_USER:-}" && -n "${SCW_DEFAULT_PROJECT_ID:-}" ]]; then
-  export SMTP_USER="SCW_${SCW_DEFAULT_PROJECT_ID}"
-fi
-
-if [[ -z "${SMTP_PASS:-}" && -n "${SCW_SECRET_KEY:-}" ]]; then
-  export SMTP_PASS="${SCW_SECRET_KEY}"
-fi
-
 if [[ -z "${SMTP_USER:-}" ]]; then
-  echo "Missing SMTP_USER. Set it explicitly or provide SCW_DEFAULT_PROJECT_ID." >&2
+  echo "Missing SMTP_USER. Set it explicitly in your environment or .env file." >&2
   exit 1
 fi
 
 if [[ -z "${SMTP_PASS:-}" ]]; then
-  echo "Missing SMTP_PASS. Set it explicitly or provide SCW_SECRET_KEY." >&2
+  echo "Missing SMTP_PASS. Set it explicitly in your environment or .env file." >&2
   exit 1
 fi
 

@@ -2,6 +2,7 @@ import {
   startTransition,
   useDeferredValue,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -301,6 +302,7 @@ function App() {
   const totalLocales = new Intl.NumberFormat(locale).format(SUPPORTED_LOCALES.length);
   const hasSubmitted =
     visitorSubmission.status === 'pending' || visitorSubmission.status === 'verified';
+  const previousAllManifestoCheckedRef = useRef(allManifestoChecked);
 
   const sectionLinks = [
     { id: 'reflection', label: t('sections.whyTitle') },
@@ -337,8 +339,20 @@ function App() {
   }, [form, visitorSubmission]);
 
   useEffect(() => {
-    if (!allManifestoChecked) {
+    const wasFullyChecked = previousAllManifestoCheckedRef.current;
+    previousAllManifestoCheckedRef.current = allManifestoChecked;
+
+    if (hasSubmitted) {
       setShowCelebration(false);
+      return;
+    }
+
+    const justCompletedAllChecks = !wasFullyChecked && allManifestoChecked;
+
+    if (!justCompletedAllChecks) {
+      if (!allManifestoChecked) {
+        setShowCelebration(false);
+      }
       return;
     }
 
@@ -352,7 +366,7 @@ function App() {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [allManifestoChecked]);
+  }, [allManifestoChecked, hasSubmitted]);
 
   useEffect(() => {
     setForm((current) => {

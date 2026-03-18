@@ -53,10 +53,8 @@ Pour arrêter la stack prod:
 
 Variables attendues pour la prod:
 
-- `SMTP_USER`: requis, sauf si dérivé via `SCW_DEFAULT_PROJECT_ID`
-- `SMTP_PASS`: requis, sauf si dérivé via `SCW_SECRET_KEY`
-- `SCW_DEFAULT_PROJECT_ID`: optionnel, fallback pour `SMTP_USER` (`SCW_<PROJECT_ID>`)
-- `SCW_SECRET_KEY`: optionnel, fallback pour `SMTP_PASS`
+- `SMTP_USER`: requis
+- `SMTP_PASS`: requis
 - `SMTP_PORT`: optionnel, défaut `465`
 - `SMTP_SECURE`: optionnel, défaut `true`
 - `SMTP_REQUIRE_AUTH`: optionnel, défaut `true`
@@ -70,15 +68,15 @@ Variables attendues pour la prod:
 Exemple `.env` minimal:
 
 ```bash
-SMTP_USER=SCW_xxxxxxxxx
-SMTP_PASS=xxxxxxxxx
+SMTP_USER=smtp_username
+SMTP_PASS=smtp_password
 ```
 
 Exemple `.env` complet:
 
 ```bash
-SMTP_USER=SCW_xxxxxxxxx
-SMTP_PASS=xxxxxxxxx
+SMTP_USER=smtp_username
+SMTP_PASS=smtp_password
 SMTP_PORT=465
 SMTP_SECURE=true
 SMTP_REQUIRE_AUTH=true
