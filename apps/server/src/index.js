@@ -41,6 +41,26 @@ function validateDepartment(value) {
   return /^\d{2,3}$/.test(value);
 }
 
+function normalizeProfessionalWebsite(value) {
+  const input = sanitizeText(value);
+
+  if (!input) {
+    return '';
+  }
+
+  try {
+    const url = new URL(input);
+
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') {
+      return '';
+    }
+
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
 function createValidationError(details) {
   const error = new Error('Validation failed');
   error.code = 'VALIDATION_ERROR';
@@ -54,8 +74,12 @@ function getErrorStatus(error) {
     return 409;
   }
 
-  if (error.code === 'NOT_FOUND') {
+  if (error.code === 'INVALID_TOKEN') {
     return 404;
+  }
+
+  if (error.code === 'RESEND_UNAVAILABLE') {
+    return 410;
   }
 
   return error.status ?? 500;
@@ -67,6 +91,9 @@ function parseRegistration(body) {
   const profession = sanitizeText(body.profession);
   const department = sanitizeText(body.department);
   const locale = sanitizeText(body.locale).toLowerCase() || 'fr';
+  const aiProfessionalAccepted = body.aiProfessionalAccepted === true;
+  const professionalWebsiteRaw = sanitizeText(body.professionalWebsite);
+  const professionalWebsite = normalizeProfessionalWebsite(professionalWebsiteRaw);
   const diffusionAccepted = body.diffusionAccepted === true;
   const privacyAccepted = body.privacyAccepted === true;
   const manifestoChecks = Array.isArray(body.manifestoChecks) ? body.manifestoChecks : [];
@@ -90,6 +117,12 @@ function parseRegistration(body) {
 
   if (!validateDepartment(department)) {
     details.department = 'INVALID';
+  }
+
+  if (aiProfessionalAccepted && professionalWebsiteRaw.length === 0) {
+    details.professionalWebsite = 'REQUIRED';
+  } else if (aiProfessionalAccepted && professionalWebsite.length === 0) {
+    details.professionalWebsite = 'INVALID';
   }
 
   if (!diffusionAccepted) {
@@ -118,6 +151,8 @@ function parseRegistration(body) {
     profession,
     department,
     locale,
+    aiProfessionalConsent: Number(aiProfessionalAccepted),
+    professionalWebsite: aiProfessionalAccepted ? professionalWebsite : '',
     diffusionConsent: Number(diffusionAccepted),
     privacyConsent: Number(privacyAccepted),
     charterConsent: Number(manifestoAccepted),
@@ -148,11 +183,13 @@ app.post('/api/signers/register', async (request, response, next) => {
     await mailer.sendVerificationEmail({
       email: payload.email,
       fullName: payload.fullName,
+      locale: payload.locale,
       verifyUrl,
     });
 
     response.status(202).json({
       status: 'verification_sent',
+      verificationCode: token,
       signer,
     });
   } catch (error) {
@@ -160,35 +197,34 @@ app.post('/api/signers/register', async (request, response, next) => {
   }
 });
 
-app.post('/api/signers/resend', async (request, response, next) => {
+app.get('/api/signers/status', (request, response, next) => {
   try {
-    const email = sanitizeText(request.body.email).toLowerCase();
+    const token = sanitizeText(request.query.token);
 
-    if (!isValidEmail(email)) {
-      throw createValidationError({ email: 'INVALID' });
+    if (!token) {
+      throw createValidationError({ token: 'MISSING' });
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const tokenHash = hashToken(token);
-    const result = repository.resendToken(email, tokenHash);
+    const result = repository.getSignerStatusByTokenHash(hashToken(token));
 
-    if (result.status === 'already_verified') {
-      response.json(result);
-      return;
+    if (!result) {
+      const error = new Error('Verification code is invalid or expired');
+      error.code = 'INVALID_TOKEN';
+      throw error;
     }
 
-    const verifyUrl = buildVerificationLink(token);
-
-    await mailer.sendVerificationEmail({
-      email,
-      fullName: result.signer.full_name,
-      verifyUrl,
-    });
-
-    response.json({ status: 'verification_sent' });
+    response.json(result);
   } catch (error) {
     next(error);
   }
+});
+
+app.post('/api/signers/resend', (request, response) => {
+  response.status(410).json({
+    code: 'RESEND_UNAVAILABLE',
+    message:
+      'Resending is unavailable because email addresses are not stored. Submit the signature form again to receive a new verification email.',
+  });
 });
 
 app.get('/api/signers/verify', (request, response) => {
@@ -202,7 +238,8 @@ app.get('/api/signers/verify', (request, response) => {
     return;
   }
 
-  const signer = repository.verifyByTokenHash(hashToken(token));
+  const tokenHash = hashToken(token);
+  const signer = repository.verifyByTokenHash(tokenHash);
 
   if (!signer) {
     response.status(404).json({
@@ -212,9 +249,11 @@ app.get('/api/signers/verify', (request, response) => {
     return;
   }
 
+  const status = repository.getSignerStatusByTokenHash(tokenHash);
+
   response.json({
     status: 'verified',
-    signer,
+    signer: status?.signer ?? signer,
   });
 });
 

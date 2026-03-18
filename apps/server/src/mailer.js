@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { buildVerificationEmail } from './emailLocales.js';
 
 export function createMailer(config) {
   if (config.smtpRequireAuth && (!config.smtpUser || !config.smtpPass)) {
@@ -20,31 +21,17 @@ export function createMailer(config) {
   });
 
   return {
-    async sendVerificationEmail({ email, fullName, verifyUrl }) {
-      const text = [
-        `Bonjour ${fullName},`,
-        '',
-        "Merci pour votre engagement.",
-        "Pour publier votre signature sur le manifeste, confirmez votre adresse email via ce lien :",
+    async sendVerificationEmail({ email, fullName, locale, verifyUrl }) {
+      const { subject, text, html } = buildVerificationEmail({
+        locale,
+        fullName,
         verifyUrl,
-        '',
-        "Si vous n'êtes pas à l'origine de cette demande, ignorez simplement ce message.",
-      ].join('\n');
-
-      const html = `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1a1a1a;">
-          <p>Bonjour ${fullName},</p>
-          <p>Merci pour votre engagement.</p>
-          <p>Pour publier votre signature sur le manifeste, confirmez votre adresse email via le lien ci-dessous :</p>
-          <p><a href="${verifyUrl}">${verifyUrl}</a></p>
-          <p>Si vous n'êtes pas à l'origine de cette demande, ignorez simplement ce message.</p>
-        </div>
-      `;
+      });
 
       await transporter.sendMail({
         from: config.smtpFrom,
         to: email,
-        subject: 'Confirmez votre signature du manifeste IA',
+        subject,
         text,
         html,
       });

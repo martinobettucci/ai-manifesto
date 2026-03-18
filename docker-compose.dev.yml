@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: apps/server/Dockerfile
+      target: dev
     environment:
       NODE_ENV: development
       PORT: 3001
@@ -16,7 +17,11 @@ services:
       SMTP_SECURE: "false"
       SMTP_REQUIRE_AUTH: "false"
       SMTP_FROM: Manifesto IA <noreply@manifesto.local>
+      CHOKIDAR_USEPOLLING: "true"
+    command: npm run dev --workspace server
+    working_dir: /app
     volumes:
+      - ./apps/server:/app/apps/server
       - ./data:/data
     ports:
       - "3001:3001"
@@ -27,8 +32,16 @@ services:
     build:
       context: .
       dockerfile: apps/client/Dockerfile
+      target: dev
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      VITE_API_PROXY_TARGET: http://server:3001
+    command: npm run dev --workspace client
+    working_dir: /app
+    volumes:
+      - ./apps/client:/app/apps/client
     ports:
-      - "8080:80"
+      - "8080:5173"
     depends_on:
       - server
 

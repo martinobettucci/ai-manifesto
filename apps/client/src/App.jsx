@@ -8,20 +8,22 @@ import { useTranslation } from 'react-i18next';
 import { api } from './lib/api.js';
 import { SUPPORTED_LOCALES } from './locales.js';
 import {
-  MANIFESTO_COMMITMENTS,
-  MANIFESTO_ENGAGEMENT_LINES,
-  MANIFESTO_ENGAGEMENT_TITLE,
-  MANIFESTO_POSITION_LINES,
-  MANIFESTO_POSITION_TITLE,
-  MANIFESTO_REQUIRED_CHECKS,
-  MANIFESTO_TITLE,
-  REFLECTION_BODY_LINES,
-  REFLECTION_SUBHEADINGS,
-  REFLECTION_TITLE,
+  DEFAULT_MANIFESTO,
+  DEFAULT_REFLECTION,
+  getReflectionContent,
 } from './manifestoText.js';
+import {
+  getLocalizedCelebration,
+  getLocalizedManifestoContent,
+} from './manifestoLocales.js';
+import {
+  getVisitorStateCopy,
+  interpolateTemplate,
+} from './visitorStateLocales.js';
+import { getAiProfessionalCopy } from './aiProfessionalLocales.js';
 
-const REQUIRED_MANIFESTO_CHECKS = MANIFESTO_REQUIRED_CHECKS;
 const THEME_STORAGE_KEY = 'manifesto-theme';
+const VISITOR_STATE_STORAGE_KEY = 'manifesto-visitor-state-v1';
 
 function getPreferredTheme() {
   if (typeof window === 'undefined') {
@@ -59,16 +61,174 @@ function getThemeCopy(locale, theme) {
   };
 }
 
-function createInitialForm(locale = 'fr') {
+function createInitialForm(
+  locale = 'fr',
+  requiredChecks = DEFAULT_MANIFESTO.commitments.length,
+) {
   return {
     fullName: '',
     email: '',
     profession: '',
     department: '',
+    aiProfessionalAccepted: false,
+    professionalWebsite: '',
     diffusionAccepted: false,
     privacyAccepted: false,
-    manifestoChecks: Array.from({ length: REQUIRED_MANIFESTO_CHECKS }, () => false),
+    manifestoChecks: Array.from({ length: requiredChecks }, () => false),
     locale,
+  };
+}
+
+function createInitialVisitorSubmission() {
+  return {
+    status: 'idle',
+    verificationCode: '',
+    signerId: null,
+    signerPosition: null,
+    publicDisplayName: '',
+  };
+}
+
+function createVisitorBootstrap() {
+  const requiredChecks = DEFAULT_MANIFESTO.commitments.length;
+  const fallback = {
+    form: createInitialForm('fr', requiredChecks),
+    submission: createInitialVisitorSubmission(),
+  };
+
+  if (typeof window === 'undefined') {
+    return fallback;
+  }
+
+  const rawState = window.localStorage.getItem(VISITOR_STATE_STORAGE_KEY);
+
+  if (!rawState) {
+    return fallback;
+  }
+
+  try {
+    const parsed = JSON.parse(rawState);
+    const rawForm = parsed?.form ?? {};
+    const rawSubmission = parsed?.submission ?? {};
+
+    const nextForm = {
+      fullName: typeof rawForm.fullName === 'string' ? rawForm.fullName : '',
+      email: typeof rawForm.email === 'string' ? rawForm.email : '',
+      profession: typeof rawForm.profession === 'string' ? rawForm.profession : '',
+      department: typeof rawForm.department === 'string' ? rawForm.department : '',
+      aiProfessionalAccepted: rawForm.aiProfessionalAccepted === true,
+      professionalWebsite:
+        typeof rawForm.professionalWebsite === 'string' ? rawForm.professionalWebsite : '',
+      diffusionAccepted: rawForm.diffusionAccepted === true,
+      privacyAccepted: rawForm.privacyAccepted === true,
+      manifestoChecks: Array.isArray(rawForm.manifestoChecks)
+        ? rawForm.manifestoChecks.map((value) => value === true)
+        : Array.from({ length: requiredChecks }, () => false),
+      locale: typeof rawForm.locale === 'string' ? rawForm.locale : 'fr',
+    };
+
+    const verificationCode =
+      typeof rawSubmission.verificationCode === 'string'
+        ? rawSubmission.verificationCode
+        : '';
+
+    const status =
+      (rawSubmission.status === 'pending' || rawSubmission.status === 'verified') &&
+      verificationCode
+        ? rawSubmission.status
+        : 'idle';
+
+    const nextSubmission = {
+      status,
+      verificationCode,
+      signerId: Number.isInteger(rawSubmission.signerId) ? rawSubmission.signerId : null,
+      signerPosition: Number.isInteger(rawSubmission.signerPosition)
+        ? rawSubmission.signerPosition
+        : null,
+      publicDisplayName:
+        typeof rawSubmission.publicDisplayName === 'string'
+          ? rawSubmission.publicDisplayName
+          : '',
+    };
+
+    return {
+      form: nextForm,
+      submission: nextSubmission,
+    };
+  } catch {
+    return fallback;
+  }
+}
+
+function createSubmissionFromStatus(statusPayload, verificationCode) {
+  const signer = statusPayload?.signer ?? {};
+
+  if (statusPayload?.status === 'verified') {
+    return {
+      status: 'verified',
+      verificationCode,
+      signerId: Number.isInteger(signer.id) ? signer.id : null,
+      signerPosition: Number.isInteger(signer.position) ? signer.position : null,
+      publicDisplayName:
+        typeof signer.publicDisplayName === 'string' ? signer.publicDisplayName : '',
+    };
+  }
+
+  if (statusPayload?.status === 'pending') {
+    return {
+      status: 'pending',
+      verificationCode,
+      signerId: Number.isInteger(signer.id) ? signer.id : null,
+      signerPosition: null,
+      publicDisplayName:
+        typeof signer.publicDisplayName === 'string' ? signer.publicDisplayName : '',
+    };
+  }
+
+  return createInitialVisitorSubmission();
+}
+
+function renderInlineMarkdown(text, keyPrefix) {
+  if (typeof text !== 'string' || text.length === 0) {
+    return text;
+  }
+
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).filter(Boolean);
+
+  return parts.map((part, index) => {
+    const key = `${keyPrefix}-${index}`;
+
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={key}>{part.slice(2, -2)}</strong>;
+    }
+
+    if (part.startsWith('*') && part.endsWith('*')) {
+      return <em key={key}>{part.slice(1, -1)}</em>;
+    }
+
+    return <span key={key}>{part}</span>;
+  });
+}
+
+function removeMarkdownMarkers(text) {
+  return typeof text === 'string' ? text.replace(/\*\*|\*/g, '') : '';
+}
+
+function getLanguageCode(locale) {
+  return locale?.split('-')[0] ?? 'fr';
+}
+
+function getProgressTone(completionRatio) {
+  const hue = Math.round(6 + completionRatio * 128);
+  const hueEnd = Math.min(hue + 18, 144);
+  const glow = `hsla(${hue} 85% 55% / 0.42)`;
+  const shellGlow = `hsla(${hue} 70% 45% / 0.14)`;
+
+  return {
+    '--progress-hue': `${hue}`,
+    '--progress-hue-end': `${hueEnd}`,
+    '--progress-glow': glow,
+    '--progress-shell-glow': shellGlow,
   };
 }
 
@@ -91,29 +251,56 @@ function formatSignedDate(date, locale) {
 
 function App() {
   const { t, i18n } = useTranslation();
+  const [bootstrap] = useState(() => createVisitorBootstrap());
   const [directory, setDirectory] = useState({ total: 0, signers: [] });
   const [directoryState, setDirectoryState] = useState('loading');
-  const [form, setForm] = useState(() => createInitialForm());
+  const [form, setForm] = useState(() => bootstrap.form);
+  const [visitorSubmission, setVisitorSubmission] = useState(() => bootstrap.submission);
   const [submitState, setSubmitState] = useState({ type: 'idle', message: '' });
   const [verifyState, setVerifyState] = useState({ status: 'idle', message: '' });
   const [searchTerm, setSearchTerm] = useState('');
-  const [lastSubmittedEmail, setLastSubmittedEmail] = useState('');
   const deferredSearchTerm = useDeferredValue(searchTerm);
   const [busy, setBusy] = useState(false);
   const [reflectionOpen, setReflectionOpen] = useState(false);
   const [theme, setTheme] = useState(() => getPreferredTheme());
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [celebrationKey, setCelebrationKey] = useState(0);
 
   const locale = i18n.resolvedLanguage ?? 'fr';
+  const language = getLanguageCode(locale);
+  const visitorCopy = getVisitorStateCopy(locale);
+  const aiProfessionalCopy = getAiProfessionalCopy(locale);
   const themeCopy = getThemeCopy(locale, theme);
   const promisePoints = t('promise.points', { returnObjects: true });
   const motiveItems = t('motives.items', { returnObjects: true });
+  const charterItems = t('charter.items', { returnObjects: true });
+  const reflectionContent = getReflectionContent(
+    language === 'en'
+      ? t('reflection', { returnObjects: true, defaultValue: DEFAULT_REFLECTION })
+      : DEFAULT_REFLECTION,
+  );
+  const manifestoContent = getLocalizedManifestoContent(locale, charterItems);
+  const requiredManifestoChecks = manifestoContent.requiredChecks;
   const localizedPromisePoints = Array.isArray(promisePoints) ? promisePoints : [];
   const localizedMotiveItems = Array.isArray(motiveItems) ? motiveItems : [];
-  const allManifestoChecked = form.manifestoChecks.every((value) => value === true);
+  const allManifestoChecked =
+    form.manifestoChecks.length === requiredManifestoChecks &&
+    form.manifestoChecks.every((value) => value === true);
+  const showManifestoReminder =
+    form.diffusionAccepted && form.privacyAccepted && !allManifestoChecked;
   const checkedManifestoCount = form.manifestoChecks.filter(Boolean).length;
-  const progressPercent = Math.round((checkedManifestoCount / REQUIRED_MANIFESTO_CHECKS) * 100);
+  const progressPercent =
+    requiredManifestoChecks > 0
+      ? Math.round((checkedManifestoCount / requiredManifestoChecks) * 100)
+      : 0;
+  const completionRatio =
+    requiredManifestoChecks > 0 ? checkedManifestoCount / requiredManifestoChecks : 0;
+  const progressTone = getProgressTone(completionRatio);
+  const celebration = getLocalizedCelebration(locale);
   const totalSigners = new Intl.NumberFormat(locale).format(directory.total);
   const totalLocales = new Intl.NumberFormat(locale).format(SUPPORTED_LOCALES.length);
+  const hasSubmitted =
+    visitorSubmission.status === 'pending' || visitorSubmission.status === 'verified';
 
   const sectionLinks = [
     { id: 'reflection', label: t('sections.whyTitle') },
@@ -136,6 +323,53 @@ function App() {
   }, [locale]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(
+      VISITOR_STATE_STORAGE_KEY,
+      JSON.stringify({
+        form,
+        submission: visitorSubmission,
+      }),
+    );
+  }, [form, visitorSubmission]);
+
+  useEffect(() => {
+    if (!allManifestoChecked) {
+      setShowCelebration(false);
+      return;
+    }
+
+    setShowCelebration(true);
+    setCelebrationKey((current) => current + 1);
+
+    const timeoutId = window.setTimeout(() => {
+      setShowCelebration(false);
+    }, 3600);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [allManifestoChecked]);
+
+  useEffect(() => {
+    setForm((current) => {
+      if (current.manifestoChecks.length === requiredManifestoChecks) {
+        return current;
+      }
+
+      return {
+        ...current,
+        manifestoChecks: Array.from({ length: requiredManifestoChecks }, (_, index) =>
+          current.manifestoChecks[index] ?? false,
+        ),
+      };
+    });
+  }, [requiredManifestoChecks]);
+
+  useEffect(() => {
     void loadDirectory();
   }, []);
 
@@ -146,6 +380,14 @@ function App() {
       void verifyToken(token);
     }
   }, []);
+
+  useEffect(() => {
+    if (!visitorSubmission.verificationCode) {
+      return;
+    }
+
+    void refreshSubmissionStatus(visitorSubmission.verificationCode);
+  }, [visitorSubmission.verificationCode]);
 
   async function loadDirectory() {
     setDirectoryState('loading');
@@ -162,11 +404,30 @@ function App() {
     }
   }
 
+  async function refreshSubmissionStatus(verificationCode) {
+    try {
+      const data = await api.getVerificationStatus(verificationCode);
+      const nextSubmission = createSubmissionFromStatus(data, verificationCode);
+      setVisitorSubmission(nextSubmission);
+
+      if (nextSubmission.status === 'verified') {
+        setSearchTerm('');
+        await loadDirectory();
+      }
+    } catch (error) {
+      if (error.code === 'INVALID_TOKEN' || error.code === 'VALIDATION_ERROR') {
+        setVisitorSubmission(createInitialVisitorSubmission());
+      }
+    }
+  }
+
   async function verifyToken(token) {
     setVerifyState({ status: 'loading', message: t('verification.loading') });
 
     try {
       const data = await api.verifyToken(token);
+      const nextSubmission = createSubmissionFromStatus(data, token);
+      setVisitorSubmission(nextSubmission);
 
       startTransition(() => {
         setVerifyState({
@@ -175,10 +436,14 @@ function App() {
         });
       });
 
+      setSearchTerm('');
       window.history.replaceState({}, '', window.location.pathname);
       await loadDirectory();
     } catch (error) {
       setVerifyState({ status: 'error', message: error.code ?? 'INVALID_TOKEN' });
+      if (token === visitorSubmission.verificationCode) {
+        setVisitorSubmission(createInitialVisitorSubmission());
+      }
       window.history.replaceState({}, '', window.location.pathname);
     }
   }
@@ -197,16 +462,29 @@ function App() {
     try {
       const payload = {
         ...form,
+        aiProfessionalAccepted: form.aiProfessionalAccepted,
         department: form.department.trim(),
         email: form.email.trim(),
         fullName: form.fullName.trim(),
+        professionalWebsite: form.professionalWebsite.trim(),
         profession: form.profession.trim(),
       };
 
       const response = await api.registerSigner(payload);
-      setLastSubmittedEmail(payload.email);
+      const verificationCode =
+        typeof response.verificationCode === 'string' ? response.verificationCode : '';
+
+      setVisitorSubmission({
+        status: 'pending',
+        verificationCode,
+        signerId: null,
+        signerPosition: null,
+        publicDisplayName:
+          typeof response.signer?.publicDisplayName === 'string'
+            ? response.signer.publicDisplayName
+            : '',
+      });
       setSubmitState({ type: 'success', message: response.status });
-      setForm((current) => createInitialForm(current.locale));
     } catch (error) {
       const nextType =
         error.code === 'ALREADY_VERIFIED'
@@ -221,28 +499,6 @@ function App() {
     }
   }
 
-  async function handleResend() {
-    const email = form.email.trim() || lastSubmittedEmail;
-
-    if (!email) {
-      setSubmitState({ type: 'invalid', message: 'EMAIL_REQUIRED' });
-      return;
-    }
-
-    setBusy(true);
-
-    try {
-      const response = await api.resendVerification(email);
-      setLastSubmittedEmail(email);
-      const type = response.status === 'already_verified' ? 'verified' : 'success';
-      setSubmitState({ type, message: response.status });
-    } catch (error) {
-      setSubmitState({ type: 'error', message: error.code ?? 'REQUEST_FAILED' });
-    } finally {
-      setBusy(false);
-    }
-  }
-
   const filteredSigners = (() => {
     const query = deferredSearchTerm.trim().toLowerCase();
 
@@ -251,11 +507,37 @@ function App() {
     }
 
     return directory.signers.filter((signer) =>
-      [signer.publicDisplayName, signer.profession, signer.department]
+      [
+        signer.publicDisplayName,
+        signer.profession,
+        signer.department,
+        signer.professionalWebsite,
+      ]
         .join(' ')
         .toLowerCase()
         .includes(query),
     );
+  })();
+
+  const highlightedSignerId =
+    visitorSubmission.status === 'verified' ? visitorSubmission.signerId : null;
+
+  const highlightedSignerPosition = (() => {
+    if (!highlightedSignerId) {
+      return Number.isInteger(visitorSubmission.signerPosition)
+        ? visitorSubmission.signerPosition
+        : null;
+    }
+
+    const index = directory.signers.findIndex((signer) => signer.id === highlightedSignerId);
+
+    if (index >= 0) {
+      return index + 1;
+    }
+
+    return Number.isInteger(visitorSubmission.signerPosition)
+      ? visitorSubmission.signerPosition
+      : null;
   })();
 
   function updateField(field, value) {
@@ -287,6 +569,10 @@ function App() {
     }
 
     if (submitState.type === 'invalid') {
+      if (showManifestoReminder) {
+        return null;
+      }
+
       return <p className="form-note warning">{t('form.invalid')}</p>;
     }
 
@@ -364,6 +650,36 @@ function App() {
       </header>
 
       <main id="main-content">
+        {visitorSubmission.status === 'verified' && (
+          <section className="welcome-strip" role="status" aria-live="polite">
+            <div className="welcome-card success">
+              <p className="welcome-badge">{visitorCopy.verifiedBadge}</p>
+              <h2>{visitorCopy.verifiedTitle}</h2>
+              <p>{visitorCopy.verifiedBody}</p>
+              <p className="welcome-position">
+                {highlightedSignerPosition
+                  ? interpolateTemplate(visitorCopy.verifiedPosition, {
+                      position: new Intl.NumberFormat(locale).format(
+                        highlightedSignerPosition,
+                      ),
+                    })
+                  : visitorCopy.verifiedPositionUnknown}
+              </p>
+            </div>
+          </section>
+        )}
+
+        {visitorSubmission.status === 'pending' && (
+          <section className="welcome-strip" role="status" aria-live="polite">
+            <div className="welcome-card pending">
+              <p className="welcome-badge">{visitorCopy.pendingBadge}</p>
+              <h2>{visitorCopy.pendingTitle}</h2>
+              <p>{visitorCopy.pendingBody}</p>
+              <p className="welcome-proof">{visitorCopy.pendingProof}</p>
+            </div>
+          </section>
+        )}
+
         <section className="hero">
           <div className="hero-inner">
             <p className="hero-eyebrow">{t('hero.eyebrow')}</p>
@@ -422,6 +738,32 @@ function App() {
           </section>
         )}
 
+        {showCelebration && (
+          <div className="celebration-overlay" aria-live="polite">
+            <div
+              key={celebrationKey}
+              className="celebration-modal"
+              role="status"
+              aria-label={celebration.title}
+            >
+              <div className="celebration-emoticons" aria-hidden="true">
+                {celebration.emoticons.map((emoticon, index) => (
+                  <span
+                    key={`${emoticon}-${index}`}
+                    className="celebration-emoticon"
+                    style={{ '--i': index }}
+                  >
+                    {emoticon}
+                  </span>
+                ))}
+              </div>
+              <p className="celebration-eyebrow">{celebration.eyebrow}</p>
+              <h2 className="celebration-title">{celebration.title}</h2>
+              <p className="celebration-body">{celebration.body}</p>
+            </div>
+          </div>
+        )}
+
         <section id="reflection" className="section">
           <div className="section-header">
             <h2 className="section-title">{t('sections.whyTitle')}</h2>
@@ -444,7 +786,7 @@ function App() {
               aria-expanded={reflectionOpen}
               onClick={() => setReflectionOpen((open) => !open)}
             >
-              <span className="reflection-toggle-title">{REFLECTION_TITLE}</span>
+              <span className="reflection-toggle-title">{reflectionContent.title}</span>
               <span className="reflection-toggle-hint">
                 {reflectionOpen ? '−' : '+'}
               </span>
@@ -452,18 +794,18 @@ function App() {
 
             {reflectionOpen && (
               <div className="reflection-body">
-                {REFLECTION_BODY_LINES.map((line, index) => {
-                  if (REFLECTION_SUBHEADINGS.has(line)) {
+                {reflectionContent.bodyLines.map((line, index) => {
+                  if (reflectionContent.subheadings.has(removeMarkdownMarkers(line))) {
                     return (
                       <h4 key={`${line}-${index}`} className="reflection-subheading">
-                        {line}
+                        {renderInlineMarkdown(line, `reflection-heading-${index}`)}
                       </h4>
                     );
                   }
 
                   return (
                     <p key={`${line}-${index}`} className="reflection-line">
-                      {line}
+                      {renderInlineMarkdown(line, `reflection-line-${index}`)}
                     </p>
                   );
                 })}
@@ -478,17 +820,21 @@ function App() {
             <p className="section-intro">{t('sections.charterIntro')}</p>
           </div>
 
-          <div className="charter-progress">
+          <div
+            className="charter-progress"
+            data-complete={allManifestoChecked ? 'true' : 'false'}
+            style={progressTone}
+          >
             <div className="progress-label">
               <span className="progress-count">{checkedManifestoCount}</span>
-              <span className="progress-total">/{REQUIRED_MANIFESTO_CHECKS}</span>
+              <span className="progress-total">/{requiredManifestoChecks}</span>
             </div>
             <div
               className="progress-track"
               role="progressbar"
-              aria-label={MANIFESTO_TITLE}
+              aria-label={t('meta.siteTitle')}
               aria-valuemin={0}
-              aria-valuemax={REQUIRED_MANIFESTO_CHECKS}
+              aria-valuemax={requiredManifestoChecks}
               aria-valuenow={checkedManifestoCount}
             >
               <span
@@ -499,7 +845,7 @@ function App() {
           </div>
 
           <div className="charter-list">
-            {MANIFESTO_COMMITMENTS.map((item, index) => (
+            {manifestoContent.commitments.map((item, index) => (
               <label
                 key={item.recognize}
                 className="charter-item"
@@ -509,12 +855,16 @@ function App() {
                 <input
                   type="checkbox"
                   className="charter-toggle"
-                  checked={form.manifestoChecks[index]}
+                  checked={form.manifestoChecks[index] ?? false}
                   onChange={(event) => updateManifestoCheck(index, event.target.checked)}
                 />
                 <span className="charter-content">
-                  <span className="charter-recognize">{item.recognize}</span>
-                  <span className="charter-act">{item.act}</span>
+                  <span className="charter-recognize">
+                    {renderInlineMarkdown(item.recognize, `manifesto-recognize-${index}`)}
+                  </span>
+                  <span className="charter-act">
+                    {renderInlineMarkdown(item.act, `manifesto-act-${index}`)}
+                  </span>
                 </span>
               </label>
             ))}
@@ -522,19 +872,19 @@ function App() {
 
           <div className="charter-declarations">
             <article className="declaration-block">
-              <h3 className="declaration-title">{MANIFESTO_POSITION_TITLE}</h3>
-              {MANIFESTO_POSITION_LINES.map((line, index) => (
+              <h3 className="declaration-title">{manifestoContent.positionTitle}</h3>
+              {manifestoContent.positionLines.map((line, index) => (
                 <p key={`${line}-${index}`} className="declaration-line">
-                  {line}
+                  {renderInlineMarkdown(line, `manifesto-position-${index}`)}
                 </p>
               ))}
             </article>
 
             <article className="declaration-block declaration-final">
-              <h3 className="declaration-title">{MANIFESTO_ENGAGEMENT_TITLE}</h3>
-              {MANIFESTO_ENGAGEMENT_LINES.map((line, index) => (
+              <h3 className="declaration-title">{manifestoContent.engagementTitle}</h3>
+              {manifestoContent.engagementLines.map((line, index) => (
                 <p key={`${line}-${index}`} className="declaration-line">
-                  {line}
+                  {renderInlineMarkdown(line, `manifesto-engagement-${index}`)}
                 </p>
               ))}
             </article>
@@ -576,109 +926,170 @@ function App() {
               </div>
             </div>
 
-            <form className="signature-form" onSubmit={handleSubmit} aria-busy={busy}>
-              <div className="form-heading">
-                <h3>{t('hero.primaryCta')}</h3>
-                <p>{t('footer.privacyNote')}</p>
-              </div>
+            {hasSubmitted ? (
+              <article className="signature-lock" role="status" aria-live="polite">
+                <p className="signature-lock-badge">
+                  {visitorSubmission.status === 'verified'
+                    ? visitorCopy.verifiedBadge
+                    : visitorCopy.pendingBadge}
+                </p>
+                <h3>
+                  {visitorSubmission.status === 'verified'
+                    ? visitorCopy.formLockedVerified
+                    : visitorCopy.formLockedPending}
+                </h3>
+                <p>
+                  {visitorSubmission.status === 'verified'
+                    ? highlightedSignerPosition
+                      ? interpolateTemplate(visitorCopy.verifiedPosition, {
+                          position: new Intl.NumberFormat(locale).format(
+                            highlightedSignerPosition,
+                          ),
+                        })
+                      : visitorCopy.verifiedPositionUnknown
+                    : visitorCopy.pendingProof}
+                </p>
+              </article>
+            ) : (
+              <form className="signature-form" onSubmit={handleSubmit} aria-busy={busy}>
+                <div className="form-heading">
+                  <h3>{t('hero.primaryCta')}</h3>
+                  <p>{t('footer.privacyNote')}</p>
+                </div>
 
-              <label>
-                <span>{t('form.fullName')}</span>
-                <input
-                  type="text"
-                  autoComplete="name"
-                  maxLength={120}
-                  value={form.fullName}
-                  onChange={(event) => updateField('fullName', event.target.value)}
-                  required
-                />
-              </label>
-
-              <label>
-                <span>{t('form.email')}</span>
-                <input
-                  type="email"
-                  autoComplete="email"
-                  maxLength={160}
-                  value={form.email}
-                  onChange={(event) => updateField('email', event.target.value)}
-                  required
-                />
-              </label>
-
-              <div className="form-grid">
                 <label>
-                  <span>{t('form.profession')}</span>
+                  <span>{t('form.fullName')}</span>
                   <input
                     type="text"
-                    autoComplete="organization-title"
+                    autoComplete="name"
                     maxLength={120}
-                    value={form.profession}
-                    onChange={(event) => updateField('profession', event.target.value)}
+                    value={form.fullName}
+                    onChange={(event) => updateField('fullName', event.target.value)}
                     required
                   />
                 </label>
 
                 <label>
-                  <span>{t('form.department')}</span>
+                  <span>{t('form.email')}</span>
                   <input
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="off"
-                    aria-describedby="department-hint"
-                    maxLength={3}
-                    pattern="[0-9]{2,3}"
-                    value={form.department}
-                    onChange={(event) => updateField('department', event.target.value)}
+                    type="email"
+                    autoComplete="email"
+                    maxLength={160}
+                    value={form.email}
+                    onChange={(event) => updateField('email', event.target.value)}
                     required
                   />
-                  <small id="department-hint">{t('form.departmentHint')}</small>
                 </label>
-              </div>
 
-              <label className="checkbox-row">
-                <input
-                  type="checkbox"
-                  checked={form.diffusionAccepted}
-                  onChange={(event) => updateField('diffusionAccepted', event.target.checked)}
-                />
-                <span>{t('form.diffusionLabel')}</span>
-              </label>
+                <div className="form-grid">
+                  <label>
+                    <span>{t('form.profession')}</span>
+                    <input
+                      type="text"
+                      autoComplete="organization-title"
+                      maxLength={120}
+                      value={form.profession}
+                      onChange={(event) => updateField('profession', event.target.value)}
+                      required
+                    />
+                  </label>
 
-              <label className="checkbox-row">
-                <input
-                  type="checkbox"
-                  checked={form.privacyAccepted}
-                  onChange={(event) => updateField('privacyAccepted', event.target.checked)}
-                />
-                <span>{t('form.privacyLabel')}</span>
-              </label>
+                  <label>
+                    <span>{t('form.department')}</span>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="off"
+                      aria-describedby="department-hint"
+                      maxLength={3}
+                      pattern="[0-9]{2,3}"
+                      value={form.department}
+                      onChange={(event) => updateField('department', event.target.value)}
+                      required
+                    />
+                    <small id="department-hint">{t('form.departmentHint')}</small>
+                  </label>
+                </div>
 
-              <div className="form-actions">
-                <button type="submit" className="btn-primary" disabled={busy}>
-                  {t('form.submit')}
-                </button>
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  disabled={busy}
-                  onClick={handleResend}
+                <label className="checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={form.aiProfessionalAccepted}
+                    onChange={(event) => {
+                      const checked = event.target.checked;
+                      setForm((current) => ({
+                        ...current,
+                        aiProfessionalAccepted: checked,
+                        professionalWebsite: checked ? current.professionalWebsite : '',
+                      }));
+                    }}
+                  />
+                  <span>{aiProfessionalCopy.declarationLabel}</span>
+                </label>
+
+                {form.aiProfessionalAccepted && (
+                  <label>
+                    <span>{aiProfessionalCopy.websiteLabel}</span>
+                    <input
+                      type="url"
+                      inputMode="url"
+                      autoComplete="url"
+                      maxLength={240}
+                      placeholder={aiProfessionalCopy.websitePlaceholder}
+                      value={form.professionalWebsite}
+                      onChange={(event) =>
+                        updateField('professionalWebsite', event.target.value)
+                      }
+                      required
+                    />
+                    <small>{aiProfessionalCopy.websiteHint}</small>
+                  </label>
+                )}
+
+                <label className="checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={form.diffusionAccepted}
+                    onChange={(event) => updateField('diffusionAccepted', event.target.checked)}
+                  />
+                  <span>{t('form.diffusionLabel')}</span>
+                </label>
+
+                <label className="checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={form.privacyAccepted}
+                    onChange={(event) => updateField('privacyAccepted', event.target.checked)}
+                  />
+                  <span>{t('form.privacyLabel')}</span>
+                </label>
+
+                {showManifestoReminder && (
+                  <p className="form-note warning">
+                    {t('form.invalidManifestoReminder', {
+                      count: requiredManifestoChecks,
+                    })}
+                  </p>
+                )}
+
+                <div className="form-actions">
+                  <button type="submit" className="btn-primary" disabled={busy}>
+                    {t('form.submit')}
+                  </button>
+                </div>
+
+                <div aria-live="polite">{renderSubmitMessage()}</div>
+
+                <a
+                  href="https://p2enjoy.studio/privacy/politique-confidentialite"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-link"
                 >
-                  {t('form.resend')}
-                </button>
-              </div>
-
-              <div aria-live="polite">{renderSubmitMessage()}</div>
-
-              <a
-                href="https://p2enjoy.studio/privacy/politique-confidentialite"
-                target="_blank"
-                rel="noreferrer"
-                className="text-link"
-              >
-                {t('footer.privacyCta')}
-              </a>
-            </form>
+                  {t('footer.privacyCta')}
+                </a>
+              </form>
+            )}
           </div>
         </section>
 
@@ -722,16 +1133,47 @@ function App() {
             )}
 
             <div className="directory-grid" aria-busy={directoryState === 'loading'}>
-              {filteredSigners.map((signer) => (
-                <article key={signer.id} className="signer-card">
-                  <div className="signer-header">
-                    <p className="signer-name">{signer.publicDisplayName}</p>
-                    <span className="signer-chip">{signer.department}</span>
-                  </div>
-                  <p className="signer-role">{signer.profession}</p>
-                  <p className="signer-date">{formatSignedDate(signer.verifiedAt, locale)}</p>
-                </article>
-              ))}
+              {filteredSigners.map((signer) => {
+                const isCurrentSigner =
+                  highlightedSignerId !== null && signer.id === highlightedSignerId;
+                const isAiProfessional = signer.aiProfessionalConsent === 1;
+
+                return (
+                  <article
+                    key={signer.id}
+                    className={`signer-card ${isCurrentSigner ? 'is-current-signer' : ''} ${
+                      isAiProfessional ? 'is-ai-pro' : ''
+                    }`}
+                  >
+                    <div className="signer-header">
+                      <p className="signer-name">{signer.publicDisplayName}</p>
+                      <div className="signer-chips">
+                        {isAiProfessional && (
+                          <span className="signer-chip signer-chip-pro">
+                            {aiProfessionalCopy.proBadge}
+                          </span>
+                        )}
+                        <span className="signer-chip">{signer.department}</span>
+                      </div>
+                    </div>
+                    {isCurrentSigner && (
+                      <p className="signer-self-tag">{visitorCopy.cardHighlight}</p>
+                    )}
+                    {isAiProfessional && signer.professionalWebsite && (
+                      <a
+                        href={signer.professionalWebsite}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="signer-website"
+                      >
+                        {signer.professionalWebsite}
+                      </a>
+                    )}
+                    <p className="signer-role">{signer.profession}</p>
+                    <p className="signer-date">{formatSignedDate(signer.verifiedAt, locale)}</p>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>

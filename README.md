@@ -27,6 +27,8 @@ npm run dev
 ./runDev.sh
 ```
 
+Le mode dev monte les sources `apps/client` et `apps/server` dans les conteneurs pour un rechargement en temps réel.
+
 - Site: `http://localhost:8080`
 - API: `http://localhost:3001`
 - Mailpit: `http://localhost:8025`
@@ -38,6 +40,8 @@ Les emails de confirmation sont capturés par Mailpit en local pour tester le pa
 ```bash
 ./runProd.sh
 ```
+
+Le mode prod build des images stables avec `COPY` des sources (pas de bind mount applicatif).
 
 Variables attendues pour SMTP:
 - `SMTP_USER` (ou `SCW_SCW_DEFAULT_PROJECT_ID`, ou `SCW_DEFAULT_PROJECT_ID` converti en `SCW_<PROJECT_ID>`)

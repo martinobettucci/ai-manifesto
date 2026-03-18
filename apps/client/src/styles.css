@@ -489,6 +489,64 @@ a {
 
 /* ===== VERIFICATION ===== */
 
+.welcome-strip {
+  width: var(--page-width);
+  margin-inline: auto;
+  padding: 1rem 0 0.2rem;
+}
+
+.welcome-card {
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+}
+
+.welcome-card.success {
+  background: var(--success-soft);
+  border-color: var(--success-border);
+}
+
+.welcome-card.pending {
+  background: var(--gold-soft);
+  border-color: var(--warning-border);
+}
+
+.welcome-card h2 {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.45rem, 3.2vw, 2.1rem);
+  line-height: 1.05;
+}
+
+.welcome-card p {
+  margin: 0.6rem 0 0;
+  color: var(--text-soft);
+  line-height: 1.65;
+}
+
+.welcome-badge {
+  display: inline-flex;
+  margin: 0 0 0.5rem;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: color-mix(in oklab, var(--bg-elevated) 78%, transparent);
+}
+
+.welcome-position {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.welcome-proof {
+  font-weight: 600;
+}
+
 .verification-strip {
   width: var(--page-width);
   margin-inline: auto;
@@ -651,6 +709,15 @@ a {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--bg-card);
+  box-shadow: inset 0 0 0 1px transparent, 0 0 0 transparent;
+  transition: border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.charter-progress[data-complete='true'] {
+  border-color: color-mix(in srgb, var(--success) 38%, var(--line));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--success) 22%, transparent),
+    0 18px 44px var(--progress-shell-glow);
 }
 
 .progress-label {
@@ -675,19 +742,27 @@ a {
 
 .progress-track {
   flex: 1;
-  height: 6px;
+  height: 10px;
   border-radius: 999px;
   background: var(--surface-strong);
   overflow: hidden;
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .progress-fill {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--accent), var(--gold));
-  box-shadow: 0 0 12px var(--accent-glow);
-  transition: width 300ms ease;
+  background:
+    linear-gradient(
+      90deg,
+      hsl(var(--progress-hue) 82% 48%),
+      hsl(var(--progress-hue-end) 78% 44%)
+    );
+  box-shadow:
+    0 0 18px var(--progress-glow),
+    0 0 36px color-mix(in srgb, var(--progress-glow) 55%, transparent);
+  transition: width 300ms ease, background 220ms ease, box-shadow 220ms ease;
 }
 
 .charter-list {
@@ -819,6 +894,111 @@ a {
   justify-content: center;
 }
 
+/* ===== CELEBRATION ===== */
+
+.celebration-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  pointer-events: none;
+}
+
+.celebration-modal {
+  width: min(32rem, calc(100vw - 2rem));
+  padding: 1.5rem 1.5rem 1.4rem;
+  border: 1px solid color-mix(in srgb, var(--success) 38%, var(--line));
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 55%),
+    linear-gradient(160deg, color-mix(in srgb, var(--success) 26%, var(--bg-elevated)), var(--bg-elevated));
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 64px color-mix(in srgb, var(--success) 22%, transparent);
+  text-align: center;
+  animation: celebration-in 420ms cubic-bezier(0.22, 1, 0.36, 1), celebration-out 700ms ease 2.9s forwards;
+}
+
+.celebration-emoticons {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+
+.celebration-emoticon {
+  font-size: clamp(1.55rem, 4vw, 2.1rem);
+  animation: celebrate-bounce 900ms ease-in-out infinite;
+  animation-delay: calc(var(--i) * 140ms);
+}
+
+.celebration-eyebrow {
+  margin: 0 0 0.45rem;
+  color: color-mix(in srgb, var(--success) 72%, var(--text));
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.celebration-title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.9rem, 5vw, 2.7rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.celebration-body {
+  margin: 0.8rem auto 0;
+  max-width: 28rem;
+  color: var(--text-soft);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+@keyframes celebration-in {
+  0% {
+    opacity: 0;
+    transform: translateY(26px) scale(0.9) rotate(-1deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes celebration-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.96);
+  }
+}
+
+@keyframes celebrate-bounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  35% {
+    transform: translateY(-5px) rotate(-6deg);
+  }
+
+  70% {
+    transform: translateY(1px) rotate(6deg);
+  }
+}
+
 /* ===== SIGNATURE ===== */
 
 .signature-layout {
@@ -925,6 +1105,44 @@ a {
   background: var(--bg-elevated);
 }
 
+.signature-lock {
+  position: sticky;
+  top: 5rem;
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--bg-elevated);
+}
+
+.signature-lock-badge {
+  margin: 0;
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.signature-lock h3 {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 1.28rem;
+  line-height: 1.22;
+  color: var(--text);
+}
+
+.signature-lock p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.65;
+}
+
 .form-heading {
   display: grid;
   gap: 0.4rem;
@@ -970,6 +1188,7 @@ a {
 
 .signature-form input[type='text'],
 .signature-form input[type='email'],
+.signature-form input[type='url'],
 .directory-search input {
   padding: 0.75rem 0.9rem;
   border: 1px solid var(--line-strong);
@@ -1126,11 +1345,29 @@ a {
   background: var(--bg-card-hover);
 }
 
+.signer-card.is-current-signer {
+  border-color: var(--success-border);
+  box-shadow: 0 0 0 1px var(--success-border), 0 0 0 4px var(--success-soft);
+  background: color-mix(in oklab, var(--success-soft) 65%, var(--bg-elevated));
+}
+
+.signer-card.is-ai-pro {
+  border-color: color-mix(in oklab, var(--accent-bright) 60%, var(--line));
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent-bright) 35%, transparent),
+    0 0 18px color-mix(in oklab, var(--accent-bright) 18%, transparent);
+}
+
 .signer-header {
   display: flex;
   justify-content: space-between;
   align-items: start;
   gap: 0.5rem;
+}
+
+.signer-chips {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
 }
 
 .signer-name {
@@ -1150,11 +1387,45 @@ a {
   color: var(--text-soft);
 }
 
+.signer-chip-pro {
+  border: 1px solid color-mix(in oklab, var(--accent-bright) 60%, var(--line));
+  background: color-mix(in oklab, var(--accent-soft) 75%, var(--surface-strong));
+  color: var(--accent-bright);
+}
+
 .signer-role {
   margin: 0;
   font-size: 0.88rem;
   line-height: 1.5;
   color: var(--text-soft);
+}
+
+.signer-self-tag {
+  margin: -0.1rem 0 0;
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--success-border);
+  background: var(--success-soft);
+  color: var(--success);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.signer-website {
+  margin: -0.05rem 0 0;
+  font-size: 0.8rem;
+  color: var(--accent-bright);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  overflow-wrap: anywhere;
+}
+
+.signer-website:hover {
+  color: var(--text);
 }
 
 .signer-date {
@@ -1212,6 +1483,10 @@ a {
   }
 
   .signature-form {
+    position: static;
+  }
+
+  .signature-lock {
     position: static;
   }
 
@@ -1283,6 +1558,7 @@ a {
   .topbar,
   .section,
   .hero,
+  .welcome-strip,
   .verification-strip,
   .footer {
     width: calc(100vw - 1rem);
@@ -1348,6 +1624,7 @@ a {
   }
 
   .signature-form,
+  .signature-lock,
   .directory-frame,
   .promise-block {
     padding: 1.15rem;

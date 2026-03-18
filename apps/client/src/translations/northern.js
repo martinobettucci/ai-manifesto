@@ -129,6 +129,8 @@ export const translations = {
         "Den här adressen har redan bekräftat sin signatur. Den finns redan i den offentliga listan.",
       invalid:
         "Fyll i alla fält korrekt och bekräfta varje samtycke.",
+      invalidManifestoReminder:
+        "Du har kryssat i de 2 rutorna korrekt, tack 🙂 Du behöver ändå läsa och acceptera manifestets {{count}} pelare.",
       genericError:
         "Ett fel uppstod vid sändningen. Du kommer att kunna skicka verifieringsmejlet igen.",
       searchLabel: "Sök efter undertecknare",
@@ -284,6 +286,8 @@ export const translations = {
         "Denne adresse har allerede bekræftet sin underskrift. Den står allerede på den offentlige liste.",
       invalid:
         "Udfyld alle felter korrekt og godkend hvert samtykke.",
+      invalidManifestoReminder:
+        "Du har korrekt sat kryds i de 2 felter, tak 🙂 Du skal stadig læse og acceptere manifestets {{count}} søjler.",
       genericError:
         "Der opstod en fejl under afsendelsen. Du kan sende valideringsmailen igen.",
       searchLabel: "Søg efter underskriver",
@@ -439,6 +443,8 @@ export const translations = {
         "Tämä osoite on jo vahvistanut allekirjoituksensa. Se on jo julkisella listalla.",
       invalid:
         "Täytä kaikki kentät oikein ja vahvista jokainen suostumus.",
+      invalidManifestoReminder:
+        "Olet rastittanut 2 ruutua oikein, kiitos 🙂 Sinun pitää silti lukea ja hyväksyä manifestin {{count}} pilaria.",
       genericError:
         "Lähetyksessä tapahtui virhe. Voit lähettää vahvistussähköpostin uudelleen.",
       searchLabel: "Etsi allekirjoittajaa",
@@ -594,6 +600,8 @@ export const translations = {
         "See aadress on oma allkirja juba kinnitanud. See on juba avalikus nimekirjas.",
       invalid:
         "Täida kõik väljad õigesti ja kinnita iga nõusolek.",
+      invalidManifestoReminder:
+        "Märkisid 2 kasti õigesti, aitäh 🙂 Sul tuleb siiski lugeda ja nõustuda manifesti {{count}} sambaga.",
       genericError:
         "Saatmisel tekkis viga. Saad kinnituskirja uuesti saata.",
       searchLabel: "Otsi allakirjutajat",
@@ -749,6 +757,8 @@ export const translations = {
         "Šī adrese jau ir apstiprinājusi savu parakstu. Tā jau ir publiskajā sarakstā.",
       invalid:
         "Lūdzu, aizpildiet visus laukus pareizi un apstipriniet katru piekrišanu.",
+      invalidManifestoReminder:
+        "Tu pareizi atzīmēji 2 rūtiņas, paldies 🙂 Tev tomēr jāizlasa un jāpieņem manifesta {{count}} pīlāri.",
       genericError:
         "Nosūtīšanas laikā radās kļūda. Jūs varēsiet atkārtoti nosūtīt verifikācijas e-pastu.",
       searchLabel: "Meklēt parakstītāju",
@@ -904,6 +914,8 @@ export const translations = {
         "Šis adresas jau patvirtino savo parašą. Jis jau yra viešame sąraše.",
       invalid:
         "Teisingai užpildykite visus laukus ir patvirtinkite kiekvieną sutikimą.",
+      invalidManifestoReminder:
+        "Teisingai pažymėjote 2 langelius, ačiū 🙂 Vis tiek reikia perskaityti ir priimti {{count}} manifesto ramsčius.",
       genericError:
         "Siunčiant įvyko klaida. Galėsite dar kartą išsiųsti patvirtinimo laišką.",
       searchLabel: "Ieškoti pasirašiusiojo",

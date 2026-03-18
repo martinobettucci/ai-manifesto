@@ -129,6 +129,8 @@ export const translations = {
         "Diese Adresse hat ihre Unterschrift bereits bestätigt. Sie steht bereits auf der öffentlichen Liste.",
       invalid:
         "Bitte füllen Sie alle Felder korrekt aus und bestätigen Sie jede Einwilligung.",
+      invalidManifestoReminder:
+        "Du hast die 2 Kästchen korrekt angehakt, danke 🙂 Bitte lies und akzeptiere trotzdem die {{count}} Säulen des Manifests.",
       genericError:
         "Beim Senden ist ein Fehler aufgetreten. Sie können die Bestätigungs-E-Mail erneut anfordern.",
       searchLabel: "Unterzeichnende suchen",
@@ -284,6 +286,8 @@ export const translations = {
         "Esta dirección ya ha confirmado su firma. Ya aparece en la lista pública.",
       invalid:
         "Completa correctamente todos los campos y valida cada consentimiento.",
+      invalidManifestoReminder:
+        "Has marcado bien las 2 casillas, gracias 🙂 Aun así, debes leer y aceptar los {{count}} pilares del manifiesto.",
       genericError:
         "Se produjo un error durante el envío. Podrás reenviar el correo de validación.",
       searchLabel: "Buscar firmante",
@@ -439,6 +443,8 @@ export const translations = {
         "Questo indirizzo ha già confermato la propria firma. È già presente nell'elenco pubblico.",
       invalid:
         "Compila correttamente tutti i campi e convalida ogni consenso.",
+      invalidManifestoReminder:
+        "Hai spuntato correttamente le 2 caselle, grazie 🙂 Devi comunque leggere e accettare i {{count}} pilastri del manifesto.",
       genericError:
         "Si è verificato un errore durante l'invio. Potrai rinviare l'email di verifica.",
       searchLabel: "Cercare un firmatario",
@@ -594,6 +600,8 @@ export const translations = {
         "Este endereço já confirmou a sua assinatura. Já consta da lista pública.",
       invalid:
         "Preencha corretamente todos os campos e valide cada consentimento.",
+      invalidManifestoReminder:
+        "Marcaste corretamente as 2 caixas, obrigado 🙂 Ainda falta ler e aceitar os {{count}} pilares do manifesto.",
       genericError:
         "Ocorreu um erro durante o envio. Poderá reenviar o email de validação.",
       searchLabel: "Procurar signatário",
@@ -749,6 +757,8 @@ export const translations = {
         "Dit adres heeft de handtekening al bevestigd. Het staat al op de publieke lijst.",
       invalid:
         "Vul alle velden correct in en bevestig elke toestemming.",
+      invalidManifestoReminder:
+        "Je hebt de 2 vakjes correct aangevinkt, bedankt 🙂 Je moet nog steeds de {{count}} pijlers van het manifest lezen en accepteren.",
       genericError:
         "Er is een fout opgetreden tijdens het verzenden. Je kunt de validatiemail opnieuw versturen.",
       searchLabel: "Ondertekenaar zoeken",

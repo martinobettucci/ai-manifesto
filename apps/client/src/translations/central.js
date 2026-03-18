@@ -129,6 +129,8 @@ export const translations = {
         "Ten adres już potwierdził podpis. Widnieje już na liście publicznej.",
       invalid:
         "Wypełnij poprawnie wszystkie pola i zatwierdź każdą zgodę.",
+      invalidManifestoReminder:
+        "Poprawnie zaznaczono 2 pola, dziękujemy 🙂 Nadal trzeba przeczytać i zaakceptować {{count}} filarów manifestu.",
       genericError:
         "Wystąpił błąd podczas wysyłki. Będziesz mógł ponownie wysłać email weryfikacyjny.",
       searchLabel: "Szukaj sygnatariusza",
@@ -284,6 +286,8 @@ export const translations = {
         "Tato adresa již svůj podpis potvrdila. Je již na veřejném seznamu.",
       invalid:
         "Vyplňte prosím správně všechna pole a potvrďte každý souhlas.",
+      invalidManifestoReminder:
+        "Správně jste zaškrtl(a) 2 políčka, děkujeme 🙂 Stále je potřeba přečíst a přijmout {{count}} pilířů manifestu.",
       genericError:
         "Během odesílání došlo k chybě. Validační email budete moci odeslat znovu.",
       searchLabel: "Hledat signatáře",
@@ -439,6 +443,8 @@ export const translations = {
         "Táto adresa už svoj podpis potvrdila. Už je vo verejnom zozname.",
       invalid:
         "Prosím, vyplňte správne všetky polia a potvrďte každý súhlas.",
+      invalidManifestoReminder:
+        "Správne ste zaškrtli 2 políčka, ďakujeme 🙂 Stále je potrebné prečítať a prijať {{count}} pilierov manifestu.",
       genericError:
         "Počas odosielania došlo k chybe. Validačný email budete môcť odoslať znova.",
       searchLabel: "Hľadať signatára",

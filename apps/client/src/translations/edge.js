@@ -129,6 +129,8 @@ export const translations = {
         "Този адрес вече е потвърдил подписа си. Той вече фигурира в публичния списък.",
       invalid:
         "Моля, попълнете правилно всички полета и потвърдете всяко съгласие.",
+      invalidManifestoReminder:
+        "Отбелязахте правилно и двете 2 полета, благодарим 🙂 Все пак трябва да прочетете и приемете {{count}}-те стълба на манифеста.",
       genericError:
         "Възникна грешка при изпращането. Ще можете да изпратите отново имейла за потвърждение.",
       searchLabel: "Търси подписал",
@@ -284,6 +286,8 @@ export const translations = {
         "Αυτή η διεύθυνση έχει ήδη επιβεβαιώσει την υπογραφή της. Βρίσκεται ήδη στη δημόσια λίστα.",
       invalid:
         "Συμπληρώστε σωστά όλα τα πεδία και επικυρώστε κάθε συγκατάθεση.",
+      invalidManifestoReminder:
+        "Σημείωσες σωστά τα 2 κουτάκια, ευχαριστούμε 🙂 Πρέπει όμως να διαβάσεις και να αποδεχτείς τους {{count}} πυλώνες του μανιφέστου.",
       genericError:
         "Παρουσιάστηκε σφάλμα κατά την αποστολή. Θα μπορείτε να ξαναστείλετε το email επιβεβαίωσης.",
       searchLabel: "Αναζήτηση υπογράφοντος",
@@ -439,6 +443,8 @@ export const translations = {
         "Tá an seoladh seo tar éis a shínithe a dheimhniú cheana féin. Tá sé ar an liosta poiblí cheana.",
       invalid:
         "Líon gach réimse i gceart agus bailíochtaigh gach toiliú.",
+      invalidManifestoReminder:
+        "Chuir tú tic sa 2 bhosca i gceart, go raibh maith agat 🙂 Caithfidh tú fós {{count}} cholún an fhorógra a léamh agus glacadh leo.",
       genericError:
         "Tharla earráid le linn an tseolta. Beidh tú in ann an ríomhphost bailíochtaithe a sheoladh arís.",
       searchLabel: "Cuardaigh sínitheoir",
@@ -594,6 +600,8 @@ export const translations = {
         "Dan l-indirizz diġà kkonferma l-firma tiegħu. Huwa diġà fuq il-lista pubblika.",
       invalid:
         "Jekk jogħġbok imla l-oqsma kollha b'mod korrett u ivvalida kull kunsens.",
+      invalidManifestoReminder:
+        "Immarkajt sew iż-2 kaxxi b'mod korrett, grazzi 🙂 Xorta trid taqra u taċċetta l-{{count}} pilastri tal-manifest.",
       genericError:
         "Seħħ żball waqt l-ispedizzjoni. Int tkun tista' terġa' tibgħat l-email ta' validazzjoni.",
       searchLabel: "Fittex firmatarju",

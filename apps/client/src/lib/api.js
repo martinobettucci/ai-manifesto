@@ -29,11 +29,8 @@ export const api = {
       body: JSON.stringify(payload),
     });
   },
-  resendVerification(email) {
-    return request('/api/signers/resend', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-    });
+  getVerificationStatus(token) {
+    return request(`/api/signers/status?token=${encodeURIComponent(token)}`);
   },
   verifyToken(token) {
     return request(`/api/signers/verify?token=${encodeURIComponent(token)}`);

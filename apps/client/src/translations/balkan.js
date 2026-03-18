@@ -129,6 +129,8 @@ export const translations = {
         "Ta naslov je svoj podpis že potrdil. Že je na javnem seznamu.",
       invalid:
         "Pravilno izpolnite vsa polja in potrdite vsako soglasje.",
+      invalidManifestoReminder:
+        "Pravilno ste označili 2 polji, hvala 🙂 Vseeno morate prebrati in sprejeti {{count}} stebrov manifesta.",
       genericError:
         "Pri pošiljanju je prišlo do napake. Potrditveni email boste lahko poslali znova.",
       searchLabel: "Poišči podpisnika",
@@ -284,6 +286,8 @@ export const translations = {
         "Ova adresa je već potvrdila svoj potpis. Već je na javnom popisu.",
       invalid:
         "Ispravno ispunite sva polja i potvrdite svaki pristanak.",
+      invalidManifestoReminder:
+        "Ispravno ste označili 2 kućice, hvala 🙂 Ipak trebate pročitati i prihvatiti {{count}} stupova manifesta.",
       genericError:
         "Došlo je do pogreške tijekom slanja. Moći ćete ponovno poslati validacijski email.",
       searchLabel: "Traži potpisnika",
@@ -439,6 +443,8 @@ export const translations = {
         "Ez a cím már megerősítette az aláírást. Már szerepel a nyilvános listán.",
       invalid:
         "Kérjük, töltse ki helyesen az összes mezőt, és erősítse meg az összes hozzájárulást.",
+      invalidManifestoReminder:
+        "A 2 jelölőnégyzetet helyesen kipipáltad, köszönjük 🙂 Ettől még el kell olvasnod és el kell fogadnod a manifesztó {{count}} pillérét.",
       genericError:
         "Hiba történt a küldés során. Újra tudja majd küldeni az ellenőrző emailt.",
       searchLabel: "Aláíró keresése",
@@ -594,6 +600,8 @@ export const translations = {
         "Această adresă și-a confirmat deja semnătura. Figurează deja pe lista publică.",
       invalid:
         "Completează corect toate câmpurile și validează fiecare consimțământ.",
+      invalidManifestoReminder:
+        "Ai bifat corect cele 2 căsuțe, mulțumim 🙂 Totuși trebuie să citești și să accepți cei {{count}} piloni ai manifestului.",
       genericError:
         "A apărut o eroare la trimitere. Vei putea retrimite emailul de validare.",
       searchLabel: "Caută un semnatar",

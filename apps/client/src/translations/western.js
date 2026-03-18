@@ -57,6 +57,198 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Reflections behind this manifesto",
+      subheadings: [
+        "A behavioral paradox",
+        "An exploited cognitive weakness",
+        "The problem is not only technical",
+        "Examples already visible",
+        "A transformation at scale",
+        "A geopolitical reality",
+        "Restoring a healthy architecture",
+        "A clear line",
+        "An essential reminder",
+        "What we are trying to preserve",
+      ],
+      bodyLines: [
+        "This manifesto does not begin with a rejection of artificial intelligence.",
+        "It begins with a subtler and more troubling observation.",
+        "We are entering an environment where answers are abundant, fast, well-phrased, and available within seconds. But that abundance creates an illusion. The impression of diversity no longer guarantees the real diversity of sources, viewpoints, or reasoning.",
+        "Several different answers can come from the same production chains, the same corpora, the same biases. They may contradict one another on the surface while sharing the same blind spots. And yet, for the user, they create the feeling that verification has happened.",
+        "The problem is therefore not only error.",
+        "The problem is **the illusion of verification**.",
+        "A behavioral paradox",
+        "Most users say they distrust artificial intelligence.",
+        "They say they cross-check sources, keep a critical mind, and do not take answers at face value.",
+        "But in concrete usage, another behavior appears.",
+        "When an answer is fast, fluent, structured, and directly usable, it is accepted much more easily. It is reread less, questioned less, and compared less with other forms of expertise.",
+        "There is therefore a gap between what we think we do and what we actually do.",
+        "We are not only facing a technological evolution.",
+        "We are facing a transformation in our relationship to the effort of verification.",
+        "An exploited cognitive weakness",
+        "The human brain is not designed to maximize truth.",
+        "It is designed to arbitrate between effort and efficiency.",
+        "A readable answer, apparently coherent and immediately usable, is naturally more attractive than a slow, contradictory, and demanding process.",
+        "Conversational AI systems fit directly into that dynamic.",
+        "They reduce friction.",
+        "They produce a first version of reality very early in the process.",
+        "They create the feeling that the work is already advanced.",
+        "That feeling can be misleading.",
+        "The easier an answer is to read, the more credible it seems.",
+        "And the more credible it seems, the less it is questioned.",
+        "The problem is not only technical",
+        "It would be tempting to reduce the issue to technical errors, model bias, or system limitations.",
+        "But the heart of the problem lies elsewhere.",
+        "It lies in the way users become accustomed to delegating, then validating without real counter-analysis. It lies in the rise of passive acceptance.",
+        "In that context, the model of the “human in the loop” becomes insufficient.",
+        "A human who is present but passive is not a guarantee.",
+        "A human who skims, validates, or rubber-stamps without analysis becomes a symbolic step, not a **real counter-power**.",
+        "Examples already visible",
+        "This phenomenon is not theoretical.",
+        "In education, assignments produced in a few minutes may look correct on the surface, yet reveal inconsistencies as soon as they are examined seriously.",
+        "In technical environments, critical decisions are made on the basis of rapidly generated suggestions, with an insufficient level of verification.",
+        "In healthcare, patients arrive with diagnoses already formulated and seek validation rather than expertise.",
+        "In development or consulting, professionals are asked to confirm framings that have already been set, instead of exercising judgment.",
+        "In all these cases, the order of authority is reversed.",
+        "AI produces a first version.",
+        "The human is reduced to the role of validation.",
+        "A transformation at scale",
+        "As these systems become widely used, they are no longer simple tools.",
+        "They become **interfaces to reality**.",
+        "They influence how problems are formulated.",
+        "They influence the words being used.",
+        "They influence what feels obvious, debatable, or acceptable.",
+        "At scale, this creates a structural power of influence.",
+        "This is not necessarily about direct manipulation.",
+        "It is about **progressive framing**.",
+        "Slightly shifting how a subject is presented, repeating certain angles, and ignoring others can be enough to reshape collective perception over the long term.",
+        "A geopolitical reality",
+        "These systems do not exist outside the world.",
+        "They are developed by companies subject to economic, regulatory, and political constraints. They evolve in shifting geopolitical contexts.",
+        "No organization can be considered permanently neutral.",
+        "History shows that balances change.",
+        "Regimes evolve.",
+        "Political lines shift.",
+        "So the question is not whether an actor is trustworthy today.",
+        "The question is what happens when the conditions change.",
+        "Restoring a healthy architecture",
+        "Faced with these observations, the response cannot be the rejection of artificial intelligence.",
+        "It must be a reorganization of how it is used.",
+        "AI can be used to explore, structure, and prepare.",
+        "It can accelerate initial understanding.",
+        "But it must not become the **unquestioned starting point** of a decision.",
+        "The role of the human expert must be restored after AI, as a space for rereading, contextualization, and arbitration.",
+        "The posture must change.",
+        "It is no longer about arriving with an answer to be validated.",
+        "It is about arriving with a hypothesis to discuss.",
+        "A clear line",
+        "This manifesto rests on a simple distinction.",
+        "Artificial intelligence is a tool.",
+        "It must not become an *oracle*.",
+        "A tool helps us think.",
+        "An oracle replaces judgment.",
+        "A tool opens possibilities.",
+        "An oracle closes discussion.",
+        "A tool enriches human relationships.",
+        "An oracle short-circuits them.",
+        "An essential reminder",
+        "Artificial intelligence is not independent from the human world.",
+        "It comes from data produced by generations of people, accumulated experience, transmitted knowledge, and lived contexts.",
+        "Without that human foundation, it would not exist.",
+        "Human expertise therefore does not disappear.",
+        "It remains a source of context, responsibility, and situated judgment.",
+        "What we are trying to preserve",
+        "This manifesto does not defend nostalgia for the past.",
+        "It defends a capacity.",
+        "The capacity to judge.",
+        "The capacity to doubt.",
+        "The capacity to confront.",
+        "The capacity to listen.",
+        "The capacity not to fully delegate our understanding of the world.",
+        "Freedom does not disappear all at once.",
+        "It erodes when we stop exercising our own judgment.",
+        "This manifesto is a response to that erosion.",
+      ],
+    },
+    manifesto: {
+      title: "MANIFESTO - AI YES AS A TOOL, NO AS AN ORACLE",
+      commitments: [
+        {
+          recognize:
+            "I recognize that the apparent plurality of answers no longer guarantees the **real plurality** of sources or judgments.",
+          act:
+            "I act by questioning where information comes from and how genuinely independent it is.",
+        },
+        {
+          recognize:
+            "I recognize that the real danger is not only error, but my **passive acceptance**.",
+          act:
+            "I act by rereading, doubting, and refusing to automatically validate what is simply well-worded.",
+        },
+        {
+          recognize:
+            "I recognize that AI reduces the mental effort needed to produce a usable answer.",
+          act:
+            "I act by never confusing **ease of reading** with reliability.",
+        },
+        {
+          recognize:
+            "I recognize that the presence of a human in the chain can become **purely symbolic**.",
+          act:
+            "I act by exercising real judgment, not validation through comfort or habit.",
+        },
+        {
+          recognize:
+            "I recognize that **human expertise remains indispensable**.",
+          act:
+            "I act by consulting experts after AI, to reread, contextualize, and decide.",
+        },
+        {
+          recognize:
+            "I recognize that AI can become a **frame of thought** before I even begin to think.",
+          act:
+            "I act by using it to prepare, never to frame my understanding of reality on its own.",
+        },
+        {
+          recognize:
+            "I recognize that some systems already influence how we perceive facts and possible options.",
+          act:
+            "I warn that a dominant answer is not a neutral answer.",
+        },
+        {
+          recognize:
+            "I recognize that these technologies evolve under economic, political, and geopolitical constraints.",
+          act:
+            "I warn that their neutrality can never be assumed to be guaranteed.",
+        },
+        {
+          recognize:
+            "I recognize that preserving my freedom of judgment requires **active effort**.",
+          act:
+            "I act by maintaining human exchanges, listening to situated expertise, and reconsidering what AI presents to me as plausible.",
+        },
+      ],
+      positionTitle: "FUNDAMENTAL POSITION",
+      positionLines: [
+        "I recognize that AI comes from the knowledge accumulated by billions of human beings.",
+        "I act by restoring value to that human, embodied, and contextualized experience.",
+        "I refuse to replace my judgment with a synthetic answer, even a relevant one.",
+        "I refuse to delegate my thinking out of comfort.",
+        "I affirm a clear line:",
+        "**AI helps me think.**",
+        "**It does not think in my place.**",
+      ],
+      engagementTitle: "FINAL COMMITMENT",
+      engagementLines: [
+        "Before AI, I would ask a human.",
+        "After AI, I commit not to forget to do so.",
+        "Above all, I commit to truly listening.",
+        "Because my freedom does not disappear all at once.",
+        "**It erodes when I stop exercising my judgment.**",
+        "*And I refuse that erosion.*",
+      ],
+    },
     charter: {
       items: [
         {
@@ -129,6 +321,8 @@ export const translations = {
         "Cette adresse a déjà confirmé sa signature. Elle figure déjà dans la liste publique.",
       invalid:
         "Merci de remplir correctement tous les champs et de valider chaque consentement.",
+      invalidManifestoReminder:
+        "Vous avez bien coché les 2 cases, merci 🙂 Il faut quand même lire et accepter les {{count}} piliers du manifesto.",
       genericError:
         "Une erreur est survenue pendant l'envoi. Vous pourrez renvoyer le mail de validation.",
       searchLabel: "Chercher un signataire",
@@ -147,6 +341,12 @@ export const translations = {
       empty: "Aucun signataire vérifié pour le moment.",
       loading: "Chargement des signataires…",
       countLabel: "signataires vérifiés",
+    },
+    celebration: {
+      eyebrow: "Merci",
+      title: "MERCI POUR VOTRE ENGAGEMENT",
+      body: "Votre charte est complète. Vous pouvez maintenant signer.",
+      emoticons: ["✨", "🌟", "😊"],
     },
     footer: {
       privacyCta: "Lire la politique de confidentialité",
@@ -284,6 +484,8 @@ export const translations = {
         "This address has already confirmed its signature. It is already on the public list.",
       invalid:
         "Please fill in every field correctly and validate every consent.",
+      invalidManifestoReminder:
+        "You checked both boxes, thank you 🙂 You still need to read and accept the {{count}} manifesto pillars.",
       genericError:
         "Something went wrong while sending. You will be able to resend the verification email.",
       searchLabel: "Search a signer",
@@ -302,6 +504,12 @@ export const translations = {
       empty: "No verified signer yet.",
       loading: "Loading signers…",
       countLabel: "verified signers",
+    },
+    celebration: {
+      eyebrow: "Thank you",
+      title: "THANK YOU FOR YOUR ENGAGEMENT",
+      body: "Your charter is complete. You can now sign.",
+      emoticons: ["✨", "🌟", "😊"],
     },
     footer: {
       privacyCta: "Read the privacy policy",

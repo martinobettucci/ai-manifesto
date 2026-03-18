@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: apps/server/Dockerfile
+      target: production
     environment:
       NODE_ENV: production
       PORT: 3001
@@ -26,6 +27,7 @@ services:
     build:
       context: .
       dockerfile: apps/client/Dockerfile
+      target: production
     ports:
       - "80:80"
     depends_on:
