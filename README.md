@@ -64,6 +64,7 @@ Variables attendues pour la prod:
 - `SMTP_GREETING_TIMEOUT_MS`: optionnel, défaut `15000`
 - `SMTP_SOCKET_TIMEOUT_MS`: optionnel, défaut `20000`
 - `SMTP_DNS_TIMEOUT_MS`: optionnel, défaut `10000`
+- `SMTP_VERIFY_ON_STARTUP`: optionnel, défaut `true` en prod (`false` en dev), lance un test SMTP au démarrage avec log explicite
 - `SMTP_FROM`: optionnel, défaut `Manifesto IA <noreply@manifesto-ia.org>`
 
 Exemple `.env` minimal:
@@ -85,6 +86,7 @@ SMTP_CONNECTION_TIMEOUT_MS=15000
 SMTP_GREETING_TIMEOUT_MS=15000
 SMTP_SOCKET_TIMEOUT_MS=20000
 SMTP_DNS_TIMEOUT_MS=10000
+SMTP_VERIFY_ON_STARTUP=true
 SMTP_FROM="Manifesto IA <noreply@manifesto-ia.org>"
 ```
 
@@ -95,6 +97,12 @@ SMTP_FROM="Manifesto IA <noreply@manifesto-ia.org>"
 ```
 
 Le script suit les logs de tous les conteneurs Docker actifs (pas seulement la stack prod) et préfixe chaque ligne avec le nom du conteneur.
+
+Les logs API sont en JSON (une ligne par événement) avec un `requestId` pour corréler:
+- la requête HTTP
+- les erreurs de validation (`4xx`)
+- les erreurs serveur (`5xx`)
+- les erreurs SMTP détaillées (code/réponse/stack tronquée)
 
 ## Claude Code en Docker
 

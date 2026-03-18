@@ -25,6 +25,10 @@ export function createMailer(config) {
   });
 
   return {
+    async verifyConnection() {
+      await transporter.verify();
+    },
+
     async sendVerificationEmail({ email, fullName, locale, verifyUrl }) {
       const { subject, text, html } = buildVerificationEmail({
         locale,
@@ -32,7 +36,7 @@ export function createMailer(config) {
         verifyUrl,
       });
 
-      await transporter.sendMail({
+      return transporter.sendMail({
         from: config.smtpFrom,
         to: email,
         subject,

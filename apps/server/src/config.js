@@ -75,6 +75,10 @@ export const config = {
   smtpGreetingTimeoutMs: parsePositiveInteger(process.env.SMTP_GREETING_TIMEOUT_MS, 15000),
   smtpSocketTimeoutMs: parsePositiveInteger(process.env.SMTP_SOCKET_TIMEOUT_MS, 20000),
   smtpDnsTimeoutMs: parsePositiveInteger(process.env.SMTP_DNS_TIMEOUT_MS, 10000),
+  smtpVerifyOnStartup: parseBoolean(
+    process.env.SMTP_VERIFY_ON_STARTUP,
+    (process.env.NODE_ENV ?? 'development') === 'production',
+  ),
   smtpUser: process.env.SMTP_USER ?? '',
   smtpPass: process.env.SMTP_PASS ?? '',
   smtpFrom: process.env.SMTP_FROM ?? 'Manifesto IA <noreply@manifesto.local>',
