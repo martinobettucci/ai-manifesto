@@ -18,6 +18,22 @@ app.use(
   }),
 );
 app.use(express.json({ limit: '256kb' }));
+app.use((request, response, next) => {
+  const startedAt = Date.now();
+
+  response.on('finish', () => {
+    const durationMs = Date.now() - startedAt;
+    const forwardedFor = sanitizeText(request.headers['x-forwarded-for']);
+    const clientIp =
+      forwardedFor.split(',')[0]?.trim() || request.socket.remoteAddress || '-';
+
+    console.log(
+      `[${new Date().toISOString()}] ${request.method} ${request.originalUrl} ${response.statusCode} ${durationMs}ms ip=${clientIp}`,
+    );
+  });
+
+  next();
+});
 
 function hashToken(token) {
   return crypto.createHash('sha256').update(token).digest('hex');
@@ -180,12 +196,25 @@ app.post('/api/signers/register', async (request, response, next) => {
     const signer = repository.createOrRefreshPendingSigner(payload);
     const verifyUrl = buildVerificationLink(token);
 
-    await mailer.sendVerificationEmail({
-      email: payload.email,
-      fullName: payload.fullName,
-      locale: payload.locale,
-      verifyUrl,
-    });
+    try {
+      await mailer.sendVerificationEmail({
+        email: payload.email,
+        fullName: payload.fullName,
+        locale: payload.locale,
+        verifyUrl,
+      });
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] Verification email delivery failed: ${error?.message ?? 'Unknown error'}`,
+      );
+
+      const deliveryError = new Error(
+        'Verification email could not be delivered right now. Please try again shortly.',
+      );
+      deliveryError.code = 'EMAIL_DELIVERY_FAILED';
+      deliveryError.status = 503;
+      throw deliveryError;
+    }
 
     response.status(202).json({
       status: 'verification_sent',
@@ -259,6 +288,12 @@ app.get('/api/signers/verify', (request, response) => {
 
 app.use((error, request, response, next) => {
   const status = getErrorStatus(error);
+
+  if (status >= 500) {
+    console.error(
+      `[${new Date().toISOString()}] ${request.method} ${request.originalUrl} -> ${status} ${error?.message ?? 'Unknown server error'}`,
+    );
+  }
 
   response.status(status).json({
     code: error.code ?? 'INTERNAL_ERROR',

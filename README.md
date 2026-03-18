@@ -61,6 +61,10 @@ Variables attendues pour la prod:
 - `SMTP_PORT`: optionnel, défaut `465`
 - `SMTP_SECURE`: optionnel, défaut `true`
 - `SMTP_REQUIRE_AUTH`: optionnel, défaut `true`
+- `SMTP_CONNECTION_TIMEOUT_MS`: optionnel, défaut `15000`
+- `SMTP_GREETING_TIMEOUT_MS`: optionnel, défaut `15000`
+- `SMTP_SOCKET_TIMEOUT_MS`: optionnel, défaut `20000`
+- `SMTP_DNS_TIMEOUT_MS`: optionnel, défaut `10000`
 - `SMTP_FROM`: optionnel, défaut `Manifesto IA <noreply@manifesto-ia.org>`
 
 Exemple `.env` minimal:
@@ -78,6 +82,10 @@ SMTP_PASS=xxxxxxxxx
 SMTP_PORT=465
 SMTP_SECURE=true
 SMTP_REQUIRE_AUTH=true
+SMTP_CONNECTION_TIMEOUT_MS=15000
+SMTP_GREETING_TIMEOUT_MS=15000
+SMTP_SOCKET_TIMEOUT_MS=20000
+SMTP_DNS_TIMEOUT_MS=10000
 SMTP_FROM="Manifesto IA <noreply@manifesto-ia.org>"
 ```
 

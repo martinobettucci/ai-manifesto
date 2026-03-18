@@ -4,6 +4,10 @@ www.manifesto-ia.org {
 
 manifesto-ia.org {
   encode zstd gzip
+  log {
+    output stdout
+    format console
+  }
 
   @api path /api/*
   reverse_proxy @api server:3001

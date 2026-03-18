@@ -11,6 +11,15 @@ function parseBoolean(value, fallback = false) {
   return ['1', 'true', 'yes', 'on'].includes(String(value).toLowerCase());
 }
 
+function parsePositiveInteger(value, fallback) {
+  if (value === undefined) {
+    return fallback;
+  }
+
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+
 export const SUPPORTED_LOCALES = [
   'bg',
   'cs',
@@ -40,7 +49,7 @@ export const SUPPORTED_LOCALES = [
 
 export const config = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
-  port: Number(process.env.PORT ?? 3001),
+  port: parsePositiveInteger(process.env.PORT, 3001),
   dbFile:
     process.env.DB_FILE ??
     path.resolve(currentDir, '../../../data/manifesto.sqlite'),
@@ -49,16 +58,23 @@ export const config = {
     process.env.PRIVACY_POLICY_URL ??
     'https://p2enjoy.studio/privacy/politique-confidentialite',
   smtpHost: process.env.SMTP_HOST ?? 'localhost',
-  smtpPort: Number(process.env.SMTP_PORT ?? 1025),
+  smtpPort: parsePositiveInteger(process.env.SMTP_PORT, 1025),
   smtpSecure: parseBoolean(
     process.env.SMTP_SECURE,
-    Number(process.env.SMTP_PORT ?? 1025) === 465 ||
-      Number(process.env.SMTP_PORT ?? 1025) === 2465,
+    parsePositiveInteger(process.env.SMTP_PORT, 1025) === 465 ||
+      parsePositiveInteger(process.env.SMTP_PORT, 1025) === 2465,
   ),
   smtpRequireAuth: parseBoolean(
     process.env.SMTP_REQUIRE_AUTH,
     (process.env.NODE_ENV ?? 'development') === 'production',
   ),
+  smtpConnectionTimeoutMs: parsePositiveInteger(
+    process.env.SMTP_CONNECTION_TIMEOUT_MS,
+    15000,
+  ),
+  smtpGreetingTimeoutMs: parsePositiveInteger(process.env.SMTP_GREETING_TIMEOUT_MS, 15000),
+  smtpSocketTimeoutMs: parsePositiveInteger(process.env.SMTP_SOCKET_TIMEOUT_MS, 20000),
+  smtpDnsTimeoutMs: parsePositiveInteger(process.env.SMTP_DNS_TIMEOUT_MS, 10000),
   smtpUser: process.env.SMTP_USER ?? '',
   smtpPass: process.env.SMTP_PASS ?? '',
   smtpFrom: process.env.SMTP_FROM ?? 'Manifesto IA <noreply@manifesto.local>',

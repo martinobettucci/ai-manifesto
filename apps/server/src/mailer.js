@@ -12,6 +12,10 @@ export function createMailer(config) {
     host: config.smtpHost,
     port: config.smtpPort,
     secure: config.smtpSecure,
+    connectionTimeout: config.smtpConnectionTimeoutMs,
+    greetingTimeout: config.smtpGreetingTimeoutMs,
+    socketTimeout: config.smtpSocketTimeoutMs,
+    dnsTimeout: config.smtpDnsTimeoutMs,
     auth: config.smtpUser
       ? {
           user: config.smtpUser,
