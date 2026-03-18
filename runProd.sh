@@ -4,6 +4,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Load .env automatically for local production runs.
+if [[ -f .env ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source .env
+  set +a
+fi
+
 # Scaleway TEM username can be provided directly or derived from project id.
 if [[ -z "${SMTP_USER:-}" && -n "${SCW_SCW_DEFAULT_PROJECT_ID:-}" ]]; then
   export SMTP_USER="${SCW_SCW_DEFAULT_PROJECT_ID}"
