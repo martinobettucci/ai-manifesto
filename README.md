@@ -43,10 +43,43 @@ Les emails de confirmation sont capturés par Mailpit en local pour tester le pa
 
 Le mode prod build des images stables avec `COPY` des sources (pas de bind mount applicatif).
 
-Variables attendues pour SMTP:
-- `SMTP_USER` (ou `SCW_SCW_DEFAULT_PROJECT_ID`, ou `SCW_DEFAULT_PROJECT_ID` converti en `SCW_<PROJECT_ID>`)
-- `SMTP_PASS` (ou `SCW_SECRET_KEY`)
-- `SMTP_REQUIRE_AUTH=true` en production (activé par défaut)
+Pour arrêter la stack prod:
+
+```bash
+./stopProd.sh
+```
+
+`runProd.sh` charge automatiquement `.env` (s'il existe), puis lance `docker compose`.
+
+Variables attendues pour la prod:
+
+- `SMTP_USER`: requis, sauf si dérivé via `SCW_SCW_DEFAULT_PROJECT_ID` ou `SCW_DEFAULT_PROJECT_ID`
+- `SMTP_PASS`: requis, sauf si dérivé via `SCW_SECRET_KEY`
+- `SCW_SCW_DEFAULT_PROJECT_ID`: optionnel, utilisé comme fallback pour `SMTP_USER`
+- `SCW_DEFAULT_PROJECT_ID`: optionnel, fallback pour `SMTP_USER` (`SCW_<PROJECT_ID>`)
+- `SCW_SECRET_KEY`: optionnel, fallback pour `SMTP_PASS`
+- `SMTP_PORT`: optionnel, défaut `465`
+- `SMTP_SECURE`: optionnel, défaut `true`
+- `SMTP_REQUIRE_AUTH`: optionnel, défaut `true`
+- `SMTP_FROM`: optionnel, défaut `Manifesto IA <noreply@manifesto-ia.org>`
+
+Exemple `.env` minimal:
+
+```bash
+SMTP_USER=SCW_xxxxxxxxx
+SMTP_PASS=xxxxxxxxx
+```
+
+Exemple `.env` complet:
+
+```bash
+SMTP_USER=SCW_xxxxxxxxx
+SMTP_PASS=xxxxxxxxx
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_REQUIRE_AUTH=true
+SMTP_FROM="Manifesto IA <noreply@manifesto-ia.org>"
+```
 
 ### Logs Docker (tous les conteneurs en cours)
 
