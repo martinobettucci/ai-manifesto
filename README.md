@@ -48,6 +48,14 @@ Variables attendues pour SMTP:
 - `SMTP_PASS` (ou `SCW_SECRET_KEY`)
 - `SMTP_REQUIRE_AUTH=true` en production (activé par défaut)
 
+### Logs Docker (tous les conteneurs en cours)
+
+```bash
+./runLogs.sh
+```
+
+Le script suit les logs de tous les conteneurs Docker actifs (pas seulement la stack prod) et préfixe chaque ligne avec le nom du conteneur.
+
 ## Claude Code en Docker
 
 Image minimale dédiée à Claude Code:
