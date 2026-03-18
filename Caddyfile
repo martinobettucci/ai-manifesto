@@ -1,0 +1,12 @@
+www.manifesto-ia.org {
+  redir https://manifesto-ia.org{uri} permanent
+}
+
+manifesto-ia.org {
+  encode zstd gzip
+
+  @api path /api/*
+  reverse_proxy @api server:3001
+
+  reverse_proxy client:80
+}
