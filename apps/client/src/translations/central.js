@@ -4,6 +4,13 @@ export const translations = {
       siteTitle: "AI tak jako narzędzie, nie jako wyrocznia",
       languageLabel: "Język",
       liveCount: "zweryfikowani sygnatariusze",
+      skipLink: "Przejdź do treści",
+    },
+    theme: {
+      dark: "Ciemny",
+      light: "Jasny",
+      switchToLight: "Przełącz na jasny tryb",
+      switchToDark: "Przełącz na ciemny tryb",
     },
     hero: {
       eyebrow: "Obywatelski manifest dla AI prowadzonej przez ludzi",
@@ -145,6 +152,37 @@ export const translations = {
       invalidBody:
         "Możesz poprosić o nowy email weryfikacyjny, używając tego samego adresu.",
     },
+    visitorState: {
+      pendingBadge: "Weryfikacja oczekuje",
+      pendingTitle: "Twój podpis nie jest jeszcze potwierdzony.",
+      pendingBody:
+        "Aby potwierdzić swoje poparcie, otwórz skrzynkę mailową i kliknij wysłany link weryfikacyjny.",
+      pendingProof:
+        "Bez kliknięcia tego linku Twój profil nie może zostać potwierdzony. Sprawdź także folder spam.",
+      verifiedBadge: "Zweryfikowane poparcie",
+      verifiedTitle:
+        "Wielkie podziękowania za udział w tej odpowiedzialnej zmianie.",
+      verifiedBody:
+        "Twoje zobowiązanie jest teraz widoczne na publicznej ścianie sygnatariuszy. Pomagasz przywracać odpowiedzialne i suwerenne praktyki AI.",
+      verifiedPosition:
+        "Obecnie zajmujesz pozycję nr {{position}} na liście zweryfikowanych sygnatariuszy.",
+      verifiedPositionUnknown:
+        "Twój podpis jest teraz wyróżniony na liście zweryfikowanych sygnatariuszy.",
+      formLockedPending:
+        "Twoje zgłoszenie czeka na potwierdzenie. Sprawdź skrzynkę mailową i kliknij link weryfikacyjny.",
+      formLockedVerified:
+        "Twój podpis jest już zweryfikowany. Jeszcze raz dziękujemy za Twoje publiczne zaangażowanie.",
+      cardHighlight: "To Ty",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Oświadczam, że jestem specjalistą AI i zobowiązuję się rozpowszechniać ten komunikat podczas moich szkoleń. W zamian otrzymuję prawo do promowania swoich usług na ścianie sygnatariuszy.",
+      websiteLabel: "Strona zawodowa",
+      websitePlaceholder: "https://twoja-strona.pl",
+      websiteHint:
+        "Ta strona jest wyświetlana publicznie wyłącznie dla specjalistów AI, którzy zaznaczą powyższe oświadczenie.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Na razie brak zweryfikowanych sygnatariuszy.",
       loading: "Ładowanie sygnatariuszy…",
@@ -161,6 +199,13 @@ export const translations = {
       siteTitle: "AI ano jako nástroj, ne jako orákulum",
       languageLabel: "Jazyk",
       liveCount: "ověření signatáři",
+      skipLink: "Přeskočit na obsah",
+    },
+    theme: {
+      dark: "Tmavý",
+      light: "Světlý",
+      switchToLight: "Přepnout na světlý režim",
+      switchToDark: "Přepnout na tmavý režim",
     },
     hero: {
       eyebrow: "Občanské manifest pro AI řízenou lidmi",
@@ -302,6 +347,37 @@ export const translations = {
       invalidBody:
         "Můžete požádat o nový validační email se stejnou adresou.",
     },
+    visitorState: {
+      pendingBadge: "Ověření čeká",
+      pendingTitle: "Váš podpis ještě není potvrzen.",
+      pendingBody:
+        "Chcete-li potvrdit svou podporu, otevřete e-mailovou schránku a klikněte na zaslaný ověřovací odkaz.",
+      pendingProof:
+        "Bez kliknutí na tento odkaz nelze váš profil potvrdit. Zkontrolujte také složku spamu.",
+      verifiedBadge: "Ověřená podpora",
+      verifiedTitle:
+        "Velké poděkování, že jste součástí této odpovědné změny.",
+      verifiedBody:
+        "Vaše angažovanost je nyní viditelná na veřejné zdi signatářů. Pomáháte obnovovat odpovědné a suverénní praktiky AI.",
+      verifiedPosition:
+        "Momentálně se nacházíte na pozici č. {{position}} v seznamu ověřených signatářů.",
+      verifiedPositionUnknown:
+        "Váš podpis je nyní v seznamu ověřených signatářů zvýrazněn.",
+      formLockedPending:
+        "Vaše žádost čeká na potvrzení. Zkontrolujte schránku a klikněte na ověřovací odkaz.",
+      formLockedVerified:
+        "Váš podpis je již ověřen. Ještě jednou děkujeme za váš veřejný závazek.",
+      cardHighlight: "To jste vy",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Prohlašuji, že jsem odborník na AI, a zavazuji se šířit toto poselství během svých školení. Na oplátku získávám právo propagovat své služby na zdi signatářů.",
+      websiteLabel: "Profesní web",
+      websitePlaceholder: "https://vas-web.cz",
+      websiteHint:
+        "Tento web se veřejně zobrazuje pouze odborníkům na AI, kteří zaškrtnou výše uvedené prohlášení.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Zatím žádný ověřený signatář.",
       loading: "Načítají se signatáři…",
@@ -318,6 +394,13 @@ export const translations = {
       siteTitle: "AI áno ako nástroj, nie ako orákulum",
       languageLabel: "Jazyk",
       liveCount: "overení signatári",
+      skipLink: "Preskočiť na obsah",
+    },
+    theme: {
+      dark: "Tmavý",
+      light: "Svetlý",
+      switchToLight: "Prepnúť na svetlý režim",
+      switchToDark: "Prepnúť na tmavý režim",
     },
     hero: {
       eyebrow: "Občiansky manifest pre AI riadenú ľuďmi",
@@ -458,6 +541,37 @@ export const translations = {
       invalidTitle: "Neplatný alebo expirovaný odkaz",
       invalidBody:
         "Môžete požiadať o nový validačný email s rovnakou adresou.",
+    },
+    visitorState: {
+      pendingBadge: "Overenie čaká",
+      pendingTitle: "Váš podpis ešte nie je potvrdený.",
+      pendingBody:
+        "Ak chcete potvrdiť svoju podporu, otvorte e-mailovú schránku a kliknite na zaslaný overovací odkaz.",
+      pendingProof:
+        "Bez kliknutia na tento odkaz nie je možné váš profil potvrdiť. Skontrolujte aj priečinok spamu.",
+      verifiedBadge: "Overená podpora",
+      verifiedTitle:
+        "Veľká vďaka, že ste súčasťou tejto zodpovednej zmeny.",
+      verifiedBody:
+        "Váš záväzok je teraz viditeľný na verejnej stene signatárov. Pomáhate obnovovať zodpovedné a suverénne praktiky AI.",
+      verifiedPosition:
+        "Momentálne ste na pozícii č. {{position}} v zozname overených signatárov.",
+      verifiedPositionUnknown:
+        "Váš podpis je teraz v zozname overených signatárov zvýraznený.",
+      formLockedPending:
+        "Vaša žiadosť čaká na potvrdenie. Skontrolujte schránku a kliknite na overovací odkaz.",
+      formLockedVerified:
+        "Váš podpis je už overený. Ešte raz ďakujeme za váš verejný záväzok.",
+      cardHighlight: "To ste vy",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Vyhlasujem, že som odborník na AI, a zaväzujem sa šíriť toto posolstvo počas svojich školení. Na oplátku získavam právo propagovať svoje služby na stene signatárov.",
+      websiteLabel: "Profesionálny web",
+      websitePlaceholder: "https://vas-web.sk",
+      websiteHint:
+        "Táto stránka sa verejne zobrazuje iba odborníkom na AI, ktorí zaškrtnú vyššie uvedené vyhlásenie.",
+      proBadge: "AI Pro",
     },
     directory: {
       empty: "Zatiaľ žiadny overený signatár.",

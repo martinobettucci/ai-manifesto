@@ -1,5 +1,5 @@
 const LINKS = {
-  linkedin: 'https://linkedi.p2enjoy.stuio',
+  linkedin: 'https://www.linkedin.com/in/martinobettucci/',
   website: 'https://p2enjoy.studio',
 };
 
@@ -485,4 +485,3 @@ export function buildVerificationEmail({ locale, fullName, verifyUrl }) {
     html,
   };
 }
-

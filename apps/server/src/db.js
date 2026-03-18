@@ -165,7 +165,7 @@ export function createRepository(dbFile) {
       verified_at AS verifiedAt
     FROM signers
     WHERE status = 'verified'
-    ORDER BY datetime(verified_at) DESC, id DESC
+    ORDER BY datetime(verified_at) ASC, id ASC
   `);
 
   const countVerified = db.prepare(`
@@ -198,8 +198,8 @@ export function createRepository(dbFile) {
     FROM signers
     WHERE status = 'verified'
       AND (
-        datetime(verified_at) > datetime(@verifiedAt)
-        OR (datetime(verified_at) = datetime(@verifiedAt) AND id > @id)
+        datetime(verified_at) < datetime(@verifiedAt)
+        OR (datetime(verified_at) = datetime(@verifiedAt) AND id < @id)
       )
   `);
 

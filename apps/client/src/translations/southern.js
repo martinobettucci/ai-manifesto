@@ -4,6 +4,13 @@ export const translations = {
       siteTitle: "KI ja als Werkzeug, nein als Orakel",
       languageLabel: "Sprache",
       liveCount: "bestätigte Unterzeichnende",
+      skipLink: "Zum Inhalt springen",
+    },
+    theme: {
+      dark: "Dunkel",
+      light: "Hell",
+      switchToLight: "Zum hellen Modus wechseln",
+      switchToDark: "Zum dunklen Modus wechseln",
     },
     hero: {
       eyebrow: "Bürgerliches Manifest für menschengesteuerte KI",
@@ -145,6 +152,37 @@ export const translations = {
       invalidBody:
         "Sie können mit derselben Adresse eine neue Bestätigungs-E-Mail anfordern.",
     },
+    visitorState: {
+      pendingBadge: "Verifikation ausstehend",
+      pendingTitle: "Ihre Unterschrift ist noch nicht bestätigt.",
+      pendingBody:
+        "Um Ihre Unterstützung zu bestätigen, öffnen Sie Ihr E-Mail-Postfach und klicken Sie auf den gesendeten Bestätigungslink.",
+      pendingProof:
+        "Ohne Klick auf diesen Link kann Ihr Profil nicht bestätigt werden. Bitte prüfen Sie auch Ihren Spam-Ordner.",
+      verifiedBadge: "Bestätigte Unterstützung",
+      verifiedTitle:
+        "Vielen Dank, dass Sie Teil dieses verantwortungsvollen Wandels sind.",
+      verifiedBody:
+        "Ihr Engagement ist jetzt in der öffentlichen Wand der Unterzeichnenden sichtbar. Sie helfen dabei, verantwortungsvolle und souveräne KI-Praktiken wiederherzustellen.",
+      verifiedPosition:
+        "Sie erscheinen derzeit auf Position Nr. {{position}} in der Liste der bestätigten Unterzeichnenden.",
+      verifiedPositionUnknown:
+        "Ihre Unterschrift ist jetzt in der Liste der bestätigten Unterzeichnenden hervorgehoben.",
+      formLockedPending:
+        "Ihre Anfrage wartet auf Bestätigung. Prüfen Sie Ihr E-Mail-Postfach und klicken Sie auf den Bestätigungslink.",
+      formLockedVerified:
+        "Ihre Unterschrift ist bereits bestätigt. Vielen Dank nochmals für Ihr öffentliches Engagement.",
+      cardHighlight: "Das sind Sie",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Ich erkläre, dass ich KI-Fachperson bin, und verpflichte mich, diese Botschaft in meinen Schulungen weiterzugeben. Im Gegenzug erhalte ich das Recht, meine Dienstleistungen in der Wand der Unterzeichnenden zu präsentieren.",
+      websiteLabel: "Berufliche Website",
+      websitePlaceholder: "https://ihre-seite.de",
+      websiteHint:
+        "Diese Website wird nur für KI-Fachleute öffentlich angezeigt, die die obige Erklärung angekreuzt haben.",
+      proBadge: "KI-Profi",
+    },
     directory: {
       empty: "Noch keine bestätigte unterzeichnende Person.",
       loading: "Unterzeichnende werden geladen…",
@@ -161,6 +199,13 @@ export const translations = {
       siteTitle: "IA sí como herramienta, no como oráculo",
       languageLabel: "Idioma",
       liveCount: "firmantes verificados",
+      skipLink: "Ir al contenido",
+    },
+    theme: {
+      dark: "Oscuro",
+      light: "Claro",
+      switchToLight: "Cambiar al modo claro",
+      switchToDark: "Cambiar al modo oscuro",
     },
     hero: {
       eyebrow: "Manifiesto cívico para una IA guiada por humanos",
@@ -302,6 +347,37 @@ export const translations = {
       invalidBody:
         "Puedes solicitar un nuevo correo de validación con la misma dirección.",
     },
+    visitorState: {
+      pendingBadge: "Verificación pendiente",
+      pendingTitle: "Tu firma aún no está confirmada.",
+      pendingBody:
+        "Para confirmar tu adhesión, abre tu correo y haz clic en el enlace de verificación enviado.",
+      pendingProof:
+        "Sin hacer clic en ese enlace, tu perfil no puede confirmarse. Revisa también tu carpeta de spam.",
+      verifiedBadge: "Apoyo verificado",
+      verifiedTitle:
+        "Muchas gracias por formar parte de este cambio responsable.",
+      verifiedBody:
+        "Tu compromiso ya es visible en el muro público de firmantes. Estás ayudando a restaurar un uso responsable y soberano de la IA.",
+      verifiedPosition:
+        "Apareces actualmente en la posición n.º {{position}} de la lista de firmantes verificados.",
+      verifiedPositionUnknown:
+        "Tu firma aparece ahora destacada en la lista de firmantes verificados.",
+      formLockedPending:
+        "Tu solicitud está pendiente de confirmación. Revisa tu correo y haz clic en el enlace de verificación.",
+      formLockedVerified:
+        "Tu firma ya está verificada. Gracias de nuevo por tu compromiso público.",
+      cardHighlight: "Eres tú",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Declaro que soy un profesional de la IA y me comprometo a difundir este mensaje durante mis formaciones. A cambio, recibo el derecho de promocionar mis servicios en el muro de firmantes.",
+      websiteLabel: "Sitio web profesional",
+      websitePlaceholder: "https://tu-sitio.es",
+      websiteHint:
+        "Este sitio se muestra públicamente solo para los profesionales de la IA que marquen la declaración anterior.",
+      proBadge: "Pro IA",
+    },
     directory: {
       empty: "Todavía no hay firmantes verificados.",
       loading: "Cargando firmantes…",
@@ -318,6 +394,13 @@ export const translations = {
       siteTitle: "IA sì come strumento, no come oracolo",
       languageLabel: "Lingua",
       liveCount: "firmatari verificati",
+      skipLink: "Vai al contenuto",
+    },
+    theme: {
+      dark: "Scuro",
+      light: "Chiaro",
+      switchToLight: "Passa al tema chiaro",
+      switchToDark: "Passa al tema scuro",
     },
     hero: {
       eyebrow: "Manifesto civico per un'IA guidata dagli esseri umani",
@@ -459,6 +542,37 @@ export const translations = {
       invalidBody:
         "Puoi richiedere una nuova email di verifica con lo stesso indirizzo.",
     },
+    visitorState: {
+      pendingBadge: "Verifica in attesa",
+      pendingTitle: "La tua firma non è ancora confermata.",
+      pendingBody:
+        "Per confermare la tua adesione, apri la tua casella email e clicca sul link di verifica inviato.",
+      pendingProof:
+        "Senza cliccare su quel link, il tuo profilo non può essere confermato. Controlla anche la cartella spam.",
+      verifiedBadge: "Sostegno verificato",
+      verifiedTitle:
+        "Grazie di cuore per far parte di questo cambiamento responsabile.",
+      verifiedBody:
+        "Il tuo impegno è ora visibile nel muro pubblico dei firmatari. Stai contribuendo a ristabilire pratiche di IA responsabili e sovrane.",
+      verifiedPosition:
+        "Attualmente compari alla posizione n. {{position}} nella lista dei firmatari verificati.",
+      verifiedPositionUnknown:
+        "La tua firma è ora evidenziata nella lista dei firmatari verificati.",
+      formLockedPending:
+        "La tua richiesta è in attesa di conferma. Controlla la tua email e clicca sul link di verifica.",
+      formLockedVerified:
+        "La tua firma è già verificata. Grazie ancora per il tuo impegno pubblico.",
+      cardHighlight: "Sei tu",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Dichiaro di essere un professionista dell'IA e mi impegno a diffondere questo messaggio durante le mie formazioni. In cambio, ricevo il diritto di promuovere i miei servizi nel muro dei firmatari.",
+      websiteLabel: "Sito web professionale",
+      websitePlaceholder: "https://il-tuo-sito.it",
+      websiteHint:
+        "Questo sito viene mostrato pubblicamente solo ai professionisti dell'IA che selezionano la dichiarazione qui sopra.",
+      proBadge: "Pro IA",
+    },
     directory: {
       empty: "Nessun firmatario verificato per ora.",
       loading: "Caricamento dei firmatari…",
@@ -475,6 +589,13 @@ export const translations = {
       siteTitle: "IA sim como ferramenta, não como oráculo",
       languageLabel: "Idioma",
       liveCount: "signatários verificados",
+      skipLink: "Ir para o conteúdo",
+    },
+    theme: {
+      dark: "Escuro",
+      light: "Claro",
+      switchToLight: "Mudar para o modo claro",
+      switchToDark: "Mudar para o modo escuro",
     },
     hero: {
       eyebrow: "Manifesto cívico para uma IA guiada por humanos",
@@ -616,6 +737,37 @@ export const translations = {
       invalidBody:
         "Pode pedir um novo email de validação com o mesmo endereço.",
     },
+    visitorState: {
+      pendingBadge: "Verificação pendente",
+      pendingTitle: "A sua assinatura ainda não está confirmada.",
+      pendingBody:
+        "Para confirmar a sua adesão, abra a sua caixa de email e clique na ligação de verificação enviada.",
+      pendingProof:
+        "Sem clicar nessa ligação, o seu perfil não pode ser confirmado. Verifique também a pasta de spam.",
+      verifiedBadge: "Apoio verificado",
+      verifiedTitle:
+        "Muito obrigado por fazer parte desta mudança responsável.",
+      verifiedBody:
+        "O seu compromisso está agora visível no mural público de signatários. Está a ajudar a restaurar práticas de IA responsáveis e soberanas.",
+      verifiedPosition:
+        "Aparece atualmente na posição n.º {{position}} da lista de signatários verificados.",
+      verifiedPositionUnknown:
+        "A sua assinatura está agora destacada na lista de signatários verificados.",
+      formLockedPending:
+        "O seu pedido está à espera de confirmação. Verifique o seu email e clique na ligação de verificação.",
+      formLockedVerified:
+        "A sua assinatura já está verificada. Obrigado novamente pelo seu compromisso público.",
+      cardHighlight: "É você",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Declaro que sou um profissional de IA e comprometo-me a divulgar esta mensagem durante as minhas formações. Em troca, recebo o direito de promover os meus serviços no mural de signatários.",
+      websiteLabel: "Site profissional",
+      websitePlaceholder: "https://o-seu-site.pt",
+      websiteHint:
+        "Este site é mostrado publicamente apenas para profissionais de IA que assinalem a declaração acima.",
+      proBadge: "Pro IA",
+    },
     directory: {
       empty: "Ainda não há signatários verificados.",
       loading: "A carregar signatários…",
@@ -632,6 +784,13 @@ export const translations = {
       siteTitle: "AI ja als hulpmiddel, niet als orakel",
       languageLabel: "Taal",
       liveCount: "geverifieerde ondertekenaars",
+      skipLink: "Ga naar de inhoud",
+    },
+    theme: {
+      dark: "Donker",
+      light: "Licht",
+      switchToLight: "Schakel naar lichte modus",
+      switchToDark: "Schakel naar donkere modus",
     },
     hero: {
       eyebrow: "Civiel manifest voor mensgestuurde AI",
@@ -772,6 +931,37 @@ export const translations = {
       invalidTitle: "Ongeldige of verlopen link",
       invalidBody:
         "Je kunt met hetzelfde adres een nieuwe validatiemail aanvragen.",
+    },
+    visitorState: {
+      pendingBadge: "Verificatie in afwachting",
+      pendingTitle: "Je handtekening is nog niet bevestigd.",
+      pendingBody:
+        "Om je steun te bevestigen, open je mailbox en klik je op de verzonden verificatielink.",
+      pendingProof:
+        "Zonder op die link te klikken kan je profiel niet worden bevestigd. Controleer ook je spammap.",
+      verifiedBadge: "Geverifieerde steun",
+      verifiedTitle:
+        "Hartelijk dank dat je deel uitmaakt van deze verantwoorde verandering.",
+      verifiedBody:
+        "Je engagement is nu zichtbaar op de openbare muur van ondertekenaars. Je helpt verantwoord en soeverein gebruik van AI te herstellen.",
+      verifiedPosition:
+        "Je staat momenteel op positie nr. {{position}} in de lijst van geverifieerde ondertekenaars.",
+      verifiedPositionUnknown:
+        "Je handtekening wordt nu uitgelicht in de lijst van geverifieerde ondertekenaars.",
+      formLockedPending:
+        "Je verzoek wacht op bevestiging. Controleer je mailbox en klik op de verificatielink.",
+      formLockedVerified:
+        "Je handtekening is al geverifieerd. Nogmaals dank voor je openbare engagement.",
+      cardHighlight: "Jij bent het",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Ik verklaar dat ik een AI-professional ben en ik verbind me ertoe deze boodschap tijdens mijn opleidingen te verspreiden. In ruil daarvoor krijg ik het recht om mijn diensten op de muur van ondertekenaars te promoten.",
+      websiteLabel: "Professionele website",
+      websitePlaceholder: "https://jouw-site.nl",
+      websiteHint:
+        "Deze website wordt alleen openbaar getoond voor AI-professionals die de bovenstaande verklaring aanvinken.",
+      proBadge: "AI-pro",
     },
     directory: {
       empty: "Nog geen geverifieerde ondertekenaar.",

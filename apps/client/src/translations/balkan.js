@@ -4,6 +4,13 @@ export const translations = {
       siteTitle: "UI da kot orodje, ne kot orakelj",
       languageLabel: "Jezik",
       liveCount: "preverjeni podpisniki",
+      skipLink: "Preskoči na vsebino",
+    },
+    theme: {
+      dark: "Temen",
+      light: "Svetel",
+      switchToLight: "Preklopi na svetli način",
+      switchToDark: "Preklopi na temni način",
     },
     hero: {
       eyebrow: "Državljanski manifest za UI pod človeškim vodstvom",
@@ -145,6 +152,37 @@ export const translations = {
       invalidBody:
         "Z istim naslovom lahko zahtevate nov validacijski email.",
     },
+    visitorState: {
+      pendingBadge: "Preverjanje v čakanju",
+      pendingTitle: "Vaš podpis še ni potrjen.",
+      pendingBody:
+        "Če želite potrditi svojo podporo, odprite svoj e-poštni predal in kliknite na poslano povezavo za preverjanje.",
+      pendingProof:
+        "Brez klika na to povezavo vašega profila ni mogoče potrditi. Preverite tudi mapo z vsiljeno pošto.",
+      verifiedBadge: "Preverjena podpora",
+      verifiedTitle:
+        "Najlepša hvala, ker ste del te odgovorne spremembe.",
+      verifiedBody:
+        "Vaša zaveza je zdaj vidna na javnem zidu podpisnikov. Pomagate obnavljati odgovorne in suverene prakse UI.",
+      verifiedPosition:
+        "Trenutno ste na mestu št. {{position}} na seznamu preverjenih podpisnikov.",
+      verifiedPositionUnknown:
+        "Vaš podpis je zdaj poudarjen na seznamu preverjenih podpisnikov.",
+      formLockedPending:
+        "Vaša zahteva čaka na potrditev. Preverite svoj e-poštni predal in kliknite povezavo za preverjanje.",
+      formLockedVerified:
+        "Vaš podpis je že preverjen. Še enkrat hvala za vašo javno zavezo.",
+      cardHighlight: "To ste vi",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Izjavljam, da sem strokovnjak za UI, in se zavezujem, da bom to sporočilo širil na svojih usposabljanjih. V zameno prejmem pravico do promocije svojih storitev na zidu podpisnikov.",
+      websiteLabel: "Profesionalna spletna stran",
+      websitePlaceholder: "https://vasa-stran.si",
+      websiteHint:
+        "Ta spletna stran se javno prikaže samo strokovnjakom za UI, ki označijo zgornjo izjavo.",
+      proBadge: "UI Pro",
+    },
     directory: {
       empty: "Za zdaj še ni preverjenih podpisnikov.",
       loading: "Nalaganje podpisnikov…",
@@ -161,6 +199,13 @@ export const translations = {
       siteTitle: "AI da kao alat, ne kao proročište",
       languageLabel: "Jezik",
       liveCount: "potvrđeni potpisnici",
+      skipLink: "Prijeđi na sadržaj",
+    },
+    theme: {
+      dark: "Tamno",
+      light: "Svijetlo",
+      switchToLight: "Prebaci na svijetli način",
+      switchToDark: "Prebaci na tamni način",
     },
     hero: {
       eyebrow: "Građanski manifest za AI pod ljudskim vodstvom",
@@ -302,6 +347,37 @@ export const translations = {
       invalidBody:
         "Možete zatražiti novi validacijski email s istom adresom.",
     },
+    visitorState: {
+      pendingBadge: "Provjera na čekanju",
+      pendingTitle: "Vaš potpis još nije potvrđen.",
+      pendingBody:
+        "Kako biste potvrdili svoju podršku, otvorite svoju e-poštu i kliknite na poslanu poveznicu za provjeru.",
+      pendingProof:
+        "Bez klika na tu poveznicu vaš profil ne može biti potvrđen. Provjerite i mapu neželjene pošte.",
+      verifiedBadge: "Potvrđena podrška",
+      verifiedTitle:
+        "Veliko hvala što ste dio ove odgovorne promjene.",
+      verifiedBody:
+        "Vaša obveza sada je vidljiva na javnom zidu potpisnika. Pomažete obnoviti odgovorne i suverene AI prakse.",
+      verifiedPosition:
+        "Trenutačno ste na poziciji br. {{position}} na popisu potvrđenih potpisnika.",
+      verifiedPositionUnknown:
+        "Vaš je potpis sada istaknut na popisu potvrđenih potpisnika.",
+      formLockedPending:
+        "Vaš zahtjev čeka potvrdu. Provjerite svoju e-poštu i kliknite na poveznicu za provjeru.",
+      formLockedVerified:
+        "Vaš je potpis već potvrđen. Još jednom hvala na vašoj javnoj obvezi.",
+      cardHighlight: "To ste vi",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Izjavljujem da sam AI profesionalac i obvezujem se širiti ovu poruku tijekom svojih edukacija. Zauzvrat dobivam pravo promovirati svoje usluge na zidu potpisnika.",
+      websiteLabel: "Profesionalna web stranica",
+      websitePlaceholder: "https://vasa-stranica.hr",
+      websiteHint:
+        "Ova se stranica javno prikazuje samo AI profesionalcima koji označe gornju izjavu.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Još nema potvrđenih potpisnika.",
       loading: "Učitavanje potpisnika…",
@@ -318,6 +394,13 @@ export const translations = {
       siteTitle: "MI igen mint eszköz, nem mint jósda",
       languageLabel: "Nyelv",
       liveCount: "ellenőrzött aláírók",
+      skipLink: "Ugrás a tartalomhoz",
+    },
+    theme: {
+      dark: "Sötét",
+      light: "Világos",
+      switchToLight: "Váltás világos módra",
+      switchToDark: "Váltás sötét módra",
     },
     hero: {
       eyebrow: "Polgári manifesztum ember által irányított MI-ért",
@@ -459,6 +542,37 @@ export const translations = {
       invalidBody:
         "Ugyanazzal a címmel új ellenőrző emailt kérhet.",
     },
+    visitorState: {
+      pendingBadge: "Ellenőrzés folyamatban",
+      pendingTitle: "Az aláírása még nincs megerősítve.",
+      pendingBody:
+        "A támogatás megerősítéséhez nyissa meg az emailfiókját, és kattintson az elküldött ellenőrző linkre.",
+      pendingProof:
+        "A linkre való kattintás nélkül a profilja nem erősíthető meg. Kérjük, ellenőrizze a spam mappát is.",
+      verifiedBadge: "Ellenőrzött támogatás",
+      verifiedTitle:
+        "Nagy köszönet, hogy ennek a felelős változásnak a része.",
+      verifiedBody:
+        "Az elköteleződése most már látható az aláírók nyilvános falán. Ön segít helyreállítani a felelős és szuverén MI-gyakorlatokat.",
+      verifiedPosition:
+        "Jelenleg a(z) {{position}}. helyen szerepel az ellenőrzött aláírók listáján.",
+      verifiedPositionUnknown:
+        "Az aláírása most kiemelten jelenik meg az ellenőrzött aláírók listáján.",
+      formLockedPending:
+        "A kérelme megerősítésre vár. Ellenőrizze az emailjét, és kattintson az ellenőrző linkre.",
+      formLockedVerified:
+        "Az aláírása már ellenőrzött. Még egyszer köszönjük nyilvános elköteleződését.",
+      cardHighlight: "Ön az",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Kijelentem, hogy MI-szakember vagyok, és vállalom, hogy ezt az üzenetet továbbadom a képzéseimen. Cserébe jogot kapok arra, hogy szolgáltatásaimat az aláírók falán népszerűsítsem.",
+      websiteLabel: "Szakmai weboldal",
+      websitePlaceholder: "https://az-on-oldala.hu",
+      websiteHint:
+        "Ez a weboldal nyilvánosan csak azoknak az MI-szakembereknek jelenik meg, akik bejelölik a fenti nyilatkozatot.",
+      proBadge: "MI Pro",
+    },
     directory: {
       empty: "Még nincs ellenőrzött aláíró.",
       loading: "Aláírók betöltése…",
@@ -475,6 +589,13 @@ export const translations = {
       siteTitle: "IA da ca instrument, nu ca oracol",
       languageLabel: "Limbă",
       liveCount: "semnatari verificați",
+      skipLink: "Mergi la conținut",
+    },
+    theme: {
+      dark: "Întunecat",
+      light: "Luminos",
+      switchToLight: "Comută la modul luminos",
+      switchToDark: "Comută la modul întunecat",
     },
     hero: {
       eyebrow: "Manifest civic pentru o IA condusă de oameni",
@@ -615,6 +736,37 @@ export const translations = {
       invalidTitle: "Link invalid sau expirat",
       invalidBody:
         "Poți solicita un nou email de validare folosind aceeași adresă.",
+    },
+    visitorState: {
+      pendingBadge: "Verificare în așteptare",
+      pendingTitle: "Semnătura ta nu este încă confirmată.",
+      pendingBody:
+        "Pentru a-ți confirma susținerea, deschide emailul tău și fă clic pe linkul de verificare trimis.",
+      pendingProof:
+        "Fără clic pe acel link, profilul tău nu poate fi confirmat. Verifică și dosarul de spam.",
+      verifiedBadge: "Susținere verificată",
+      verifiedTitle:
+        "Îți mulțumim mult că faci parte din această schimbare responsabilă.",
+      verifiedBody:
+        "Angajamentul tău este acum vizibil pe zidul public al semnatarilor. Contribui la restabilirea unor practici IA responsabile și suverane.",
+      verifiedPosition:
+        "Apari în prezent pe poziția nr. {{position}} în lista semnatarilor verificați.",
+      verifiedPositionUnknown:
+        "Semnătura ta este acum evidențiată în lista semnatarilor verificați.",
+      formLockedPending:
+        "Cererea ta așteaptă confirmarea. Verifică emailul și fă clic pe linkul de verificare.",
+      formLockedVerified:
+        "Semnătura ta este deja verificată. Îți mulțumim din nou pentru angajamentul tău public.",
+      cardHighlight: "Tu ești",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Declar că sunt profesionist în IA și mă angajez să transmit acest mesaj în timpul formărilor mele. În schimb, primesc dreptul de a-mi promova serviciile pe zidul semnatarilor.",
+      websiteLabel: "Site profesional",
+      websitePlaceholder: "https://siteul-tau.ro",
+      websiteHint:
+        "Acest site este afișat public doar profesioniștilor în IA care bifează declarația de mai sus.",
+      proBadge: "Pro IA",
     },
     directory: {
       empty: "Niciun semnatar verificat pentru moment.",

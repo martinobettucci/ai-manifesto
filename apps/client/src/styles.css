@@ -896,6 +896,97 @@ a {
 
 /* ===== CELEBRATION ===== */
 
+.pending-reminder-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--accent) 16%, transparent), transparent 48%),
+    rgba(6, 10, 18, 0.78);
+  backdrop-filter: blur(10px);
+}
+
+.pending-reminder-modal {
+  width: min(42rem, calc(100vw - 2rem));
+  padding: 2rem 2rem 1.85rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.1), transparent 54%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--accent) 18%, var(--bg-elevated)),
+      color-mix(in srgb, var(--bg-elevated) 92%, black)
+    );
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 90px color-mix(in srgb, var(--accent) 18%, transparent);
+  text-align: center;
+}
+
+.pending-reminder-modal:focus {
+  outline: 2px solid color-mix(in srgb, var(--accent-bright) 72%, white);
+  outline-offset: 4px;
+}
+
+.pending-reminder-badge {
+  margin: 0 0 0.7rem;
+  color: var(--accent-bright);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.pending-reminder-modal h2 {
+  margin: 0 0 0.85rem;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.02;
+  color: var(--text);
+}
+
+.pending-reminder-modal p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.pending-reminder-email {
+  display: grid;
+  gap: 0.2rem;
+  margin: 1.2rem 0 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--accent-soft) 66%, transparent);
+}
+
+.pending-reminder-email-label {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pending-reminder-email strong {
+  color: var(--text);
+  font-size: clamp(1.05rem, 2.8vw, 1.3rem);
+  overflow-wrap: anywhere;
+}
+
+.pending-reminder-proof {
+  margin-top: 0.95rem !important;
+  color: color-mix(in srgb, var(--accent-bright) 54%, var(--text));
+  font-weight: 600;
+}
+
 .celebration-overlay {
   position: fixed;
   inset: 0;
@@ -1552,6 +1643,11 @@ a {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .pending-reminder-modal {
+    padding: 1.6rem 1.2rem 1.4rem;
+    border-radius: 26px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1629,6 +1725,15 @@ a {
   .promise-block {
     padding: 1.15rem;
     border-radius: var(--radius-lg);
+  }
+
+  .pending-reminder-modal {
+    padding: 1.35rem 1rem 1.15rem;
+    border-radius: 24px;
+  }
+
+  .pending-reminder-modal p {
+    font-size: 0.98rem;
   }
 }
 

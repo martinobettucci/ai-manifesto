@@ -17,11 +17,6 @@ import {
   getLocalizedCelebration,
   getLocalizedManifestoContent,
 } from './manifestoLocales.js';
-import {
-  getVisitorStateCopy,
-  interpolateTemplate,
-} from './visitorStateLocales.js';
-import { getAiProfessionalCopy } from './aiProfessionalLocales.js';
 
 const THEME_STORAGE_KEY = 'manifesto-theme';
 const VISITOR_STATE_STORAGE_KEY = 'manifesto-visitor-state-v1';
@@ -40,25 +35,10 @@ function getPreferredTheme() {
   return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
 
-function getThemeCopy(locale, theme) {
-  const language = locale?.split('-')[0] ?? 'fr';
-  const isFrench = language === 'fr';
-
+function getThemeCopy(t, theme) {
   return {
-    currentLabel: isFrench
-      ? theme === 'dark'
-        ? 'Sombre'
-        : 'Clair'
-      : theme === 'dark'
-        ? 'Dark'
-        : 'Light',
-    actionLabel: isFrench
-      ? theme === 'dark'
-        ? 'Activer le mode clair'
-        : 'Activer le mode sombre'
-      : theme === 'dark'
-        ? 'Switch to light mode'
-        : 'Switch to dark mode',
+    currentLabel: theme === 'dark' ? t('theme.dark') : t('theme.light'),
+    actionLabel: theme === 'dark' ? t('theme.switchToLight') : t('theme.switchToDark'),
   };
 }
 
@@ -266,12 +246,11 @@ function App() {
   const [theme, setTheme] = useState(() => getPreferredTheme());
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrationKey, setCelebrationKey] = useState(0);
+  const pendingReminderModalRef = useRef(null);
 
   const locale = i18n.resolvedLanguage ?? 'fr';
   const language = getLanguageCode(locale);
-  const visitorCopy = getVisitorStateCopy(locale);
-  const aiProfessionalCopy = getAiProfessionalCopy(locale);
-  const themeCopy = getThemeCopy(locale, theme);
+  const themeCopy = getThemeCopy(t, theme);
   const promisePoints = t('promise.points', { returnObjects: true });
   const motiveItems = t('motives.items', { returnObjects: true });
   const charterItems = t('charter.items', { returnObjects: true });
@@ -302,6 +281,7 @@ function App() {
   const totalLocales = new Intl.NumberFormat(locale).format(SUPPORTED_LOCALES.length);
   const hasSubmitted =
     visitorSubmission.status === 'pending' || visitorSubmission.status === 'verified';
+  const showPendingReminderModal = visitorSubmission.status === 'pending';
   const previousAllManifestoCheckedRef = useRef(allManifestoChecked);
 
   const sectionLinks = [
@@ -367,6 +347,27 @@ function App() {
       window.clearTimeout(timeoutId);
     };
   }, [allManifestoChecked, hasSubmitted]);
+
+  useEffect(() => {
+    if (!showPendingReminderModal) {
+      return;
+    }
+
+    pendingReminderModalRef.current?.focus();
+  }, [showPendingReminderModal]);
+
+  useEffect(() => {
+    if (!showPendingReminderModal || typeof document === 'undefined') {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showPendingReminderModal]);
 
   useEffect(() => {
     setForm((current) => {
@@ -601,8 +602,35 @@ function App() {
     <div className="page-shell">
       <div className="page-grain" aria-hidden="true" />
 
+      {showPendingReminderModal && (
+        <div className="pending-reminder-overlay">
+          <section
+            ref={pendingReminderModalRef}
+            className="pending-reminder-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pending-reminder-title"
+            aria-describedby="pending-reminder-body pending-reminder-email pending-reminder-proof"
+            tabIndex={-1}
+          >
+            <p className="pending-reminder-badge">{t('visitorState.pendingBadge')}</p>
+            <h2 id="pending-reminder-title">{t('visitorState.pendingTitle')}</h2>
+            <p id="pending-reminder-body">{t('visitorState.pendingBody')}</p>
+            {form.email && (
+              <div className="pending-reminder-email" id="pending-reminder-email">
+                <span className="pending-reminder-email-label">{t('form.email')}</span>
+                <strong>{form.email}</strong>
+              </div>
+            )}
+            <p className="pending-reminder-proof" id="pending-reminder-proof">
+              {t('visitorState.pendingProof')}
+            </p>
+          </section>
+        </div>
+      )}
+
       <a href="#main-content" className="skip-link">
-        {t('meta.skipLink', { defaultValue: 'Skip to content' })}
+        {t('meta.skipLink')}
       </a>
 
       <header className="topbar">
@@ -667,17 +695,17 @@ function App() {
         {visitorSubmission.status === 'verified' && (
           <section className="welcome-strip" role="status" aria-live="polite">
             <div className="welcome-card success">
-              <p className="welcome-badge">{visitorCopy.verifiedBadge}</p>
-              <h2>{visitorCopy.verifiedTitle}</h2>
-              <p>{visitorCopy.verifiedBody}</p>
+              <p className="welcome-badge">{t('visitorState.verifiedBadge')}</p>
+              <h2>{t('visitorState.verifiedTitle')}</h2>
+              <p>{t('visitorState.verifiedBody')}</p>
               <p className="welcome-position">
                 {highlightedSignerPosition
-                  ? interpolateTemplate(visitorCopy.verifiedPosition, {
+                  ? t('visitorState.verifiedPosition', {
                       position: new Intl.NumberFormat(locale).format(
                         highlightedSignerPosition,
                       ),
                     })
-                  : visitorCopy.verifiedPositionUnknown}
+                  : t('visitorState.verifiedPositionUnknown')}
               </p>
             </div>
           </section>
@@ -686,10 +714,10 @@ function App() {
         {visitorSubmission.status === 'pending' && (
           <section className="welcome-strip" role="status" aria-live="polite">
             <div className="welcome-card pending">
-              <p className="welcome-badge">{visitorCopy.pendingBadge}</p>
-              <h2>{visitorCopy.pendingTitle}</h2>
-              <p>{visitorCopy.pendingBody}</p>
-              <p className="welcome-proof">{visitorCopy.pendingProof}</p>
+              <p className="welcome-badge">{t('visitorState.pendingBadge')}</p>
+              <h2>{t('visitorState.pendingTitle')}</h2>
+              <p>{t('visitorState.pendingBody')}</p>
+              <p className="welcome-proof">{t('visitorState.pendingProof')}</p>
             </div>
           </section>
         )}
@@ -944,24 +972,24 @@ function App() {
               <article className="signature-lock" role="status" aria-live="polite">
                 <p className="signature-lock-badge">
                   {visitorSubmission.status === 'verified'
-                    ? visitorCopy.verifiedBadge
-                    : visitorCopy.pendingBadge}
+                    ? t('visitorState.verifiedBadge')
+                    : t('visitorState.pendingBadge')}
                 </p>
                 <h3>
                   {visitorSubmission.status === 'verified'
-                    ? visitorCopy.formLockedVerified
-                    : visitorCopy.formLockedPending}
+                    ? t('visitorState.formLockedVerified')
+                    : t('visitorState.formLockedPending')}
                 </h3>
                 <p>
                   {visitorSubmission.status === 'verified'
                     ? highlightedSignerPosition
-                      ? interpolateTemplate(visitorCopy.verifiedPosition, {
+                      ? t('visitorState.verifiedPosition', {
                           position: new Intl.NumberFormat(locale).format(
                             highlightedSignerPosition,
                           ),
                         })
-                      : visitorCopy.verifiedPositionUnknown
-                    : visitorCopy.pendingProof}
+                      : t('visitorState.verifiedPositionUnknown')
+                    : t('visitorState.pendingProof')}
                 </p>
               </article>
             ) : (
@@ -1038,25 +1066,25 @@ function App() {
                       }));
                     }}
                   />
-                  <span>{aiProfessionalCopy.declarationLabel}</span>
+                  <span>{t('aiProfessional.declarationLabel')}</span>
                 </label>
 
                 {form.aiProfessionalAccepted && (
                   <label>
-                    <span>{aiProfessionalCopy.websiteLabel}</span>
+                    <span>{t('aiProfessional.websiteLabel')}</span>
                     <input
                       type="url"
                       inputMode="url"
                       autoComplete="url"
                       maxLength={240}
-                      placeholder={aiProfessionalCopy.websitePlaceholder}
+                      placeholder={t('aiProfessional.websitePlaceholder')}
                       value={form.professionalWebsite}
                       onChange={(event) =>
                         updateField('professionalWebsite', event.target.value)
                       }
                       required
                     />
-                    <small>{aiProfessionalCopy.websiteHint}</small>
+                    <small>{t('aiProfessional.websiteHint')}</small>
                   </label>
                 )}
 
@@ -1164,14 +1192,14 @@ function App() {
                       <div className="signer-chips">
                         {isAiProfessional && (
                           <span className="signer-chip signer-chip-pro">
-                            {aiProfessionalCopy.proBadge}
+                            {t('aiProfessional.proBadge')}
                           </span>
                         )}
                         <span className="signer-chip">{signer.department}</span>
                       </div>
                     </div>
                     {isCurrentSigner && (
-                      <p className="signer-self-tag">{visitorCopy.cardHighlight}</p>
+                      <p className="signer-self-tag">{t('visitorState.cardHighlight')}</p>
                     )}
                     {isAiProfessional && signer.professionalWebsite && (
                       <a

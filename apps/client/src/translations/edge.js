@@ -4,6 +4,13 @@ export const translations = {
       siteTitle: "ИИ да като инструмент, не като оракул",
       languageLabel: "Език",
       liveCount: "потвърдени подписали",
+      skipLink: "Към съдържанието",
+    },
+    theme: {
+      dark: "Тъмен",
+      light: "Светъл",
+      switchToLight: "Превключи към светъл режим",
+      switchToDark: "Превключи към тъмен режим",
     },
     hero: {
       eyebrow: "Граждански манифест за ИИ под човешки контрол",
@@ -145,6 +152,37 @@ export const translations = {
       invalidBody:
         "Можете да поискате нов имейл за потвърждение със същия адрес.",
     },
+    visitorState: {
+      pendingBadge: "Проверката е в изчакване",
+      pendingTitle: "Вашият подпис още не е потвърден.",
+      pendingBody:
+        "За да потвърдите подкрепата си, отворете пощата си и натиснете изпратения линк за потвърждение.",
+      pendingProof:
+        "Без натискане на този линк профилът ви не може да бъде потвърден. Проверете и папката за спам.",
+      verifiedBadge: "Потвърдена подкрепа",
+      verifiedTitle:
+        "Голяма благодарност, че сте част от тази отговорна промяна.",
+      verifiedBody:
+        "Вашият ангажимент вече е видим на публичната стена на подписалите. Помагате да се възстановят отговорни и суверенни практики за ИИ.",
+      verifiedPosition:
+        "В момента сте на позиция № {{position}} в списъка с потвърдени подписали.",
+      verifiedPositionUnknown:
+        "Подписът ви вече е откроен в списъка с потвърдени подписали.",
+      formLockedPending:
+        "Вашата заявка чака потвърждение. Проверете пощата си и натиснете линка за потвърждение.",
+      formLockedVerified:
+        "Вашият подпис вече е потвърден. Още веднъж благодарим за вашия публичен ангажимент.",
+      cardHighlight: "Това сте вие",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Декларирам, че съм професионалист в областта на ИИ, и се ангажирам да разпространявам това послание по време на моите обучения. В замяна получавам правото да популяризирам услугите си на стената на подписалите.",
+      websiteLabel: "Професионален сайт",
+      websitePlaceholder: "https://vashiat-sait.bg",
+      websiteHint:
+        "Този сайт се показва публично само на професионалисти в ИИ, които отбележат горната декларация.",
+      proBadge: "Про ИИ",
+    },
     directory: {
       empty: "Все още няма потвърдени подписали.",
       loading: "Зареждане на подписалите…",
@@ -161,6 +199,13 @@ export const translations = {
       siteTitle: "Η ΤΝ ναι ως εργαλείο, όχι ως μαντείο",
       languageLabel: "Γλώσσα",
       liveCount: "επιβεβαιωμένοι υπογράφοντες",
+      skipLink: "Μετάβαση στο περιεχόμενο",
+    },
+    theme: {
+      dark: "Σκοτεινό",
+      light: "Φωτεινό",
+      switchToLight: "Μετάβαση σε φωτεινή λειτουργία",
+      switchToDark: "Μετάβαση σε σκοτεινή λειτουργία",
     },
     hero: {
       eyebrow: "Πολιτικό μανιφέστο για ΤΝ υπό ανθρώπινο έλεγχο",
@@ -302,6 +347,37 @@ export const translations = {
       invalidBody:
         "Μπορείτε να ζητήσετε νέο email επιβεβαίωσης με την ίδια διεύθυνση.",
     },
+    visitorState: {
+      pendingBadge: "Η επαλήθευση εκκρεμεί",
+      pendingTitle: "Η υπογραφή σας δεν έχει ακόμη επιβεβαιωθεί.",
+      pendingBody:
+        "Για να επιβεβαιώσετε τη στήριξή σας, ανοίξτε το email σας και πατήστε τον σύνδεσμο επαλήθευσης που σας στάλθηκε.",
+      pendingProof:
+        "Χωρίς να πατήσετε αυτόν τον σύνδεσμο, το προφίλ σας δεν μπορεί να επιβεβαιωθεί. Ελέγξτε και τον φάκελο ανεπιθύμητης αλληλογραφίας.",
+      verifiedBadge: "Επιβεβαιωμένη στήριξη",
+      verifiedTitle:
+        "Μεγάλο ευχαριστώ που είστε μέρος αυτής της υπεύθυνης αλλαγής.",
+      verifiedBody:
+        "Η δέσμευσή σας είναι τώρα ορατή στον δημόσιο τοίχο των υπογραφόντων. Βοηθάτε στην αποκατάσταση υπεύθυνων και κυρίαρχων πρακτικών ΤΝ.",
+      verifiedPosition:
+        "Βρίσκεστε αυτή τη στιγμή στη θέση αρ. {{position}} στη λίστα των επιβεβαιωμένων υπογραφόντων.",
+      verifiedPositionUnknown:
+        "Η υπογραφή σας είναι τώρα επισημασμένη στη λίστα των επιβεβαιωμένων υπογραφόντων.",
+      formLockedPending:
+        "Το αίτημά σας αναμένει επιβεβαίωση. Ελέγξτε το email σας και πατήστε τον σύνδεσμο επαλήθευσης.",
+      formLockedVerified:
+        "Η υπογραφή σας έχει ήδη επιβεβαιωθεί. Σας ευχαριστούμε ξανά για τη δημόσια δέσμευσή σας.",
+      cardHighlight: "Είστε εσείς",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Δηλώνω ότι είμαι επαγγελματίας της ΤΝ και δεσμεύομαι να μεταδίδω αυτό το μήνυμα κατά τη διάρκεια των εκπαιδεύσεών μου. Σε αντάλλαγμα, λαμβάνω το δικαίωμα να προβάλλω τις υπηρεσίες μου στον τοίχο των υπογραφόντων.",
+      websiteLabel: "Επαγγελματικός ιστότοπος",
+      websitePlaceholder: "https://o-istotopos-sas.gr",
+      websiteHint:
+        "Αυτός ο ιστότοπος εμφανίζεται δημόσια μόνο για επαγγελματίες της ΤΝ που επιλέγουν τη δήλωση παραπάνω.",
+      proBadge: "Pro ΤΝ",
+    },
     directory: {
       empty: "Δεν υπάρχει ακόμη επιβεβαιωμένος υπογράφων.",
       loading: "Φόρτωση υπογραφόντων…",
@@ -318,6 +394,13 @@ export const translations = {
       siteTitle: "IS sea mar uirlis, ní mar oraicl",
       languageLabel: "Teanga",
       liveCount: "sínitheoirí fíoraithe",
+      skipLink: "Téigh chuig an ábhar",
+    },
+    theme: {
+      dark: "Dorcha",
+      light: "Geal",
+      switchToLight: "Athraigh go mód geal",
+      switchToDark: "Athraigh go mód dorcha",
     },
     hero: {
       eyebrow: "Forógra sibhialta do IS faoi stiúir an duine",
@@ -459,6 +542,37 @@ export const translations = {
       invalidBody:
         "Is féidir leat ríomhphost bailíochtaithe nua a iarraidh leis an seoladh céanna.",
     },
+    visitorState: {
+      pendingBadge: "Fíorú ar feitheamh",
+      pendingTitle: "Níl do shíniú deimhnithe fós.",
+      pendingBody:
+        "Chun do thacaíocht a dheimhniú, oscail do bhosca isteach agus cliceáil ar an nasc fíoraithe a seoladh chugat.",
+      pendingProof:
+        "Gan cliceáil ar an nasc sin, ní féidir do phróifíl a dheimhniú. Seiceáil d'fhillteán turscair freisin.",
+      verifiedBadge: "Tacaíocht fhíoraithe",
+      verifiedTitle:
+        "Míle buíochas as a bheith mar chuid den athrú freagrach seo.",
+      verifiedBody:
+        "Tá do thiomantas le feiceáil anois ar bhalla poiblí na sínitheoirí. Tá tú ag cabhrú le cleachtais IS fhreagracha agus cheannasacha a athbhunú.",
+      verifiedPosition:
+        "Tá tú faoi láthair i suíomh Uimh. {{position}} ar liosta na sínitheoirí fíoraithe.",
+      verifiedPositionUnknown:
+        "Tá do shíniú aibhsithe anois ar liosta na sínitheoirí fíoraithe.",
+      formLockedPending:
+        "Tá d'iarratas ag fanacht le deimhniú. Seiceáil do bhosca isteach agus cliceáil ar an nasc fíoraithe.",
+      formLockedVerified:
+        "Tá do shíniú fíoraithe cheana féin. Go raibh maith agat arís as do thiomantas poiblí.",
+      cardHighlight: "Is tusa é",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Dearbhaím gur gairmí IS mé agus geallaim an teachtaireacht seo a roinnt le linn mo chuid oiliúna. Mar chúiteamh, faighim an ceart mo sheirbhísí a chur chun cinn ar bhalla na sínitheoirí.",
+      websiteLabel: "Suíomh gréasáin gairmiúil",
+      websitePlaceholder: "https://do-shuiomh.ie",
+      websiteHint:
+        "Ní thaispeántar an suíomh seo go poiblí ach do ghairmithe IS a chuireann tic leis an dearbhú thuas.",
+      proBadge: "Gairmí IS",
+    },
     directory: {
       empty: "Níl aon sínitheoir fíoraithe ann fós.",
       loading: "Ag luchtú sínitheoirí…",
@@ -475,6 +589,13 @@ export const translations = {
       siteTitle: "AI iva bħala għodda, le bħala oraklu",
       languageLabel: "Lingwa",
       liveCount: "firmatarji verifikati",
+      skipLink: "Mur għall-kontenut",
+    },
+    theme: {
+      dark: "Skur",
+      light: "Ċar",
+      switchToLight: "Aqleb għall-modalità ċara",
+      switchToDark: "Aqleb għall-modalità skura",
     },
     hero: {
       eyebrow: "Manifest ċiviku għal AI taħt tmexxija umana",
@@ -615,6 +736,37 @@ export const translations = {
       invalidTitle: "Link invalidu jew skadut",
       invalidBody:
         "Tista' titlob email ġdida ta' validazzjoni bl-istess indirizz.",
+    },
+    visitorState: {
+      pendingBadge: "Verifika pendenti",
+      pendingTitle: "Il-firma tiegħek għadha ma ġietx ikkonfermata.",
+      pendingBody:
+        "Biex tikkonferma l-appoġġ tiegħek, iftaħ l-email tiegħek u kklikkja l-link ta' verifika mibgħut lilek.",
+      pendingProof:
+        "Mingħajr ma tikklikkja dik il-link, il-profil tiegħek ma jistax jiġi kkonfermat. Iċċekkja wkoll il-folder tal-ispam.",
+      verifiedBadge: "Appoġġ ivverifikat",
+      verifiedTitle:
+        "Grazzi ħafna talli int parti minn din il-bidla responsabbli.",
+      verifiedBody:
+        "L-impenn tiegħek issa jidher fuq il-ħajt pubbliku tal-firmatarji. Int qed tgħin biex terġa' tinbena prattika tal-AI responsabbli u sovrana.",
+      verifiedPosition:
+        "Bħalissa tidher fil-pożizzjoni nru {{position}} fil-lista tal-firmatarji verifikati.",
+      verifiedPositionUnknown:
+        "Il-firma tiegħek issa hija enfasizzata fil-lista tal-firmatarji verifikati.",
+      formLockedPending:
+        "It-talba tiegħek qed tistenna konferma. Iċċekkja l-email tiegħek u kklikkja l-link ta' verifika.",
+      formLockedVerified:
+        "Il-firma tiegħek diġà hija verifikata. Grazzi mill-ġdid għall-impenn pubbliku tiegħek.",
+      cardHighlight: "Int inti",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Niddikjara li jien professjonist tal-AI u nimpenja ruħi nxerred dan il-messaġġ waqt it-taħriġ tiegħi. Bi tpattija, nirċievi d-dritt li nippromwovi s-servizzi tiegħi fuq il-ħajt tal-firmatarji.",
+      websiteLabel: "Sit professjonali",
+      websitePlaceholder: "https://is-sit-tieghek.mt",
+      websiteHint:
+        "Dan is-sit jintwera pubblikament biss lil professjonisti tal-AI li jimmarkaw id-dikjarazzjoni ta' hawn fuq.",
+      proBadge: "Pro AI",
     },
     directory: {
       empty: "Għad m'hemm l-ebda firmatarju verifikat.",

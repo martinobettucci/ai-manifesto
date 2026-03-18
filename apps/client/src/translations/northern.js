@@ -4,6 +4,13 @@ export const translations = {
       siteTitle: "AI ja som verktyg, nej som orakel",
       languageLabel: "Språk",
       liveCount: "verifierade undertecknare",
+      skipLink: "Hoppa till innehållet",
+    },
+    theme: {
+      dark: "Mörk",
+      light: "Ljus",
+      switchToLight: "Byt till ljust läge",
+      switchToDark: "Byt till mörkt läge",
     },
     hero: {
       eyebrow: "Civilt manifest för människostyrd AI",
@@ -145,6 +152,37 @@ export const translations = {
       invalidBody:
         "Du kan begära ett nytt verifieringsmejl med samma adress.",
     },
+    visitorState: {
+      pendingBadge: "Verifiering väntar",
+      pendingTitle: "Din signatur är ännu inte bekräftad.",
+      pendingBody:
+        "För att bekräfta ditt stöd, öppna din inkorg och klicka på verifieringslänken som skickades till dig.",
+      pendingProof:
+        "Utan att klicka på den länken kan din profil inte bekräftas. Kontrollera också din skräppost.",
+      verifiedBadge: "Verifierat stöd",
+      verifiedTitle:
+        "Stort tack för att du är en del av denna ansvarsfulla förändring.",
+      verifiedBody:
+        "Ditt engagemang syns nu på den offentliga väggen för undertecknare. Du hjälper till att återställa ansvarsfulla och suveräna AI-praktiker.",
+      verifiedPosition:
+        "Du syns just nu på plats nr {{position}} i listan över verifierade undertecknare.",
+      verifiedPositionUnknown:
+        "Din signatur är nu markerad i listan över verifierade undertecknare.",
+      formLockedPending:
+        "Din begäran väntar på bekräftelse. Kontrollera din inkorg och klicka på verifieringslänken.",
+      formLockedVerified:
+        "Din signatur är redan verifierad. Tack igen för ditt offentliga engagemang.",
+      cardHighlight: "Det är du",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Jag intygar att jag är AI-professionell och förbinder mig att sprida detta budskap under mina utbildningar. I gengäld får jag rätt att marknadsföra mina tjänster på undertecknarnas vägg.",
+      websiteLabel: "Professionell webbplats",
+      websitePlaceholder: "https://din-sajt.se",
+      websiteHint:
+        "Den här webbplatsen visas offentligt endast för AI-professionella som markerar deklarationen ovan.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Inga verifierade undertecknare ännu.",
       loading: "Laddar undertecknare…",
@@ -161,6 +199,13 @@ export const translations = {
       siteTitle: "AI ja som værktøj, nej som orakel",
       languageLabel: "Sprog",
       liveCount: "verificerede underskrivere",
+      skipLink: "Spring til indhold",
+    },
+    theme: {
+      dark: "Mørk",
+      light: "Lys",
+      switchToLight: "Skift til lys tilstand",
+      switchToDark: "Skift til mørk tilstand",
     },
     hero: {
       eyebrow: "Civilt manifest for menneskestyret AI",
@@ -302,6 +347,37 @@ export const translations = {
       invalidBody:
         "Du kan anmode om en ny valideringsmail med den samme adresse.",
     },
+    visitorState: {
+      pendingBadge: "Verifikation afventer",
+      pendingTitle: "Din underskrift er endnu ikke bekræftet.",
+      pendingBody:
+        "For at bekræfte din tilslutning skal du åbne din indbakke og klikke på det sendte verifikationslink.",
+      pendingProof:
+        "Uden at klikke på det link kan din profil ikke bekræftes. Tjek også din spammappe.",
+      verifiedBadge: "Verificeret støtte",
+      verifiedTitle:
+        "Mange tak, fordi du er en del af denne ansvarlige forandring.",
+      verifiedBody:
+        "Dit engagement er nu synligt på den offentlige væg af underskrivere. Du hjælper med at genoprette ansvarlige og suveræne AI-praksisser.",
+      verifiedPosition:
+        "Du står i øjeblikket på plads nr. {{position}} på listen over verificerede underskrivere.",
+      verifiedPositionUnknown:
+        "Din underskrift er nu fremhævet på listen over verificerede underskrivere.",
+      formLockedPending:
+        "Din anmodning afventer bekræftelse. Tjek din indbakke og klik på verifikationslinket.",
+      formLockedVerified:
+        "Din underskrift er allerede verificeret. Tak igen for dit offentlige engagement.",
+      cardHighlight: "Det er dig",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Jeg erklærer, at jeg er AI-professionel, og jeg forpligter mig til at dele dette budskab under mine kurser. Til gengæld får jeg ret til at promovere mine tjenester på underskrivernes væg.",
+      websiteLabel: "Professionel hjemmeside",
+      websitePlaceholder: "https://din-side.dk",
+      websiteHint:
+        "Dette websted vises kun offentligt for AI-professionelle, der markerer erklæringen ovenfor.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Ingen verificerede underskrivere endnu.",
       loading: "Indlæser underskrivere…",
@@ -318,6 +394,13 @@ export const translations = {
       siteTitle: "Tekoäly kyllä työkaluna, ei oraakkelina",
       languageLabel: "Kieli",
       liveCount: "vahvistetut allekirjoittajat",
+      skipLink: "Siirry sisältöön",
+    },
+    theme: {
+      dark: "Tumma",
+      light: "Vaalea",
+      switchToLight: "Vaihda vaaleaan tilaan",
+      switchToDark: "Vaihda tummaan tilaan",
     },
     hero: {
       eyebrow: "Kansalaismanifesti ihmisen ohjaamalle tekoälylle",
@@ -459,6 +542,37 @@ export const translations = {
       invalidBody:
         "Voit pyytää uuden vahvistussähköpostin samalla osoitteella.",
     },
+    visitorState: {
+      pendingBadge: "Vahvistus odottaa",
+      pendingTitle: "Allekirjoitustasi ei ole vielä vahvistettu.",
+      pendingBody:
+        "Vahvista tukesi avaamalla sähköpostisi ja napsauttamalla sinulle lähetettyä vahvistuslinkkiä.",
+      pendingProof:
+        "Ilman tämän linkin klikkaamista profiiliasi ei voida vahvistaa. Tarkista myös roskapostikansiosi.",
+      verifiedBadge: "Vahvistettu tuki",
+      verifiedTitle:
+        "Suuri kiitos, että olet mukana tässä vastuullisessa muutoksessa.",
+      verifiedBody:
+        "Sitoutumisesi näkyy nyt allekirjoittajien julkisella seinällä. Autat palauttamaan vastuulliset ja suvereenit tekoälykäytännöt.",
+      verifiedPosition:
+        "Näyt tällä hetkellä sijalla nro {{position}} vahvistettujen allekirjoittajien listalla.",
+      verifiedPositionUnknown:
+        "Allekirjoituksesi on nyt korostettu vahvistettujen allekirjoittajien listalla.",
+      formLockedPending:
+        "Pyyntösi odottaa vahvistusta. Tarkista sähköpostisi ja napsauta vahvistuslinkkiä.",
+      formLockedVerified:
+        "Allekirjoituksesi on jo vahvistettu. Kiitos vielä julkisesta sitoutumisestasi.",
+      cardHighlight: "Se olet sinä",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Vakuutan olevani tekoälyalan ammattilainen ja sitoudun levittämään tätä viestiä koulutuksissani. Vastineeksi saan oikeuden esitellä palvelujani allekirjoittajien seinällä.",
+      websiteLabel: "Ammatillinen verkkosivusto",
+      websitePlaceholder: "https://sivustosi.fi",
+      websiteHint:
+        "Tämä sivusto näytetään julkisesti vain niille tekoälyalan ammattilaisille, jotka rastittavat yllä olevan vakuutuksen.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Ei vielä vahvistettuja allekirjoittajia.",
       loading: "Ladataan allekirjoittajia…",
@@ -475,6 +589,13 @@ export const translations = {
       siteTitle: "Tehisaru jah tööriistana, mitte oraaklina",
       languageLabel: "Keel",
       liveCount: "kinnitatud allakirjutajad",
+      skipLink: "Liigu sisu juurde",
+    },
+    theme: {
+      dark: "Tume",
+      light: "Hele",
+      switchToLight: "Lülitu heledale režiimile",
+      switchToDark: "Lülitu tumedale režiimile",
     },
     hero: {
       eyebrow: "Kodanikumanifest inimjuhitud tehisaru jaoks",
@@ -616,6 +737,37 @@ export const translations = {
       invalidBody:
         "Saad taotleda uue kinnituskirja sama aadressiga.",
     },
+    visitorState: {
+      pendingBadge: "Kinnitamine ootel",
+      pendingTitle: "Sinu allkiri ei ole veel kinnitatud.",
+      pendingBody:
+        "Toetuse kinnitamiseks ava oma e-post ja klõpsa saadetud kinnitamislingil.",
+      pendingProof:
+        "Ilma sellel lingil klõpsamata ei saa sinu profiili kinnitada. Kontrolli ka rämpsposti kausta.",
+      verifiedBadge: "Kinnitatud toetus",
+      verifiedTitle:
+        "Suur aitäh, et oled osa sellest vastutustundlikust muutusest.",
+      verifiedBody:
+        "Sinu pühendumus on nüüd nähtav allakirjutanute avalikus seinas. Aitad taastada vastutustundlikud ja suveräänsed tehisaru tavad.",
+      verifiedPosition:
+        "Oled praegu kinnitatud allakirjutanute nimekirjas kohal nr {{position}}.",
+      verifiedPositionUnknown:
+        "Sinu allkiri on nüüd kinnitatud allakirjutanute nimekirjas esile tõstetud.",
+      formLockedPending:
+        "Sinu taotlus ootab kinnitamist. Kontrolli oma e-posti ja klõpsa kinnitamislingil.",
+      formLockedVerified:
+        "Sinu allkiri on juba kinnitatud. Aitäh veel kord sinu avaliku pühendumuse eest.",
+      cardHighlight: "See oled sina",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Kinnitan, et olen tehisaru valdkonna spetsialist, ja kohustun seda sõnumit oma koolitustel edasi andma. Vastutasuks saan õiguse tutvustada oma teenuseid allakirjutanute seinal.",
+      websiteLabel: "Professionaalne veebisait",
+      websitePlaceholder: "https://sinu-sait.ee",
+      websiteHint:
+        "Seda veebisaiti näidatakse avalikult ainult neile tehisaru spetsialistidele, kes märgivad ülaltoodud kinnituse.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Veel pole ühtegi kinnitatud allakirjutajat.",
       loading: "Allakirjutajate laadimine…",
@@ -632,6 +784,13 @@ export const translations = {
       siteTitle: "MI jā kā rīks, nevis kā orākuls",
       languageLabel: "Valoda",
       liveCount: "apstiprinātie parakstītāji",
+      skipLink: "Pāriet uz saturu",
+    },
+    theme: {
+      dark: "Tumšs",
+      light: "Gaišs",
+      switchToLight: "Pārslēgt uz gaišo režīmu",
+      switchToDark: "Pārslēgt uz tumšo režīmu",
     },
     hero: {
       eyebrow: "Pilsonisks manifests cilvēku vadītam MI",
@@ -773,6 +932,37 @@ export const translations = {
       invalidBody:
         "Varat pieprasīt jaunu verifikācijas e-pastu ar to pašu adresi.",
     },
+    visitorState: {
+      pendingBadge: "Verifikācija gaida",
+      pendingTitle: "Tavs paraksts vēl nav apstiprināts.",
+      pendingBody:
+        "Lai apstiprinātu savu atbalstu, atver savu e-pastu un noklikšķini uz nosūtītās verifikācijas saites.",
+      pendingProof:
+        "Bez klikšķa uz šīs saites tavu profilu nevar apstiprināt. Pārbaudi arī savu surogātpasta mapi.",
+      verifiedBadge: "Apstiprināts atbalsts",
+      verifiedTitle:
+        "Liels paldies, ka esi daļa no šīm atbildīgajām pārmaiņām.",
+      verifiedBody:
+        "Tava apņemšanās tagad ir redzama publiskajā parakstītāju sienā. Tu palīdz atjaunot atbildīgu un suverēnu MI lietojumu.",
+      verifiedPosition:
+        "Pašlaik tu esi Nr. {{position}} apstiprināto parakstītāju sarakstā.",
+      verifiedPositionUnknown:
+        "Tavs paraksts tagad ir izcelts apstiprināto parakstītāju sarakstā.",
+      formLockedPending:
+        "Tavs pieprasījums gaida apstiprinājumu. Pārbaudi savu e-pastu un noklikšķini uz verifikācijas saites.",
+      formLockedVerified:
+        "Tavs paraksts jau ir apstiprināts. Vēlreiz paldies par tavu publisko apņemšanos.",
+      cardHighlight: "Tas esi tu",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Es apliecinu, ka esmu MI profesionālis, un apņemos izplatīt šo vēstījumu savās apmācībās. Pretī saņemu tiesības reklamēt savus pakalpojumus parakstītāju sienā.",
+      websiteLabel: "Profesionālā vietne",
+      websitePlaceholder: "https://tava-vietne.lv",
+      websiteHint:
+        "Šī vietne publiski tiek rādīta tikai tiem MI profesionāļiem, kuri atzīmē iepriekš minēto apliecinājumu.",
+      proBadge: "AI Pro",
+    },
     directory: {
       empty: "Pagaidām nav neviena apstiprināta parakstītāja.",
       loading: "Ielādē parakstītājus…",
@@ -789,6 +979,13 @@ export const translations = {
       siteTitle: "DI taip kaip įrankis, ne kaip orakulas",
       languageLabel: "Kalba",
       liveCount: "patvirtinti pasirašiusieji",
+      skipLink: "Pereiti prie turinio",
+    },
+    theme: {
+      dark: "Tamsus",
+      light: "Šviesus",
+      switchToLight: "Perjungti į šviesų režimą",
+      switchToDark: "Perjungti į tamsų režimą",
     },
     hero: {
       eyebrow: "Pilietinis manifestas žmogaus valdomam DI",
@@ -929,6 +1126,37 @@ export const translations = {
       invalidTitle: "Neteisinga arba nebegaliojanti nuoroda",
       invalidBody:
         "Galite paprašyti naujo patvirtinimo laiško tuo pačiu adresu.",
+    },
+    visitorState: {
+      pendingBadge: "Patvirtinimas laukia",
+      pendingTitle: "Tavo parašas dar nepatvirtintas.",
+      pendingBody:
+        "Kad patvirtintum savo palaikymą, atidaryk savo el. paštą ir spustelėk atsiųstą patvirtinimo nuorodą.",
+      pendingProof:
+        "Nepaspaudus šios nuorodos tavo profilis negali būti patvirtintas. Taip pat patikrink brukalo aplanką.",
+      verifiedBadge: "Patvirtintas palaikymas",
+      verifiedTitle:
+        "Nuoširdus ačiū, kad esi šio atsakingo pokyčio dalis.",
+      verifiedBody:
+        "Tavo įsipareigojimas dabar matomas viešoje pasirašiusiųjų sienoje. Tu padedi atkurti atsakingą ir suverenią DI praktiką.",
+      verifiedPosition:
+        "Šiuo metu esi Nr. {{position}} patvirtintų pasirašiusiųjų sąraše.",
+      verifiedPositionUnknown:
+        "Tavo parašas dabar paryškintas patvirtintų pasirašiusiųjų sąraše.",
+      formLockedPending:
+        "Tavo prašymas laukia patvirtinimo. Patikrink el. paštą ir spustelėk patvirtinimo nuorodą.",
+      formLockedVerified:
+        "Tavo parašas jau patvirtintas. Dar kartą ačiū už tavo viešą įsipareigojimą.",
+      cardHighlight: "Tai tu",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Pareikiu, kad esu DI profesionalas, ir įsipareigoju skleisti šią žinią savo mokymuose. Mainais gaunu teisę reklamuoti savo paslaugas pasirašiusiųjų sienoje.",
+      websiteLabel: "Profesinė svetainė",
+      websitePlaceholder: "https://tavo-svetaine.lt",
+      websiteHint:
+        "Ši svetainė viešai rodoma tik tiems DI profesionalams, kurie pažymi aukščiau esantį pareiškimą.",
+      proBadge: "AI Pro",
     },
     directory: {
       empty: "Kol kas nėra patvirtintų pasirašiusiųjų.",

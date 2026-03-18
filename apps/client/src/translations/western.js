@@ -4,6 +4,13 @@ export const translations = {
       siteTitle: "IA oui comme outil, non comme oracle",
       languageLabel: "Langue",
       liveCount: "signataires vérifiés",
+      skipLink: "Aller au contenu",
+    },
+    theme: {
+      dark: "Sombre",
+      light: "Clair",
+      switchToLight: "Activer le mode clair",
+      switchToDark: "Activer le mode sombre",
     },
     hero: {
       eyebrow: "Manifeste civique pour une IA sous contrôle humain",
@@ -337,6 +344,36 @@ export const translations = {
       invalidBody:
         "Vous pouvez redemander un email de validation avec la même adresse.",
     },
+    visitorState: {
+      pendingBadge: "Vérification en attente",
+      pendingTitle: "Votre signature n'est pas encore confirmée.",
+      pendingBody:
+        "Pour valider votre adhésion, ouvrez votre boîte mail et cliquez sur le lien de vérification envoyé.",
+      pendingProof:
+        "Sans clic sur ce lien, votre profil ne peut pas être confirmé. Pensez aussi à vérifier vos indésirables.",
+      verifiedBadge: "Soutien vérifié",
+      verifiedTitle: "Un grand merci pour faire partie de ce changement responsable.",
+      verifiedBody:
+        "Votre engagement est maintenant visible dans le mur public des signataires. Vous contribuez à restaurer un usage responsable et souverain des IA.",
+      verifiedPosition:
+        "Vous apparaissez actuellement en position n°{{position}} dans la liste des signataires vérifiés.",
+      verifiedPositionUnknown:
+        "Votre signature est maintenant mise en évidence dans la liste des signataires vérifiés.",
+      formLockedPending:
+        "Votre demande est en attente de confirmation. Vérifiez votre boîte mail et cliquez sur le lien de vérification.",
+      formLockedVerified:
+        "Votre signature est déjà vérifiée. Merci encore pour votre engagement public.",
+      cardHighlight: "C'est vous",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "Je déclare être un professionnel de l'IA et je m'engage à diffuser ce message lors de mes formations. En échange, je reçois le droit de promouvoir mes services dans le mur des signataires.",
+      websiteLabel: "Site web professionnel",
+      websitePlaceholder: "https://votre-site.fr",
+      websiteHint:
+        "Ce site est affiché publiquement uniquement pour les professionnels de l'IA ayant coché la déclaration ci-dessus.",
+      proBadge: "Pro IA",
+    },
     directory: {
       empty: "Aucun signataire vérifié pour le moment.",
       loading: "Chargement des signataires…",
@@ -359,6 +396,13 @@ export const translations = {
       siteTitle: "AI yes as a tool, no as an oracle",
       languageLabel: "Language",
       liveCount: "verified signers",
+      skipLink: "Skip to content",
+    },
+    theme: {
+      dark: "Dark",
+      light: "Light",
+      switchToLight: "Switch to light mode",
+      switchToDark: "Switch to dark mode",
     },
     hero: {
       eyebrow: "Civic manifesto for human-led AI",
@@ -499,6 +543,36 @@ export const translations = {
       invalidTitle: "Invalid or expired link",
       invalidBody:
         "You can request a new verification email with the same address.",
+    },
+    visitorState: {
+      pendingBadge: "Verification pending",
+      pendingTitle: "Your signature is not confirmed yet.",
+      pendingBody:
+        "To confirm your support, open your inbox and click the verification link that was sent to you.",
+      pendingProof:
+        "Without clicking that link, your profile cannot be confirmed. Please also check your spam folder.",
+      verifiedBadge: "Verified support",
+      verifiedTitle: "Big thank you for being part of this responsible change.",
+      verifiedBody:
+        "Your engagement is now visible in the public signers wall. You are helping restore responsible and sovereign AI practices.",
+      verifiedPosition:
+        "You currently appear at position #{{position}} in the verified signers list.",
+      verifiedPositionUnknown:
+        "Your signature is now highlighted in the verified signers list.",
+      formLockedPending:
+        "Your request is awaiting confirmation. Check your inbox and click the verification link.",
+      formLockedVerified:
+        "Your signature is already verified. Thank you again for your public commitment.",
+      cardHighlight: "It is you",
+    },
+    aiProfessional: {
+      declarationLabel:
+        "I declare that I am an AI professional and I commit to sharing this message during my trainings. In return, I receive the right to promote my services in the signers wall.",
+      websiteLabel: "Professional website",
+      websitePlaceholder: "https://your-site.com",
+      websiteHint:
+        "This website is shown publicly only for AI professionals who check the declaration above.",
+      proBadge: "AI Pro",
     },
     directory: {
       empty: "No verified signer yet.",
