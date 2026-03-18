@@ -53,9 +53,8 @@ Pour arrêter la stack prod:
 
 Variables attendues pour la prod:
 
-- `SMTP_USER`: requis, sauf si dérivé via `SCW_SCW_DEFAULT_PROJECT_ID` ou `SCW_DEFAULT_PROJECT_ID`
+- `SMTP_USER`: requis, sauf si dérivé via `SCW_DEFAULT_PROJECT_ID`
 - `SMTP_PASS`: requis, sauf si dérivé via `SCW_SECRET_KEY`
-- `SCW_SCW_DEFAULT_PROJECT_ID`: optionnel, utilisé comme fallback pour `SMTP_USER`
 - `SCW_DEFAULT_PROJECT_ID`: optionnel, fallback pour `SMTP_USER` (`SCW_<PROJECT_ID>`)
 - `SCW_SECRET_KEY`: optionnel, fallback pour `SMTP_PASS`
 - `SMTP_PORT`: optionnel, défaut `465`

@@ -13,10 +13,6 @@ if [[ -f .env ]]; then
 fi
 
 # Scaleway TEM username can be provided directly or derived from project id.
-if [[ -z "${SMTP_USER:-}" && -n "${SCW_SCW_DEFAULT_PROJECT_ID:-}" ]]; then
-  export SMTP_USER="${SCW_SCW_DEFAULT_PROJECT_ID}"
-fi
-
 if [[ -z "${SMTP_USER:-}" && -n "${SCW_DEFAULT_PROJECT_ID:-}" ]]; then
   export SMTP_USER="SCW_${SCW_DEFAULT_PROJECT_ID}"
 fi
