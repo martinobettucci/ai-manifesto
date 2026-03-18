@@ -12,11 +12,12 @@ const supportedLocaleSet = new Set(SUPPORTED_LOCALES);
 const REQUIRED_MANIFESTO_CHECKS = 9;
 
 function writeLog(level, message, meta = {}) {
+  const safeMeta = redactSensitiveMeta(meta);
   const entry = JSON.stringify({
     timestamp: new Date().toISOString(),
     level,
     message,
-    ...meta,
+    ...safeMeta,
   });
 
   if (level === 'error') {
@@ -68,7 +69,7 @@ app.use((request, response, next) => {
     logInfo('HTTP request completed', {
       requestId,
       method: request.method,
-      path: request.originalUrl,
+      path: sanitizePathForLog(request.originalUrl),
       status: response.statusCode,
       durationMs,
       ip: clientIp,
@@ -105,23 +106,73 @@ function truncateForLog(value, maxLength = 220) {
   return `${value.slice(0, maxLength)}...`;
 }
 
-function maskEmail(value) {
-  const normalized = sanitizeText(value).toLowerCase();
-
-  if (!normalized.includes('@')) {
-    return '';
+function sanitizePathForLog(value) {
+  if (typeof value !== 'string' || value.length === 0) {
+    return '/';
   }
 
-  const [localPart, domainPart] = normalized.split('@');
+  try {
+    const url = new URL(value, 'http://localhost');
+    const sensitiveKeys = [];
 
-  if (!domainPart) {
-    return '';
+    for (const key of url.searchParams.keys()) {
+      const normalized = key.trim().toLowerCase();
+
+      if (normalized.includes('token') || normalized.includes('verify')) {
+        sensitiveKeys.push(key);
+      }
+    }
+
+    for (const key of sensitiveKeys) {
+      url.searchParams.delete(key);
+    }
+
+    const safeQuery = url.searchParams.toString();
+    return safeQuery ? `${url.pathname}?${safeQuery}` : url.pathname;
+  } catch {
+    return value
+      .replace(/([?&])(token|verify)[^=]*=[^&]*/gi, '$1$2=[REDACTED]')
+      .replace(/[?&]$/, '');
+  }
+}
+
+function redactSensitiveText(value) {
+  if (typeof value !== 'string' || value.length === 0) {
+    return value;
   }
 
-  const visibleLocal = localPart.slice(0, 2);
-  const localMask = localPart.length > 2 ? '***' : '*';
+  return value
+    .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '[REDACTED_EMAIL]')
+    .replace(/([?&])(token|verify)[^=]*=[^&]*/gi, '$1$2=[REDACTED]');
+}
 
-  return `${visibleLocal}${localMask}@${domainPart}`;
+function redactSensitiveMeta(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => redactSensitiveMeta(item));
+  }
+
+  if (value && typeof value === 'object') {
+    const next = {};
+
+    for (const [key, item] of Object.entries(value)) {
+      const normalized = key.trim().toLowerCase();
+
+      if (normalized.includes('email') || normalized === 'fullname' || normalized === 'full_name') {
+        next[key] = '[REDACTED]';
+        continue;
+      }
+
+      next[key] = redactSensitiveMeta(item);
+    }
+
+    return next;
+  }
+
+  if (typeof value === 'string') {
+    return redactSensitiveText(value);
+  }
+
+  return value;
 }
 
 function buildErrorMeta(error) {
@@ -297,7 +348,6 @@ app.post('/api/signers/register', async (request, response, next) => {
   try {
     logInfo('Registration request received', {
       requestId: request.requestId ?? '-',
-      email: maskEmail(request.body?.email),
       locale: sanitizeText(request.body?.locale).toLowerCase() || 'fr',
     });
 
@@ -310,7 +360,6 @@ app.post('/api/signers/register', async (request, response, next) => {
 
     logInfo('Pending signer stored', {
       requestId: request.requestId ?? '-',
-      email: maskEmail(payload.email),
       publicDisplayName: signer.publicDisplayName,
     });
 
@@ -324,14 +373,12 @@ app.post('/api/signers/register', async (request, response, next) => {
 
       logInfo('Verification email sent', {
         requestId: request.requestId ?? '-',
-        email: maskEmail(payload.email),
         messageId: truncateForLog(delivery?.messageId, 180),
         smtpResponse: truncateForLog(delivery?.response, 220),
       });
     } catch (error) {
       logError('Verification email delivery failed', {
         requestId: request.requestId ?? '-',
-        email: maskEmail(payload.email),
         ...buildErrorMeta(error),
       });
 
@@ -431,7 +478,7 @@ app.use((error, request, response, next) => {
     logWarn('Request rejected', {
       requestId,
       method: request.method,
-      path: request.originalUrl,
+      path: sanitizePathForLog(request.originalUrl),
       status,
       ...buildErrorMeta(error),
     });
@@ -439,7 +486,7 @@ app.use((error, request, response, next) => {
     logError('Request failed', {
       requestId,
       method: request.method,
-      path: request.originalUrl,
+      path: sanitizePathForLog(request.originalUrl),
       status,
       ...buildErrorMeta(error),
     });
