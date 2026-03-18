@@ -28,8 +28,25 @@ services:
       context: .
       dockerfile: apps/client/Dockerfile
       target: production
-    ports:
-      - "80:80"
     depends_on:
       - server
     restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - server
+      - client
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

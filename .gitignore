@@ -33,3 +33,7 @@ out/
 
 # OS
 Thumbs.db
+# Runtime SQLite files
+data/*.sqlite
+data/*.sqlite-*
+!data/.gitkeep
