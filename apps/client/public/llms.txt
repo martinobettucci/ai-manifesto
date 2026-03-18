@@ -1,0 +1,33 @@
+# Manifeste IA
+
+> Manifeste civique pour un usage responsable de l'intelligence artificielle: l'IA doit rester un outil au service des humains, jamais une autorite.
+
+Ce site publie un manifeste, un formulaire de signature, un annuaire des signataires verifies, et une API pour l'etat de signature et la verification.
+
+## Publication
+
+- Author: Martino Bettucci (mailto:martino.bettucci@gmail.com)
+- Publishing company: P2Enjoy Studio (https://p2enjoy.studio/)
+- Main site publisher URL: https://manifesto-ia.org/
+
+## Website
+
+- [Homepage](https://manifesto-ia.org/): Page principale du manifeste, formulaire de signature et annuaire public.
+- [Robots](https://manifesto-ia.org/robots.txt): Regles d'acces automatees.
+- [Sitemap](https://manifesto-ia.org/sitemap.xml): Liste des URLs publiques indexables.
+
+## API
+
+- [Health](https://manifesto-ia.org/api/health): Etat API et URL de politique de confidentialite.
+- [Directory](https://manifesto-ia.org/api/signers): Liste publique des signataires verifies et compteur total.
+- [Signer status](https://manifesto-ia.org/api/signers/status): Etat d'un signataire via parametre `token`.
+- [Verify signer](https://manifesto-ia.org/api/signers/verify): Verification definitive d'une signature via parametre `token`.
+
+## Policies
+
+- [Privacy policy](https://p2enjoy.studio/privacy/politique-confidentialite): Politique de confidentialite referencee par l'application.
+
+## Optional
+
+- [Source repository](https://github.com/martinobettucci/ai-manifesto): Code source du projet (frontend, backend, infrastructure).
+- [Project README](https://github.com/martinobettucci/ai-manifesto/blob/main/README.md): Stack technique, scripts et deploiement.
