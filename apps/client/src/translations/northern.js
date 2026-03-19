@@ -64,6 +64,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Reflektionerna bakom detta manifest",
+    },
     charter: {
       items: [
         {
@@ -122,6 +125,10 @@ export const translations = {
       profession: "Yrke",
       department: "Departementsnummer",
       departmentHint: "2 eller 3 siffror. Exempel: 49",
+      country: "Land",
+      countryHint: "Skriv för att filtrera och välj ditt land.",
+      countrySearchPlaceholder: "Sök ett land",
+      countrySelectPlaceholder: "Välj ett land",
       submit: "Skicka signaturförfrågan",
       resend: "Skicka verifieringsmejlet igen",
       privacyLabel:
@@ -259,6 +266,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Refleksionerne bag dette manifest",
+    },
     charter: {
       items: [
         {
@@ -317,6 +327,10 @@ export const translations = {
       profession: "Profession",
       department: "Departementsnummer",
       departmentHint: "2 eller 3 cifre. Eksempel: 49",
+      country: "Land",
+      countryHint: "Skriv for at filtrere, og vælg dit land.",
+      countrySearchPlaceholder: "Søg et land",
+      countrySelectPlaceholder: "Vælg et land",
       submit: "Send anmodning om underskrift",
       resend: "Send valideringsmail igen",
       privacyLabel:
@@ -454,6 +468,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Tämän manifestin taustalla olevat pohdinnat",
+    },
     charter: {
       items: [
         {
@@ -512,6 +529,10 @@ export const translations = {
       profession: "Ammatti",
       department: "Departementtinumero",
       departmentHint: "2 tai 3 numeroa. Esimerkki: 49",
+      country: "Maa",
+      countryHint: "Kirjoita suodattaaksesi ja valitse maasi.",
+      countrySearchPlaceholder: "Hae maa",
+      countrySelectPlaceholder: "Valitse maa",
       submit: "Lähetä allekirjoituspyyntö",
       resend: "Lähetä vahvistussähköposti uudelleen",
       privacyLabel:
@@ -649,6 +670,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Mõtted selle manifesti taga",
+    },
     charter: {
       items: [
         {
@@ -707,6 +731,10 @@ export const translations = {
       profession: "Amet",
       department: "Departemangu number",
       departmentHint: "2 või 3 numbrit. Näide: 49",
+      country: "Riik",
+      countryHint: "Sisesta otsing, seejärel vali oma riik.",
+      countrySearchPlaceholder: "Otsi riiki",
+      countrySelectPlaceholder: "Vali riik",
       submit: "Saada allkirjataotlus",
       resend: "Saada kinnituskiri uuesti",
       privacyLabel:
@@ -844,6 +872,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Pārdomas aiz šī manifesta",
+    },
     charter: {
       items: [
         {
@@ -902,6 +933,10 @@ export const translations = {
       profession: "Profesija",
       department: "Departamenta numurs",
       departmentHint: "2 vai 3 cipari. Piemērs: 49",
+      country: "Valsts",
+      countryHint: "Raksti, lai filtrētu, un izvēlies savu valsti.",
+      countrySearchPlaceholder: "Meklēt valsti",
+      countrySelectPlaceholder: "Izvēlies valsti",
       submit: "Nosūtīt paraksta pieprasījumu",
       resend: "Nosūtīt verifikācijas e-pastu vēlreiz",
       privacyLabel:
@@ -1039,6 +1074,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Apmąstymai už šio manifesto",
+    },
     charter: {
       items: [
         {
@@ -1097,6 +1135,10 @@ export const translations = {
       profession: "Profesija",
       department: "Departamento numeris",
       departmentHint: "2 arba 3 skaitmenys. Pavyzdys: 49",
+      country: "Šalis",
+      countryHint: "Įveskite, kad filtruotumėte, ir pasirinkite savo šalį.",
+      countrySearchPlaceholder: "Ieškoti šalies",
+      countrySelectPlaceholder: "Pasirinkite šalį",
       submit: "Siųsti parašo prašymą",
       resend: "Siųsti patvirtinimo laišką dar kartą",
       privacyLabel:

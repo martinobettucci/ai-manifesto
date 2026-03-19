@@ -64,6 +64,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Размислите зад този манифест",
+    },
     charter: {
       items: [
         {
@@ -122,6 +125,10 @@ export const translations = {
       profession: "Професия",
       department: "Номер на департамент",
       departmentHint: "2 или 3 цифри. Пример: 49",
+      country: "Държава",
+      countryHint: "Въведете текст за филтриране, после изберете държава.",
+      countrySearchPlaceholder: "Търсене на държава",
+      countrySelectPlaceholder: "Изберете държава",
       submit: "Изпрати заявка за подпис",
       resend: "Изпрати отново имейла за потвърждение",
       privacyLabel:
@@ -259,6 +266,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Οι σκέψεις πίσω από αυτό το μανιφέστο",
+    },
     charter: {
       items: [
         {
@@ -317,6 +327,10 @@ export const translations = {
       profession: "Επάγγελμα",
       department: "Αριθμός διαμερίσματος",
       departmentHint: "2 ή 3 ψηφία. Παράδειγμα: 49",
+      country: "Χώρα",
+      countryHint: "Πληκτρολογήστε για φιλτράρισμα και επιλέξτε τη χώρα σας.",
+      countrySearchPlaceholder: "Αναζήτηση χώρας",
+      countrySelectPlaceholder: "Επιλέξτε χώρα",
       submit: "Αποστολή αιτήματος υπογραφής",
       resend: "Επανάληψη αποστολής email επιβεβαίωσης",
       privacyLabel:
@@ -454,6 +468,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Na machnaimh taobh thiar den mhainifist seo",
+    },
     charter: {
       items: [
         {
@@ -512,6 +529,10 @@ export const translations = {
       profession: "Gairm",
       department: "Uimhir roinne",
       departmentHint: "2 nó 3 dhigit. Sampla: 49",
+      country: "Tír",
+      countryHint: "Clóscríobh chun scagadh, ansin roghnaigh do thír.",
+      countrySearchPlaceholder: "Cuardaigh tír",
+      countrySelectPlaceholder: "Roghnaigh tír",
       submit: "Seol iarratas sínithe",
       resend: "Seol an ríomhphost bailíochtaithe arís",
       privacyLabel:
@@ -649,6 +670,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Riflessjonijiet wara dan il-manifest",
+    },
     charter: {
       items: [
         {
@@ -707,6 +731,10 @@ export const translations = {
       profession: "Professjoni",
       department: "Numru tad-dipartiment",
       departmentHint: "2 jew 3 ċifri. Eżempju: 49",
+      country: "Pajjiż",
+      countryHint: "Ikteb biex tiffiltra, imbagħad agħżel pajjiżek.",
+      countrySearchPlaceholder: "Fittex pajjiż",
+      countrySelectPlaceholder: "Agħżel pajjiż",
       submit: "Ibgħat talba għall-firma",
       resend: "Erġa' ibgħat l-email ta' validazzjoni",
       privacyLabel:

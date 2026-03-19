@@ -64,6 +64,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Reflexionen hinter diesem Manifest",
+    },
     charter: {
       items: [
         {
@@ -122,6 +125,10 @@ export const translations = {
       profession: "Beruf",
       department: "Departementsnummer",
       departmentHint: "2 oder 3 Ziffern. Beispiel: 49",
+      country: "Nation",
+      countryHint: "Tippe zum Filtern, dann dein Land auswählen.",
+      countrySearchPlaceholder: "Land suchen",
+      countrySelectPlaceholder: "Land auswählen",
       submit: "Unterzeichnungsanfrage senden",
       resend: "Bestätigungs-E-Mail erneut senden",
       privacyLabel:
@@ -259,6 +266,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Reflexiones detrás de este manifiesto",
+    },
     charter: {
       items: [
         {
@@ -317,6 +327,10 @@ export const translations = {
       profession: "Profesión",
       department: "Número de departamento",
       departmentHint: "2 o 3 cifras. Ejemplo: 49",
+      country: "País",
+      countryHint: "Escribe para filtrar y luego selecciona tu país.",
+      countrySearchPlaceholder: "Buscar un país",
+      countrySelectPlaceholder: "Selecciona un país",
       submit: "Enviar solicitud de firma",
       resend: "Reenviar correo de validación",
       privacyLabel:
@@ -454,6 +468,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Le riflessioni dietro questo manifesto",
+    },
     charter: {
       items: [
         {
@@ -512,6 +529,10 @@ export const translations = {
       profession: "Professione",
       department: "Numero di dipartimento",
       departmentHint: "2 o 3 cifre. Esempio: 49",
+      country: "Paese",
+      countryHint: "Digita per filtrare, poi seleziona il tuo paese.",
+      countrySearchPlaceholder: "Cerca un paese",
+      countrySelectPlaceholder: "Seleziona un paese",
       submit: "Inviare la richiesta di firma",
       resend: "Inviare di nuovo l'email di verifica",
       privacyLabel:
@@ -649,6 +670,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Reflexões por trás deste manifesto",
+    },
     charter: {
       items: [
         {
@@ -707,6 +731,10 @@ export const translations = {
       profession: "Profissão",
       department: "Número do departamento",
       departmentHint: "2 ou 3 dígitos. Exemplo: 49",
+      country: "País",
+      countryHint: "Digite para filtrar e selecione seu país.",
+      countrySearchPlaceholder: "Pesquisar um país",
+      countrySelectPlaceholder: "Selecione um país",
       submit: "Enviar pedido de assinatura",
       resend: "Reenviar email de validação",
       privacyLabel:
@@ -844,6 +872,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Overpeinzingen achter dit manifest",
+    },
     charter: {
       items: [
         {
@@ -902,6 +933,10 @@ export const translations = {
       profession: "Beroep",
       department: "Departementsnummer",
       departmentHint: "2 of 3 cijfers. Voorbeeld: 49",
+      country: "Land",
+      countryHint: "Typ om te filteren en kies je land.",
+      countrySearchPlaceholder: "Zoek een land",
+      countrySelectPlaceholder: "Kies een land",
       submit: "Handtekeningaanvraag verzenden",
       resend: "Validatiemail opnieuw verzenden",
       privacyLabel:

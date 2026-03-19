@@ -8,6 +8,7 @@ const SIGNERS_SCHEMA = `
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     profession TEXT NOT NULL,
     department TEXT NOT NULL,
+    country TEXT NOT NULL DEFAULT '',
     locale TEXT NOT NULL,
     public_display_name TEXT NOT NULL,
     ai_professional_consent INTEGER NOT NULL DEFAULT 0,
@@ -69,6 +70,7 @@ export function createRepository(dbFile) {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           profession TEXT NOT NULL,
           department TEXT NOT NULL,
+          country TEXT NOT NULL DEFAULT '',
           locale TEXT NOT NULL,
           public_display_name TEXT NOT NULL,
           ai_professional_consent INTEGER NOT NULL DEFAULT 0,
@@ -88,6 +90,7 @@ export function createRepository(dbFile) {
           id,
           profession,
           department,
+          country,
           locale,
           public_display_name,
           ai_professional_consent,
@@ -106,6 +109,7 @@ export function createRepository(dbFile) {
           id,
           profession,
           department,
+          '',
           locale,
           public_display_name,
           ${legacyAiProfessionalConsent},
@@ -154,12 +158,20 @@ export function createRepository(dbFile) {
     `);
   }
 
+  if (!signerColumns.has('country')) {
+    db.exec(`
+      ALTER TABLE signers
+      ADD COLUMN country TEXT NOT NULL DEFAULT ''
+    `);
+  }
+
   const selectDirectory = db.prepare(`
     SELECT
       id,
       public_display_name AS publicDisplayName,
       profession,
       department,
+      country,
       ai_professional_consent AS aiProfessionalConsent,
       professional_website AS professionalWebsite,
       verified_at AS verifiedAt
@@ -207,6 +219,7 @@ export function createRepository(dbFile) {
     INSERT INTO signers (
       profession,
       department,
+      country,
       locale,
       public_display_name,
       ai_professional_consent,
@@ -222,6 +235,7 @@ export function createRepository(dbFile) {
     ) VALUES (
       @profession,
       @department,
+      @country,
       @locale,
       @publicDisplayName,
       @aiProfessionalConsent,

@@ -64,6 +64,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Refleksje stojące za tym manifestem",
+    },
     charter: {
       items: [
         {
@@ -122,6 +125,10 @@ export const translations = {
       profession: "Zawód",
       department: "Numer departamentu",
       departmentHint: "2 lub 3 cyfry. Przykład: 49",
+      country: "Kraj",
+      countryHint: "Wpisz, aby filtrować, a następnie wybierz swój kraj.",
+      countrySearchPlaceholder: "Szukaj kraju",
+      countrySelectPlaceholder: "Wybierz kraj",
       submit: "Wyślij prośbę o podpis",
       resend: "Wyślij ponownie email weryfikacyjny",
       privacyLabel:
@@ -259,6 +266,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Úvahy za tímto manifestem",
+    },
     charter: {
       items: [
         {
@@ -317,6 +327,10 @@ export const translations = {
       profession: "Profese",
       department: "Číslo departementu",
       departmentHint: "2 nebo 3 číslice. Příklad: 49",
+      country: "Země",
+      countryHint: "Pište pro filtrování a vyberte svou zemi.",
+      countrySearchPlaceholder: "Hledat zemi",
+      countrySelectPlaceholder: "Vyberte zemi",
       submit: "Odeslat žádost o podpis",
       resend: "Znovu poslat validační email",
       privacyLabel:
@@ -454,6 +468,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Úvahy za týmto manifestom",
+    },
     charter: {
       items: [
         {
@@ -512,6 +529,10 @@ export const translations = {
       profession: "Profesia",
       department: "Číslo departementu",
       departmentHint: "2 alebo 3 číslice. Príklad: 49",
+      country: "Krajina",
+      countryHint: "Píšte na filtrovanie a vyberte svoju krajinu.",
+      countrySearchPlaceholder: "Hľadať krajinu",
+      countrySelectPlaceholder: "Vyberte krajinu",
       submit: "Odoslať žiadosť o podpis",
       resend: "Znova odoslať validačný email",
       privacyLabel:

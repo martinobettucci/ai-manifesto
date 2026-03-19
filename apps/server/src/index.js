@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import express from 'express';
 import helmet from 'helmet';
 import { config, SUPPORTED_LOCALES } from './config.js';
+import { normalizeCountryCode } from './countries.js';
 import { createRepository } from './db.js';
 import { createMailer } from './mailer.js';
 
@@ -263,6 +264,10 @@ function parseRegistration(body) {
   const email = sanitizeText(body.email).toLowerCase();
   const profession = sanitizeText(body.profession);
   const department = sanitizeText(body.department);
+  const countryRaw = sanitizeText(
+    body.country ?? body.nation ?? body.countryCode ?? body.nationCode,
+  );
+  const country = normalizeCountryCode(countryRaw);
   const locale = sanitizeText(body.locale).toLowerCase() || 'fr';
   const aiProfessionalAccepted = body.aiProfessionalAccepted === true;
   const professionalWebsiteRaw = sanitizeText(body.professionalWebsite);
@@ -290,6 +295,10 @@ function parseRegistration(body) {
 
   if (!validateDepartment(department)) {
     details.department = 'INVALID';
+  }
+
+  if (countryRaw && !country) {
+    details.country = 'INVALID';
   }
 
   if (aiProfessionalAccepted && professionalWebsiteRaw.length === 0) {
@@ -323,6 +332,7 @@ function parseRegistration(body) {
     email,
     profession,
     department,
+    country,
     locale,
     aiProfessionalConsent: Number(aiProfessionalAccepted),
     professionalWebsite: aiProfessionalAccepted ? professionalWebsite : '',

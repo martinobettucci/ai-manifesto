@@ -64,6 +64,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Razmisleki za tem manifestom",
+    },
     charter: {
       items: [
         {
@@ -122,6 +125,10 @@ export const translations = {
       profession: "Poklic",
       department: "Številka departmaja",
       departmentHint: "2 ali 3 številke. Primer: 49",
+      country: "Država",
+      countryHint: "Pišite za filtriranje in izberite svojo državo.",
+      countrySearchPlaceholder: "Poišči državo",
+      countrySelectPlaceholder: "Izberite državo",
       submit: "Pošlji zahtevo za podpis",
       resend: "Ponovno pošlji validacijski email",
       privacyLabel:
@@ -259,6 +266,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Razmišljanja iza ovog manifesta",
+    },
     charter: {
       items: [
         {
@@ -317,6 +327,10 @@ export const translations = {
       profession: "Zanimanje",
       department: "Broj departmana",
       departmentHint: "2 ili 3 znamenke. Primjer: 49",
+      country: "Država",
+      countryHint: "Upišite za filtriranje i odaberite svoju državu.",
+      countrySearchPlaceholder: "Pretraži državu",
+      countrySelectPlaceholder: "Odaberite državu",
       submit: "Pošalji zahtjev za potpis",
       resend: "Ponovno pošalji validacijski email",
       privacyLabel:
@@ -454,6 +468,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "A kiáltvány mögötti gondolatok",
+    },
     charter: {
       items: [
         {
@@ -512,6 +529,10 @@ export const translations = {
       profession: "Foglalkozás",
       department: "Megyei szám",
       departmentHint: "2 vagy 3 számjegy. Példa: 49",
+      country: "Ország",
+      countryHint: "Írj a szűréshez, majd válaszd ki az országot.",
+      countrySearchPlaceholder: "Ország keresése",
+      countrySelectPlaceholder: "Válassz országot",
       submit: "Aláírási kérés küldése",
       resend: "Ellenőrző email újraküldése",
       privacyLabel:
@@ -649,6 +670,9 @@ export const translations = {
         },
       ],
     },
+    reflection: {
+      title: "Reflecțiile din spatele acestui manifest",
+    },
     charter: {
       items: [
         {
@@ -707,6 +731,10 @@ export const translations = {
       profession: "Profesie",
       department: "Număr de departament",
       departmentHint: "2 sau 3 cifre. Exemplu: 49",
+      country: "Țara",
+      countryHint: "Tastează pentru a filtra, apoi selectează țara.",
+      countrySearchPlaceholder: "Caută o țară",
+      countrySelectPlaceholder: "Selectează o țară",
       submit: "Trimite cererea de semnătură",
       resend: "Retrimite emailul de validare",
       privacyLabel:

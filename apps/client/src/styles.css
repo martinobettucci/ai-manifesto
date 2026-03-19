@@ -1280,6 +1280,8 @@ a {
 .signature-form input[type='text'],
 .signature-form input[type='email'],
 .signature-form input[type='url'],
+.signature-form input[type='search'],
+.signature-form select,
 .directory-search input {
   padding: 0.75rem 0.9rem;
   border: 1px solid var(--line-strong);
@@ -1291,6 +1293,7 @@ a {
 }
 
 .signature-form input:focus,
+.signature-form select:focus,
 .directory-search input:focus {
   outline: none;
   border-color: var(--accent);
@@ -1299,8 +1302,18 @@ a {
 }
 
 .signature-form input::placeholder,
+.signature-form select::placeholder,
 .directory-search input::placeholder {
   color: var(--text-faint);
+}
+
+.signature-form select option {
+  background: var(--select-option-bg);
+}
+
+.country-combobox {
+  display: grid;
+  gap: 0.6rem;
 }
 
 .checkbox-row {

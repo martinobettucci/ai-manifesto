@@ -24,5 +24,5 @@ export function maskPublicName(fullName) {
 }
 
 export function createPublicDisplayName({ fullName, profession, department }) {
-  return `${maskPublicName(fullName)} (${profession.trim()}) - ${department.trim()}`;
+  return `${maskPublicName(fullName)} (${profession.trim()})`;
 }

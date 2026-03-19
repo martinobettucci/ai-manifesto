@@ -2,6 +2,7 @@ import {
   startTransition,
   useDeferredValue,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -9,10 +10,20 @@ import { useTranslation } from 'react-i18next';
 import { api } from './lib/api.js';
 import { SUPPORTED_LOCALES } from './locales.js';
 import {
+  getCountryOptions,
+  normalizeCountryCode,
+  resolveDefaultCountryCode,
+} from './countries.js';
+import {
   DEFAULT_MANIFESTO,
   DEFAULT_REFLECTION,
+  EN_REFLECTION,
   getReflectionContent,
 } from './manifestoText.js';
+import {
+  getReflectionForLocale,
+  hasReflectionForLocale,
+} from './reflectionLocales.js';
 import {
   getLocalizedCelebration,
   getLocalizedManifestoContent,
@@ -51,6 +62,7 @@ function createInitialForm(
     email: '',
     profession: '',
     department: '',
+    country: resolveDefaultCountryCode(),
     aiProfessionalAccepted: false,
     professionalWebsite: '',
     diffusionAccepted: false,
@@ -97,6 +109,9 @@ function createVisitorBootstrap() {
       email: typeof rawForm.email === 'string' ? rawForm.email : '',
       profession: typeof rawForm.profession === 'string' ? rawForm.profession : '',
       department: typeof rawForm.department === 'string' ? rawForm.department : '',
+      country: normalizeCountryCode(
+        rawForm.country ?? rawForm.nation ?? rawForm.countryCode ?? rawForm.nationCode,
+      ),
       aiProfessionalAccepted: rawForm.aiProfessionalAccepted === true,
       professionalWebsite:
         typeof rawForm.professionalWebsite === 'string' ? rawForm.professionalWebsite : '',
@@ -230,6 +245,55 @@ function formatSignedDate(date, locale) {
   }
 }
 
+function stripDepartmentFromDisplayName(publicDisplayName, department) {
+  const safeDisplayName =
+    typeof publicDisplayName === 'string' ? publicDisplayName.trim() : '';
+  const safeDepartment = typeof department === 'string' ? department.trim() : '';
+
+  if (!safeDisplayName || !safeDepartment) {
+    return safeDisplayName;
+  }
+
+  const suffix = ` - ${safeDepartment}`;
+
+  return safeDisplayName.endsWith(suffix)
+    ? safeDisplayName.slice(0, -suffix.length)
+    : safeDisplayName;
+}
+
+function createReflectionFallbackContent({ locale, title, intro, motives }) {
+  if (locale === 'fr') {
+    return DEFAULT_REFLECTION;
+  }
+
+  if (locale === 'en') {
+    return EN_REFLECTION;
+  }
+
+  const safeTitle = typeof title === 'string' && title.trim() ? title.trim() : DEFAULT_REFLECTION.title;
+  const safeIntro = typeof intro === 'string' && intro.trim() ? intro.trim() : '';
+  const safeMotives = Array.isArray(motives)
+    ? motives.filter(
+        (item) =>
+          typeof item?.title === 'string' &&
+          item.title.trim() &&
+          typeof item?.body === 'string' &&
+          item.body.trim(),
+      )
+    : [];
+
+  const bodyLines = [
+    ...(safeIntro ? [safeIntro] : []),
+    ...safeMotives.flatMap((item) => [item.title.trim(), item.body.trim()]),
+  ];
+
+  return {
+    title: safeTitle,
+    subheadings: safeMotives.map((item) => item.title.trim()),
+    bodyLines,
+  };
+}
+
 function App() {
   const { t, i18n } = useTranslation();
   const [bootstrap] = useState(() => createVisitorBootstrap());
@@ -241,6 +305,7 @@ function App() {
   const [verifyState, setVerifyState] = useState({ status: 'idle', message: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const deferredSearchTerm = useDeferredValue(searchTerm);
+  const [countrySearch, setCountrySearch] = useState('');
   const [busy, setBusy] = useState(false);
   const [reflectionOpen, setReflectionOpen] = useState(false);
   const [theme, setTheme] = useState(() => getPreferredTheme());
@@ -251,18 +316,35 @@ function App() {
   const locale = i18n.resolvedLanguage ?? 'fr';
   const language = getLanguageCode(locale);
   const themeCopy = getThemeCopy(t, theme);
+  const countryOptions = useMemo(() => getCountryOptions(locale), [locale]);
+  const filteredCountryOptions = useMemo(() => {
+    const query = countrySearch.trim().toLowerCase();
+
+    if (!query) {
+      return countryOptions;
+    }
+
+    return countryOptions.filter((option) => {
+      const label = option.label.toLowerCase();
+      return label.includes(query) || option.code.toLowerCase().includes(query);
+    });
+  }, [countryOptions, countrySearch]);
   const promisePoints = t('promise.points', { returnObjects: true });
   const motiveItems = t('motives.items', { returnObjects: true });
   const charterItems = t('charter.items', { returnObjects: true });
-  const reflectionContent = getReflectionContent(
-    language === 'en'
-      ? t('reflection', { returnObjects: true, defaultValue: DEFAULT_REFLECTION })
-      : DEFAULT_REFLECTION,
-  );
+  const localizedMotiveItems = Array.isArray(motiveItems) ? motiveItems : [];
+  const reflectionFallback = hasReflectionForLocale(language)
+    ? getReflectionForLocale(language)
+    : createReflectionFallbackContent({
+        locale: language,
+        title: t('reflection.title'),
+        intro: t('sections.whyIntro'),
+        motives: localizedMotiveItems,
+      });
+  const reflectionContent = getReflectionContent(null, reflectionFallback);
   const manifestoContent = getLocalizedManifestoContent(locale, charterItems);
   const requiredManifestoChecks = manifestoContent.requiredChecks;
   const localizedPromisePoints = Array.isArray(promisePoints) ? promisePoints : [];
-  const localizedMotiveItems = Array.isArray(motiveItems) ? motiveItems : [];
   const allManifestoChecked =
     form.manifestoChecks.length === requiredManifestoChecks &&
     form.manifestoChecks.every((value) => value === true);
@@ -447,7 +529,10 @@ function App() {
       startTransition(() => {
         setVerifyState({
           status: 'success',
-          message: data.signer?.publicDisplayName ?? '',
+          message: stripDepartmentFromDisplayName(
+            data.signer?.publicDisplayName ?? '',
+            form.department,
+          ),
         });
       });
 
@@ -1053,6 +1138,34 @@ function App() {
                   </label>
                 </div>
 
+                <label>
+                  <span>{t('form.country')}</span>
+                  <div className="country-combobox">
+                    <input
+                      type="search"
+                      value={countrySearch}
+                      onChange={(event) => setCountrySearch(event.target.value)}
+                      placeholder={t('form.countrySearchPlaceholder')}
+                      autoComplete="off"
+                    />
+                    <select
+                      value={form.country}
+                      onChange={(event) =>
+                        updateField('country', normalizeCountryCode(event.target.value))
+                      }
+                      required
+                    >
+                      <option value="">{t('form.countrySelectPlaceholder')}</option>
+                      {filteredCountryOptions.map((option) => (
+                        <option key={option.code} value={option.code}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <small>{t('form.countryHint')}</small>
+                </label>
+
                 <label className="checkbox-row">
                   <input
                     type="checkbox"
@@ -1179,6 +1292,10 @@ function App() {
                 const isCurrentSigner =
                   highlightedSignerId !== null && signer.id === highlightedSignerId;
                 const isAiProfessional = signer.aiProfessionalConsent === 1;
+                const visibleDisplayName = stripDepartmentFromDisplayName(
+                  signer.publicDisplayName,
+                  signer.department,
+                );
 
                 return (
                   <article
@@ -1188,7 +1305,7 @@ function App() {
                     }`}
                   >
                     <div className="signer-header">
-                      <p className="signer-name">{signer.publicDisplayName}</p>
+                      <p className="signer-name">{visibleDisplayName}</p>
                       <div className="signer-chips">
                         {isAiProfessional && (
                           <span className="signer-chip signer-chip-pro">
