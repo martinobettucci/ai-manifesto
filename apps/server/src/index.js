@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { isIP } from 'node:net';
 import express from 'express';
 import helmet from 'helmet';
 import { config, SUPPORTED_LOCALES } from './config.js';
@@ -11,6 +12,15 @@ const repository = createRepository(config.dbFile);
 const mailer = createMailer(config);
 const supportedLocaleSet = new Set(SUPPORTED_LOCALES);
 const REQUIRED_MANIFESTO_CHECKS = 9;
+const GEOLOOKUP_TIMEOUT_MS = 1800;
+const GEOLOOKUP_HEADERS = [
+  'cf-ipcountry',
+  'x-vercel-ip-country',
+  'cloudfront-viewer-country',
+  'fastly-country-code',
+  'x-country-code',
+  'x-appengine-country',
+];
 
 function writeLog(level, message, meta = {}) {
   const safeMeta = redactSensitiveMeta(meta);
@@ -93,6 +103,198 @@ function buildVerificationLink(token) {
 
 function sanitizeText(value) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function readHeaderText(request, headerName) {
+  const value = request.headers[headerName];
+
+  if (Array.isArray(value)) {
+    return sanitizeText(value[0] ?? '');
+  }
+
+  return sanitizeText(value);
+}
+
+function normalizeIpAddress(value) {
+  const input = sanitizeText(value);
+
+  if (!input) {
+    return '';
+  }
+
+  const bracketedIpv6 = input.match(/^\[([^\]]+)\](?::\d+)?$/);
+  if (bracketedIpv6) {
+    return bracketedIpv6[1];
+  }
+
+  const ipv4WithPort = input.match(/^(\d{1,3}(?:\.\d{1,3}){3}):\d+$/);
+  if (ipv4WithPort) {
+    return ipv4WithPort[1];
+  }
+
+  if (input.startsWith('::ffff:')) {
+    const mappedIpv4 = input.slice('::ffff:'.length);
+    if (isIP(mappedIpv4) === 4) {
+      return mappedIpv4;
+    }
+  }
+
+  return input;
+}
+
+function resolveClientIp(request) {
+  const forwardedFor = readHeaderText(request, 'x-forwarded-for');
+  const realIp = readHeaderText(request, 'x-real-ip');
+  const candidate = forwardedFor.split(',')[0]?.trim() || realIp || request.socket.remoteAddress;
+  return normalizeIpAddress(candidate);
+}
+
+function isPrivateIpv4(ipAddress) {
+  const octets = ipAddress.split('.').map((part) => Number.parseInt(part, 10));
+  const [first, second] = octets;
+
+  if (first === 10 || first === 127 || first === 0) {
+    return true;
+  }
+
+  if (first === 169 && second === 254) {
+    return true;
+  }
+
+  if (first === 172 && second >= 16 && second <= 31) {
+    return true;
+  }
+
+  if (first === 192 && second === 168) {
+    return true;
+  }
+
+  if (first === 100 && second >= 64 && second <= 127) {
+    return true;
+  }
+
+  if (first >= 224) {
+    return true;
+  }
+
+  return false;
+}
+
+function isPrivateIpv6(ipAddress) {
+  const normalized = ipAddress.toLowerCase();
+
+  if (normalized === '::1' || normalized === '::') {
+    return true;
+  }
+
+  if (normalized.startsWith('fc') || normalized.startsWith('fd')) {
+    return true;
+  }
+
+  if (normalized.startsWith('fe80')) {
+    return true;
+  }
+
+  if (normalized.startsWith('2001:db8')) {
+    return true;
+  }
+
+  return false;
+}
+
+function isPublicIpAddress(ipAddress) {
+  const version = isIP(ipAddress);
+
+  if (version === 4) {
+    return !isPrivateIpv4(ipAddress);
+  }
+
+  if (version === 6) {
+    return !isPrivateIpv6(ipAddress);
+  }
+
+  return false;
+}
+
+function resolveCountryFromHeaders(request) {
+  for (const headerName of GEOLOOKUP_HEADERS) {
+    const countryCode = normalizeCountryCode(readHeaderText(request, headerName));
+    if (countryCode) {
+      return {
+        countryCode,
+        source: `header:${headerName}`,
+      };
+    }
+  }
+
+  return null;
+}
+
+function resolveCountryFromAcceptLanguage(request) {
+  const header = readHeaderText(request, 'accept-language');
+
+  if (!header) {
+    return '';
+  }
+
+  const tags = header
+    .split(',')
+    .map((entry) => entry.split(';')[0]?.trim())
+    .filter(Boolean);
+
+  for (const tag of tags) {
+    const parts = tag.split('-').map((part) => part.trim());
+
+    for (const part of parts.slice(1)) {
+      if (!/^[A-Za-z]{2}$/.test(part)) {
+        continue;
+      }
+
+      const countryCode = normalizeCountryCode(part);
+      if (countryCode) {
+        return countryCode;
+      }
+    }
+  }
+
+  return '';
+}
+
+async function lookupCountryCodeByIp(ipAddress) {
+  if (!isPublicIpAddress(ipAddress)) {
+    return '';
+  }
+
+  const lookupUrl = new URL(`https://ipwho.is/${ipAddress}`);
+  lookupUrl.searchParams.set('fields', 'success,country_code');
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, GEOLOOKUP_TIMEOUT_MS);
+
+  try {
+    const upstreamResponse = await fetch(lookupUrl, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal: controller.signal,
+    });
+
+    if (!upstreamResponse.ok) {
+      return '';
+    }
+
+    const payload = await upstreamResponse.json().catch(() => null);
+    if (!payload || payload.success !== true) {
+      return '';
+    }
+
+    return normalizeCountryCode(payload.country_code);
+  } catch {
+    return '';
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 function truncateForLog(value, maxLength = 220) {
@@ -347,6 +549,41 @@ app.get('/api/health', (request, response) => {
   response.json({
     ok: true,
     privacyPolicyUrl: config.privacyPolicyUrl,
+  });
+});
+
+app.get('/api/visitor/country', async (request, response) => {
+  const fromHeader = resolveCountryFromHeaders(request);
+
+  if (fromHeader) {
+    response.json(fromHeader);
+    return;
+  }
+
+  const clientIp = resolveClientIp(request);
+  const fromIpLookup = clientIp ? await lookupCountryCodeByIp(clientIp) : '';
+
+  if (fromIpLookup) {
+    response.json({
+      countryCode: fromIpLookup,
+      source: 'ipwho.is',
+    });
+    return;
+  }
+
+  const fromAcceptLanguage = resolveCountryFromAcceptLanguage(request);
+
+  if (fromAcceptLanguage) {
+    response.json({
+      countryCode: fromAcceptLanguage,
+      source: 'accept-language',
+    });
+    return;
+  }
+
+  response.json({
+    countryCode: '',
+    source: 'none',
   });
 });
 

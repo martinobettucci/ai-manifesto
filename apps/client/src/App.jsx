@@ -87,6 +87,7 @@ function createVisitorBootstrap() {
   const fallback = {
     form: createInitialForm('fr', requiredChecks),
     submission: createInitialVisitorSubmission(),
+    hasPersistedState: false,
   };
 
   if (typeof window === 'undefined') {
@@ -150,6 +151,7 @@ function createVisitorBootstrap() {
     return {
       form: nextForm,
       submission: nextSubmission,
+      hasPersistedState: true,
     };
   } catch {
     return fallback;
@@ -312,6 +314,10 @@ function App() {
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrationKey, setCelebrationKey] = useState(0);
   const pendingReminderModalRef = useRef(null);
+  const initialCountryRef = useRef(bootstrap.form.country);
+  const countryPrefillAttemptedRef = useRef(
+    bootstrap.hasPersistedState && Boolean(bootstrap.form.country),
+  );
 
   const locale = i18n.resolvedLanguage ?? 'fr';
   const language = getLanguageCode(locale);
@@ -385,6 +391,66 @@ function App() {
   useEffect(() => {
     setForm((current) => ({ ...current, locale }));
   }, [locale]);
+
+  useEffect(() => {
+    if (countryPrefillAttemptedRef.current) {
+      return;
+    }
+
+    countryPrefillAttemptedRef.current = true;
+    let cancelled = false;
+
+    const applyFallbackCountry = () => {
+      const fallbackCountry = resolveDefaultCountryCode();
+      if (!fallbackCountry || cancelled) {
+        return;
+      }
+
+      setForm((current) => {
+        const canAutoFill = !current.country || current.country === initialCountryRef.current;
+        if (!canAutoFill || current.country === fallbackCountry) {
+          return current;
+        }
+
+        return {
+          ...current,
+          country: fallbackCountry,
+        };
+      });
+    };
+
+    const resolveVisitorCountry = async () => {
+      try {
+        const data = await api.getVisitorCountry();
+        const detectedCountry = normalizeCountryCode(data?.countryCode);
+
+        if (!detectedCountry || cancelled) {
+          applyFallbackCountry();
+          return;
+        }
+
+        setForm((current) => {
+          const canAutoFill = !current.country || current.country === initialCountryRef.current;
+          if (!canAutoFill || current.country === detectedCountry) {
+            return current;
+          }
+
+          return {
+            ...current,
+            country: detectedCountry,
+          };
+        });
+      } catch {
+        applyFallbackCountry();
+      }
+    };
+
+    void resolveVisitorCountry();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') {

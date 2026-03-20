@@ -12,7 +12,7 @@ export const REFLECTION_BY_LOCALE = {
     subheadings: [
       'Un paradoxe comportemental',
       'Une faille cognitive exploitée',
-      'Le problème n'est pas seulement technique',
+      "Le problème n'est pas seulement technique",
       'Des exemples déjà visibles',
       'Une transformation à grande échelle',
       'Une réalité géopolitique',
@@ -472,7 +472,7 @@ Este manifiesto es una respuesta a esa erosión.
       'Esempi già visibili',
       'Una trasformazione su larga scala',
       'Una realtà geopolitica',
-      'Ripristinare un'architettura sana',
+      "Ripristinare un'architettura sana",
       'Una linea chiara',
       'Un promemoria essenziale',
       'Ciò che cerchiamo di preservare',
@@ -2638,7 +2638,7 @@ Is freagra é an mainifist seo ar an eród sin.
       'Eżempji diġà viżibbli',
       'Trasformazzjoni fuq skala kbira',
       'Realtà ġeopolitika',
-      'Restawr ta' arkitettura b'saħħitha',
+      "Restawr ta' arkitettura b'saħħitha",
       'Linji ċari',
       'Tfakkira essenzjali',
       'Dak li rridu nħarsu',
@@ -2748,4 +2748,9 @@ Dan il-manifest huwa risposta għal din l-erożjoni.
 export function getReflectionForLocale(locale) {
   const code = String(locale ?? 'fr').split('-')[0].toLowerCase();
   return REFLECTION_BY_LOCALE[code] ?? REFLECTION_BY_LOCALE.fr;
+}
+
+export function hasReflectionForLocale(locale) {
+  const code = String(locale ?? 'fr').split('-')[0].toLowerCase();
+  return Object.prototype.hasOwnProperty.call(REFLECTION_BY_LOCALE, code);
 }

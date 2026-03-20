@@ -20,6 +20,9 @@ async function request(path, options = {}) {
 }
 
 export const api = {
+  getVisitorCountry() {
+    return request('/api/visitor/country');
+  },
   getDirectory() {
     return request('/api/signers');
   },
