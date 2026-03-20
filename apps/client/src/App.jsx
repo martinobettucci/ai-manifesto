@@ -31,6 +31,8 @@ import {
 
 const THEME_STORAGE_KEY = 'manifesto-theme';
 const VISITOR_STATE_STORAGE_KEY = 'manifesto-visitor-state-v1';
+const HERO_VIDEO_SRC = '/media/hero-loop.mp4';
+const HERO_POSTER_SRC = '/media/hero-poster.webp';
 
 function getPreferredTheme() {
   if (typeof window === 'undefined') {
@@ -51,6 +53,14 @@ function getThemeCopy(t, theme) {
     currentLabel: theme === 'dark' ? t('theme.dark') : t('theme.light'),
     actionLabel: theme === 'dark' ? t('theme.switchToLight') : t('theme.switchToDark'),
   };
+}
+
+function getPrefersReducedMotion() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 }
 
 function createInitialForm(
@@ -331,6 +341,9 @@ function App() {
   const [busy, setBusy] = useState(false);
   const [reflectionOpen, setReflectionOpen] = useState(false);
   const [theme, setTheme] = useState(() => getPreferredTheme());
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () => getPrefersReducedMotion(),
+  );
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrationKey, setCelebrationKey] = useState(0);
   const pendingReminderModalRef = useRef(null);
@@ -407,6 +420,31 @@ function App() {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = (event) => {
+      setPrefersReducedMotion(event.matches);
+    };
+
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', handleChange);
+      return () => {
+        mediaQuery.removeEventListener('change', handleChange);
+      };
+    }
+
+    mediaQuery.addListener(handleChange);
+    return () => {
+      mediaQuery.removeListener(handleChange);
+    };
+  }, []);
 
   useEffect(() => {
     setForm((current) => ({ ...current, locale }));
@@ -894,6 +932,29 @@ function App() {
         )}
 
         <section className="hero">
+          <div className="hero-media" aria-hidden="true">
+            <img
+              src={HERO_POSTER_SRC}
+              alt=""
+              className="hero-poster"
+              loading="eager"
+              decoding="async"
+            />
+            {!prefersReducedMotion && (
+              <video
+                className="hero-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={HERO_POSTER_SRC}
+              >
+                <source src={HERO_VIDEO_SRC} type="video/mp4" />
+              </video>
+            )}
+            <div className="hero-overlay" />
+          </div>
           <div className="hero-inner">
             <p className="hero-eyebrow">{t('hero.eyebrow')}</p>
             <h1 className="hero-title">{t('hero.title')}</h1>
@@ -977,7 +1038,7 @@ function App() {
           </div>
         )}
 
-        <section id="reflection" className="section">
+        <section id="reflection" className="section section-reflection">
           <div className="section-header">
             <h2 className="section-title">{t('sections.whyTitle')}</h2>
             <p className="section-intro">{t('sections.whyIntro')}</p>
@@ -1027,7 +1088,7 @@ function App() {
           </article>
         </section>
 
-        <section id="charter" className="section">
+        <section id="charter" className="section section-charter">
           <div className="section-header">
             <h2 className="section-title">{t('sections.charterTitle')}</h2>
             <p className="section-intro">{t('sections.charterIntro')}</p>
@@ -1114,7 +1175,7 @@ function App() {
           </div>
         </section>
 
-        <section id="signature" className="section">
+        <section id="signature" className="section section-signature">
           <div className="signature-layout">
             <div className="signature-preamble">
               <div className="section-header">
@@ -1335,7 +1396,7 @@ function App() {
           </div>
         </section>
 
-        <section id="directory" className="section">
+        <section id="directory" className="section section-directory">
           <div className="section-header">
             <h2 className="section-title">{t('sections.directoryTitle')}</h2>
             <p className="section-intro">{t('sections.directoryIntro')}</p>
