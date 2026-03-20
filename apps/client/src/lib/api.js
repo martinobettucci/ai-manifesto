@@ -4,6 +4,7 @@ async function request(path, options = {}) {
       'Content-Type': 'application/json',
       ...(options.headers ?? {}),
     },
+    credentials: 'same-origin',
     ...options,
   });
 
@@ -37,5 +38,44 @@ export const api = {
   },
   verifyToken(token) {
     return request(`/api/signers/verify?token=${encodeURIComponent(token)}`);
+  },
+  requestAdminMagicLink() {
+    return request('/api/admin/auth/request', {
+      method: 'POST',
+      body: JSON.stringify({}),
+    });
+  },
+  verifyAdminMagicLink(token) {
+    return request(`/api/admin/auth/verify?token=${encodeURIComponent(token)}`);
+  },
+  getAdminSession() {
+    return request('/api/admin/auth/me');
+  },
+  logoutAdmin() {
+    return request('/api/admin/auth/logout', {
+      method: 'POST',
+      body: JSON.stringify({}),
+    });
+  },
+  getAdminDataroom() {
+    return request('/api/admin/dataroom');
+  },
+  createAdminSigner(payload) {
+    return request('/api/admin/signers', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+  updateAdminSigner(id, payload) {
+    return request(`/api/admin/signers/${encodeURIComponent(id)}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  },
+  deleteAdminSigner(id) {
+    return request(`/api/admin/signers/${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      body: JSON.stringify({}),
+    });
   },
 };

@@ -13,6 +13,7 @@ const mailer = createMailer(config);
 const supportedLocaleSet = new Set(SUPPORTED_LOCALES);
 const REQUIRED_MANIFESTO_CHECKS = 9;
 const GEOLOOKUP_TIMEOUT_MS = 1800;
+const ADMIN_MAGIC_LINK_QUERY_PARAM = 'admin_verify';
 const GEOLOOKUP_HEADERS = [
   'cf-ipcountry',
   'x-vercel-ip-country',
@@ -101,8 +102,143 @@ function buildVerificationLink(token) {
   return url.toString();
 }
 
+function buildAdminMagicLink(token) {
+  const url = new URL(config.appBaseUrl);
+  url.pathname = '/backoffice';
+  url.searchParams.set(ADMIN_MAGIC_LINK_QUERY_PARAM, token);
+  return url.toString();
+}
+
+function buildFutureIsoDate({ minutes = 0, hours = 0 }) {
+  const now = new Date();
+
+  if (minutes > 0) {
+    now.setMinutes(now.getMinutes() + minutes);
+  }
+
+  if (hours > 0) {
+    now.setHours(now.getHours() + hours);
+  }
+
+  return now.toISOString();
+}
+
 function sanitizeText(value) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function parseCookies(request) {
+  const header = readHeaderText(request, 'cookie');
+
+  if (!header) {
+    return {};
+  }
+
+  return header.split(';').reduce((accumulator, entry) => {
+    const [keyPart, ...valueParts] = entry.split('=');
+    const key = sanitizeText(keyPart);
+
+    if (!key) {
+      return accumulator;
+    }
+
+    const value = valueParts.join('=').trim();
+
+    try {
+      accumulator[key] = decodeURIComponent(value);
+    } catch {
+      accumulator[key] = value;
+    }
+
+    return accumulator;
+  }, {});
+}
+
+function serializeCookie(name, value, options = {}) {
+  const parts = [`${name}=${encodeURIComponent(value)}`];
+
+  parts.push(`Path=${options.path ?? '/'}`);
+
+  if (options.maxAgeSeconds !== undefined) {
+    parts.push(`Max-Age=${Math.max(0, Number.parseInt(options.maxAgeSeconds, 10) || 0)}`);
+  }
+
+  if (options.expiresAt) {
+    parts.push(`Expires=${options.expiresAt.toUTCString()}`);
+  }
+
+  if (options.httpOnly !== false) {
+    parts.push('HttpOnly');
+  }
+
+  if (options.sameSite) {
+    parts.push(`SameSite=${options.sameSite}`);
+  }
+
+  if (options.secure === true) {
+    parts.push('Secure');
+  }
+
+  return parts.join('; ');
+}
+
+function setAdminSessionCookie(response, sessionToken) {
+  const maxAgeSeconds = config.adminSessionTtlHours * 60 * 60;
+
+  response.setHeader(
+    'Set-Cookie',
+    serializeCookie(config.adminCookieName, sessionToken, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'Lax',
+      secure: config.nodeEnv === 'production',
+      maxAgeSeconds,
+    }),
+  );
+}
+
+function clearAdminSessionCookie(response) {
+  response.setHeader(
+    'Set-Cookie',
+    serializeCookie(config.adminCookieName, '', {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'Lax',
+      secure: config.nodeEnv === 'production',
+      maxAgeSeconds: 0,
+      expiresAt: new Date(0),
+    }),
+  );
+}
+
+function readAdminSessionCookie(request) {
+  const cookies = parseCookies(request);
+  return sanitizeText(cookies[config.adminCookieName]);
+}
+
+function isAdminAuthEnabled() {
+  return isValidEmail(config.adminEmail);
+}
+
+function createAdminAuthDisabledError() {
+  const error = new Error('Admin backoffice is disabled');
+  error.code = 'ADMIN_AUTH_DISABLED';
+  error.status = 503;
+  return error;
+}
+
+function createAdminUnauthorizedError() {
+  const error = new Error('Admin authentication required');
+  error.code = 'ADMIN_UNAUTHORIZED';
+  error.status = 401;
+  return error;
+}
+
+function createSignerNotFoundError() {
+  const error = new Error('Signer not found');
+  error.code = 'SIGNER_NOT_FOUND';
+  error.status = 404;
+  return error;
 }
 
 function readHeaderText(request, headerName) {
@@ -334,7 +470,7 @@ function sanitizePathForLog(value) {
     return safeQuery ? `${url.pathname}?${safeQuery}` : url.pathname;
   } catch {
     return value
-      .replace(/([?&])(token|verify)[^=]*=[^&]*/gi, '$1$2=[REDACTED]')
+      .replace(/([?&])([^=]*?(token|verify)[^=]*)=[^&]*/gi, '$1$2=[REDACTED]')
       .replace(/[?&]$/, '');
   }
 }
@@ -346,7 +482,7 @@ function redactSensitiveText(value) {
 
   return value
     .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '[REDACTED_EMAIL]')
-    .replace(/([?&])(token|verify)[^=]*=[^&]*/gi, '$1$2=[REDACTED]');
+    .replace(/([?&])([^=]*?(token|verify)[^=]*)=[^&]*/gi, '$1$2=[REDACTED]');
 }
 
 function redactSensitiveMeta(value) {
@@ -437,6 +573,29 @@ function normalizeProfessionalWebsite(value) {
   }
 }
 
+function parseBinaryConsent(value, fieldName, details) {
+  if (value === true || value === 1 || value === '1') {
+    return 1;
+  }
+
+  if (value === false || value === 0 || value === '0') {
+    return 0;
+  }
+
+  details[fieldName] = 'INVALID';
+  return 0;
+}
+
+function parseAdminSignerId(value) {
+  const id = Number.parseInt(String(value), 10);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    throw createValidationError({ id: 'INVALID' });
+  }
+
+  return id;
+}
+
 function createValidationError(details) {
   const error = new Error('Validation failed');
   error.code = 'VALIDATION_ERROR';
@@ -446,6 +605,10 @@ function createValidationError(details) {
 }
 
 function getErrorStatus(error) {
+  if (error.code === 'ADMIN_UNAUTHORIZED') {
+    return 401;
+  }
+
   if (error.code === 'ALREADY_VERIFIED') {
     return 409;
   }
@@ -542,6 +705,76 @@ function parseRegistration(body) {
     privacyConsent: Number(privacyAccepted),
     charterConsent: Number(manifestoAccepted),
     verificationTokenHash: '',
+  };
+}
+
+function parseAdminSignerPayload(body) {
+  const publicDisplayName = sanitizeText(body.publicDisplayName);
+  const profession = sanitizeText(body.profession);
+  const department = sanitizeText(body.department);
+  const countryRaw = sanitizeText(body.country);
+  const country = normalizeCountryCode(countryRaw);
+  const locale = sanitizeText(body.locale).toLowerCase();
+  const status = sanitizeText(body.status).toLowerCase();
+  const professionalWebsiteRaw = sanitizeText(body.professionalWebsite);
+  const professionalWebsite = normalizeProfessionalWebsite(professionalWebsiteRaw);
+
+  const details = {};
+  const aiProfessionalConsent = parseBinaryConsent(
+    body.aiProfessionalConsent,
+    'aiProfessionalConsent',
+    details,
+  );
+  const diffusionConsent = parseBinaryConsent(body.diffusionConsent, 'diffusionConsent', details);
+  const privacyConsent = parseBinaryConsent(body.privacyConsent, 'privacyConsent', details);
+  const charterConsent = parseBinaryConsent(body.charterConsent, 'charterConsent', details);
+
+  if (publicDisplayName.length < 3) {
+    details.publicDisplayName = 'REQUIRED';
+  }
+
+  if (profession.length < 2) {
+    details.profession = 'REQUIRED';
+  }
+
+  if (!validateDepartment(department)) {
+    details.department = 'INVALID';
+  }
+
+  if (countryRaw && !country) {
+    details.country = 'INVALID';
+  }
+
+  if (!supportedLocaleSet.has(locale)) {
+    details.locale = 'UNSUPPORTED';
+  }
+
+  if (status !== 'pending' && status !== 'verified') {
+    details.status = 'INVALID';
+  }
+
+  if (aiProfessionalConsent === 1 && professionalWebsiteRaw.length === 0) {
+    details.professionalWebsite = 'REQUIRED';
+  } else if (aiProfessionalConsent === 1 && professionalWebsite.length === 0) {
+    details.professionalWebsite = 'INVALID';
+  }
+
+  if (Object.keys(details).length > 0) {
+    throw createValidationError(details);
+  }
+
+  return {
+    publicDisplayName,
+    profession,
+    department,
+    country,
+    locale,
+    aiProfessionalConsent,
+    professionalWebsite: aiProfessionalConsent === 1 ? professionalWebsite : '',
+    diffusionConsent,
+    privacyConsent,
+    charterConsent,
+    status,
   };
 }
 
@@ -717,6 +950,249 @@ app.get('/api/signers/verify', (request, response) => {
   });
 });
 
+function requireAdminSession(request, response, next) {
+  if (!isAdminAuthEnabled()) {
+    next(createAdminAuthDisabledError());
+    return;
+  }
+
+  repository.cleanupExpiredAdminAuth();
+
+  const sessionToken = readAdminSessionCookie(request);
+
+  if (!sessionToken) {
+    next(createAdminUnauthorizedError());
+    return;
+  }
+
+  const sessionHash = hashToken(sessionToken);
+  const session = repository.getActiveAdminSessionByHash(sessionHash);
+
+  if (!session) {
+    clearAdminSessionCookie(response);
+    next(createAdminUnauthorizedError());
+    return;
+  }
+
+  repository.touchAdminSession(session.id);
+  request.adminSession = session;
+  next();
+}
+
+app.post('/api/admin/auth/request', async (request, response, next) => {
+  try {
+    if (!isAdminAuthEnabled()) {
+      throw createAdminAuthDisabledError();
+    }
+
+    repository.cleanupExpiredAdminAuth();
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const tokenHash = hashToken(token);
+    const expiresAt = buildFutureIsoDate({
+      minutes: config.adminMagicLinkTtlMinutes,
+    });
+    const magicLink = buildAdminMagicLink(token);
+
+    repository.createAdminMagicLink({
+      tokenHash,
+      expiresAt,
+    });
+
+    await mailer.sendAdminMagicLinkEmail({
+      email: config.adminEmail,
+      magicLink,
+      expiresInMinutes: config.adminMagicLinkTtlMinutes,
+    });
+
+    response.status(202).json({
+      status: 'magic_link_sent',
+      message: 'If backoffice access is configured, a magic link email has been sent.',
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/admin/auth/verify', (request, response, next) => {
+  try {
+    if (!isAdminAuthEnabled()) {
+      throw createAdminAuthDisabledError();
+    }
+
+    const token = sanitizeText(request.query.token);
+
+    if (!token) {
+      throw createValidationError({ token: 'MISSING' });
+    }
+
+    repository.cleanupExpiredAdminAuth();
+
+    const consumedMagicLink = repository.consumeAdminMagicLinkByTokenHash(hashToken(token));
+
+    if (!consumedMagicLink) {
+      const error = new Error('Admin magic link is invalid or expired');
+      error.code = 'INVALID_TOKEN';
+      throw error;
+    }
+
+    const sessionToken = crypto.randomBytes(32).toString('hex');
+    const sessionHash = hashToken(sessionToken);
+    const expiresAt = buildFutureIsoDate({
+      hours: config.adminSessionTtlHours,
+    });
+
+    repository.createAdminSession({
+      sessionHash,
+      expiresAt,
+    });
+
+    setAdminSessionCookie(response, sessionToken);
+
+    response.json({
+      authenticated: true,
+      expiresAt,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/admin/auth/me', (request, response) => {
+  if (!isAdminAuthEnabled()) {
+    response.json({
+      enabled: false,
+      authenticated: false,
+    });
+    return;
+  }
+
+  repository.cleanupExpiredAdminAuth();
+
+  const sessionToken = readAdminSessionCookie(request);
+
+  if (!sessionToken) {
+    response.json({
+      enabled: true,
+      authenticated: false,
+    });
+    return;
+  }
+
+  const session = repository.getActiveAdminSessionByHash(hashToken(sessionToken));
+
+  if (!session) {
+    clearAdminSessionCookie(response);
+    response.json({
+      enabled: true,
+      authenticated: false,
+    });
+    return;
+  }
+
+  repository.touchAdminSession(session.id);
+
+  response.json({
+    enabled: true,
+    authenticated: true,
+    expiresAt: session.expiresAt,
+  });
+});
+
+app.post('/api/admin/auth/logout', (request, response) => {
+  if (isAdminAuthEnabled()) {
+    repository.cleanupExpiredAdminAuth();
+
+    const sessionToken = readAdminSessionCookie(request);
+
+    if (sessionToken) {
+      repository.revokeAdminSessionByHash(hashToken(sessionToken));
+    }
+  }
+
+  clearAdminSessionCookie(response);
+
+  response.json({
+    authenticated: false,
+  });
+});
+
+app.get('/api/admin/dataroom', requireAdminSession, (request, response) => {
+  response.json(repository.getAdminDataroom());
+});
+
+app.post('/api/admin/signers', requireAdminSession, (request, response, next) => {
+  try {
+    const payload = parseAdminSignerPayload(request.body);
+    const now = new Date().toISOString();
+    const signer = repository.createAdminSigner({
+      ...payload,
+      verificationSentAt: payload.status === 'pending' ? now : '',
+      verifiedAt: payload.status === 'verified' ? now : '',
+    });
+
+    if (!signer) {
+      throw new Error('Signer creation failed');
+    }
+
+    response.status(201).json({
+      signer,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.put('/api/admin/signers/:id', requireAdminSession, (request, response, next) => {
+  try {
+    const id = parseAdminSignerId(request.params.id);
+    const existingSigner = repository.getAdminSignerById(id);
+
+    if (!existingSigner) {
+      throw createSignerNotFoundError();
+    }
+
+    const payload = parseAdminSignerPayload(request.body);
+    const now = new Date().toISOString();
+    const currentVerificationSentAt = sanitizeText(existingSigner.verificationSentAt);
+    const currentVerifiedAt = sanitizeText(existingSigner.verifiedAt);
+    const signer = repository.updateAdminSigner(id, {
+      ...payload,
+      verificationSentAt:
+        payload.status === 'pending' ? currentVerificationSentAt || now : currentVerificationSentAt,
+      verifiedAt: payload.status === 'verified' ? currentVerifiedAt || now : '',
+    });
+
+    if (!signer) {
+      throw createSignerNotFoundError();
+    }
+
+    response.json({
+      signer,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete('/api/admin/signers/:id', requireAdminSession, (request, response, next) => {
+  try {
+    const id = parseAdminSignerId(request.params.id);
+    const deleted = repository.deleteAdminSignerById(id);
+
+    if (!deleted) {
+      throw createSignerNotFoundError();
+    }
+
+    response.json({
+      deleted: true,
+      id,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.use((error, request, response, next) => {
   const status = getErrorStatus(error);
   const requestId = request.requestId ?? '-';
@@ -758,6 +1234,10 @@ logInfo('Server starting', {
   smtpRequireAuth: config.smtpRequireAuth,
   smtpHasUser: Boolean(config.smtpUser),
   smtpVerifyOnStartup: config.smtpVerifyOnStartup,
+  adminBackofficeEnabled: isAdminAuthEnabled(),
+  adminMagicLinkTtlMinutes: config.adminMagicLinkTtlMinutes,
+  adminSessionTtlHours: config.adminSessionTtlHours,
+  adminCookieName: config.adminCookieName,
 });
 
 if (config.smtpVerifyOnStartup) {

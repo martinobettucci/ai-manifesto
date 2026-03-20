@@ -20,6 +20,14 @@ function parsePositiveInteger(value, fallback) {
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 }
 
+function parseEmail(value) {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value.trim().toLowerCase();
+}
+
 export const SUPPORTED_LOCALES = [
   'bg',
   'cs',
@@ -82,4 +90,8 @@ export const config = {
   smtpUser: process.env.SMTP_USER ?? '',
   smtpPass: process.env.SMTP_PASS ?? '',
   smtpFrom: process.env.SMTP_FROM ?? 'Manifesto IA <noreply@manifesto.local>',
+  adminEmail: parseEmail(process.env.ADMIN_EMAIL),
+  adminMagicLinkTtlMinutes: parsePositiveInteger(process.env.ADMIN_MAGIC_LINK_TTL_MINUTES, 15),
+  adminSessionTtlHours: parsePositiveInteger(process.env.ADMIN_SESSION_TTL_HOURS, 24),
+  adminCookieName: process.env.ADMIN_COOKIE_NAME?.trim() || 'manifesto_admin_session',
 };

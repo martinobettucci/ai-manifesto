@@ -8,11 +8,15 @@ import '@fontsource/familjen-grotesk/700.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
+import BackofficeApp from './BackofficeApp.jsx';
 import './i18n.js';
 import './styles.css';
 
+const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/';
+const RootComponent = normalizedPath === '/backoffice' ? BackofficeApp : App;
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <RootComponent />
   </React.StrictMode>,
 );

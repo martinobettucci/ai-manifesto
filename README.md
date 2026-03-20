@@ -28,6 +28,7 @@ npm run dev
 ```
 
 Le mode dev monte les sources `apps/client` et `apps/server` dans les conteneurs pour un rechargement en temps réel.
+`runDev.sh` ouvre automatiquement l'UI et Mailpit quand ils répondent (désactivable avec `OPEN_DEV_PAGES=false`).
 
 - Site: `http://localhost:8080`
 - API: `http://localhost:3001`
@@ -64,12 +65,17 @@ Variables attendues pour la prod:
 - `SMTP_DNS_TIMEOUT_MS`: optionnel, défaut `10000`
 - `SMTP_VERIFY_ON_STARTUP`: optionnel, défaut `true` en prod (`false` en dev), lance un test SMTP au démarrage avec log explicite
 - `SMTP_FROM`: optionnel, défaut `Manifesto IA <noreply@manifesto-ia.org>`
+- `ADMIN_EMAIL`: optionnel mais requis pour activer le backoffice magic link
+- `ADMIN_MAGIC_LINK_TTL_MINUTES`: optionnel, défaut `15`
+- `ADMIN_SESSION_TTL_HOURS`: optionnel, défaut `24`
+- `ADMIN_COOKIE_NAME`: optionnel, défaut `manifesto_admin_session`
 
 Exemple `.env` minimal:
 
 ```bash
 SMTP_USER=smtp_username
 SMTP_PASS=smtp_password
+ADMIN_EMAIL=admin@manifesto-ia.org
 ```
 
 Exemple `.env` complet:
@@ -86,6 +92,10 @@ SMTP_SOCKET_TIMEOUT_MS=20000
 SMTP_DNS_TIMEOUT_MS=10000
 SMTP_VERIFY_ON_STARTUP=true
 SMTP_FROM="Manifesto IA <noreply@manifesto-ia.org>"
+ADMIN_EMAIL=admin@manifesto-ia.org
+ADMIN_MAGIC_LINK_TTL_MINUTES=15
+ADMIN_SESSION_TTL_HOURS=24
+ADMIN_COOKIE_NAME=manifesto_admin_session
 ```
 
 ### Logs Docker (tous les conteneurs en cours)

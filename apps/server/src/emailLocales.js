@@ -485,3 +485,39 @@ export function buildVerificationEmail({ locale, fullName, verifyUrl }) {
     html,
   };
 }
+
+export function buildAdminMagicLinkEmail({ magicLink, expiresInMinutes }) {
+  const safeMagicLink = String(magicLink);
+  const safeExpiresInMinutes = Number.isFinite(expiresInMinutes) ? expiresInMinutes : 15;
+  const escapedMagicLink = escapeHtml(safeMagicLink);
+
+  const subject = 'Connexion backoffice Manifesto IA';
+  const text = [
+    'Bonjour,',
+    '',
+    'Une demande de connexion au backoffice a ete initiee.',
+    'Cliquez sur ce lien magique pour vous authentifier :',
+    safeMagicLink,
+    '',
+    `Ce lien expire dans ${safeExpiresInMinutes} minutes et ne peut etre utilise qu'une seule fois.`,
+    '',
+    "Si vous n'etes pas a l'origine de cette demande, ignorez simplement cet email.",
+  ].join('\n');
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1a1a1a;">
+      <p>Bonjour,</p>
+      <p>Une demande de connexion au backoffice a ete initiee.</p>
+      <p>Cliquez sur ce lien magique pour vous authentifier :</p>
+      <p><a href="${escapedMagicLink}">${escapedMagicLink}</a></p>
+      <p>Ce lien expire dans ${safeExpiresInMinutes} minutes et ne peut etre utilise qu'une seule fois.</p>
+      <p>Si vous n'etes pas a l'origine de cette demande, ignorez simplement cet email.</p>
+    </div>
+  `;
+
+  return {
+    subject,
+    text,
+    html,
+  };
+}

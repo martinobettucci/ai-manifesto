@@ -7,11 +7,13 @@ manifesto-ia.org {
 
   @hasToken query token=*
   @hasVerify query verify=*
+  @hasAdminVerify query admin_verify=*
   @hasEmail query email=*
   @hasFullName query fullName=*
   @hasFullNameSnake query full_name=*
   log_skip @hasToken
   log_skip @hasVerify
+  log_skip @hasAdminVerify
   log_skip @hasEmail
   log_skip @hasFullName
   log_skip @hasFullNameSnake
@@ -22,12 +24,13 @@ manifesto-ia.org {
       request>uri query {
         delete token
         delete verify
+        delete admin_verify
         delete email
         delete fullName
         delete full_name
         delete fullname
       }
-      request>uri regexp "(?i)([?&](token|verify|email|full_?name)=)[^&]*" "${1}[REDACTED]"
+      request>uri regexp "(?i)([?&](token|verify|admin_verify|email|full_?name)=)[^&]*" "${1}[REDACTED]"
       wrap console
     }
   }

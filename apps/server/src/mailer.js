@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { buildVerificationEmail } from './emailLocales.js';
+import { buildAdminMagicLinkEmail, buildVerificationEmail } from './emailLocales.js';
 
 export function createMailer(config) {
   if (config.smtpRequireAuth && (!config.smtpUser || !config.smtpPass)) {
@@ -34,6 +34,21 @@ export function createMailer(config) {
         locale,
         fullName,
         verifyUrl,
+      });
+
+      return transporter.sendMail({
+        from: config.smtpFrom,
+        to: email,
+        subject,
+        text,
+        html,
+      });
+    },
+
+    async sendAdminMagicLinkEmail({ email, magicLink, expiresInMinutes }) {
+      const { subject, text, html } = buildAdminMagicLinkEmail({
+        magicLink,
+        expiresInMinutes,
       });
 
       return transporter.sendMail({

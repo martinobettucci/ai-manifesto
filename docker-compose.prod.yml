@@ -23,6 +23,10 @@ services:
       SMTP_USER: ${SMTP_USER:?SMTP_USER is required}
       SMTP_PASS: ${SMTP_PASS:?SMTP_PASS is required}
       SMTP_FROM: ${SMTP_FROM:-Manifesto IA <noreply@manifesto-ia.org>}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_MAGIC_LINK_TTL_MINUTES: ${ADMIN_MAGIC_LINK_TTL_MINUTES:-15}
+      ADMIN_SESSION_TTL_HOURS: ${ADMIN_SESSION_TTL_HOURS:-24}
+      ADMIN_COOKIE_NAME: ${ADMIN_COOKIE_NAME:-manifesto_admin_session}
     volumes:
       - ./data:/data
     restart: unless-stopped
