@@ -550,7 +550,7 @@ function isValidEmail(value) {
 }
 
 function validateDepartment(value) {
-  return /^\d{2,3}$/.test(value);
+  return /^(?:\d{2,3}|2[AB])$/i.test(value);
 }
 
 function normalizeProfessionalWebsite(value) {
@@ -628,7 +628,7 @@ function parseRegistration(body) {
   const fullName = sanitizeText(body.fullName);
   const email = sanitizeText(body.email).toLowerCase();
   const profession = sanitizeText(body.profession);
-  const department = sanitizeText(body.department);
+  const department = sanitizeText(body.department).toUpperCase();
   const countryRaw = sanitizeText(
     body.country ?? body.nation ?? body.countryCode ?? body.nationCode,
   );
@@ -711,7 +711,7 @@ function parseRegistration(body) {
 function parseAdminSignerPayload(body) {
   const publicDisplayName = sanitizeText(body.publicDisplayName);
   const profession = sanitizeText(body.profession);
-  const department = sanitizeText(body.department);
+  const department = sanitizeText(body.department).toUpperCase();
   const countryRaw = sanitizeText(body.country);
   const country = normalizeCountryCode(countryRaw);
   const locale = sanitizeText(body.locale).toLowerCase();

@@ -1191,13 +1191,14 @@ function App() {
                     <span>{t('form.department')}</span>
                     <input
                       type="text"
-                      inputMode="numeric"
+                      inputMode="text"
                       autoComplete="off"
                       aria-describedby="department-hint"
                       maxLength={3}
-                      pattern="[0-9]{2,3}"
+                      pattern="(?:[0-9]{2,3}|2[AaBb])"
+                      title="Format attendu: 2 chiffres, 3 chiffres, 2A ou 2B."
                       value={form.department}
-                      onChange={(event) => updateField('department', event.target.value)}
+                      onChange={(event) => updateField('department', event.target.value.toUpperCase())}
                       required
                     />
                     <small id="department-hint">{t('form.departmentHint')}</small>

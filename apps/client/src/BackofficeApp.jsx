@@ -1,5 +1,6 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { api } from './lib/api.js';
+import { getCountryOptions } from './countries.js';
 
 const ADMIN_VERIFY_QUERY_PARAM = 'admin_verify';
 
@@ -148,6 +149,7 @@ function BackofficeApp() {
   const [dataroomState, setDataroomState] = useState('idle');
   const [searchTerm, setSearchTerm] = useState('');
   const deferredSearchTerm = useDeferredValue(searchTerm);
+  const countryOptions = useMemo(() => getCountryOptions('fr'), []);
 
   const [editorMode, setEditorMode] = useState('create');
   const [editingSignerId, setEditingSignerId] = useState(null);
@@ -584,22 +586,30 @@ function BackofficeApp() {
                 <input
                   type="text"
                   required
-                  pattern="\\d{2,3}"
+                  pattern="(?:[0-9]{2,3}|2[AaBb])"
+                  inputMode="text"
+                  maxLength={3}
+                  title="Format attendu: 2 chiffres, 3 chiffres, 2A ou 2B."
                   value={signerForm.department}
-                  onChange={(event) => handleSignerFieldChange('department', event.target.value)}
+                  onChange={(event) =>
+                    handleSignerFieldChange('department', event.target.value.toUpperCase())
+                  }
                 />
               </label>
 
               <label className="admin-field">
                 Pays (ISO-2)
-                <input
-                  type="text"
-                  maxLength={2}
+                <select
                   value={signerForm.country}
-                  onChange={(event) =>
-                    handleSignerFieldChange('country', event.target.value.toUpperCase())
-                  }
-                />
+                  onChange={(event) => handleSignerFieldChange('country', event.target.value)}
+                >
+                  <option value="">-</option>
+                  {countryOptions.map((option) => (
+                    <option key={option.code} value={option.code}>
+                      {option.label} ({option.code})
+                    </option>
+                  ))}
+                </select>
               </label>
 
               <label className="admin-field">
