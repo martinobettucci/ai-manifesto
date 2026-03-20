@@ -263,6 +263,26 @@ function stripDepartmentFromDisplayName(publicDisplayName, department) {
     : safeDisplayName;
 }
 
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function stripProfessionFromDisplayName(publicDisplayName, profession) {
+  const safeDisplayName =
+    typeof publicDisplayName === 'string' ? publicDisplayName.trim() : '';
+  const safeProfession = typeof profession === 'string' ? profession.trim() : '';
+
+  if (!safeDisplayName || !safeProfession) {
+    return safeDisplayName;
+  }
+
+  const professionSuffixPattern = new RegExp(
+    `\\s*\\(${escapeRegExp(safeProfession)}\\)\\s*$`,
+  );
+
+  return safeDisplayName.replace(professionSuffixPattern, '').trim();
+}
+
 function createReflectionFallbackContent({ locale, title, intro, motives }) {
   if (locale === 'fr') {
     return DEFAULT_REFLECTION;
@@ -1359,9 +1379,9 @@ function App() {
                 const isCurrentSigner =
                   highlightedSignerId !== null && signer.id === highlightedSignerId;
                 const isAiProfessional = signer.aiProfessionalConsent === 1;
-                const visibleDisplayName = stripDepartmentFromDisplayName(
-                  signer.publicDisplayName,
-                  signer.department,
+                const visibleDisplayName = stripProfessionFromDisplayName(
+                  stripDepartmentFromDisplayName(signer.publicDisplayName, signer.department),
+                  signer.profession,
                 );
 
                 return (
